@@ -4,7 +4,7 @@
 
 # Site
 title: 王某某
-subtitle: 生活日志，技术博客
+subtitle: 技术博客，生活日志
 description: ''
 keywords: personal website
 author: wxc
@@ -13,7 +13,9 @@ timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://Hercules11.github.io/Hercules11.github.io
+# 如果您的网站存放在子目录中，例如 http://example.com/blog，则请将您的 url 设为 http://example.com/blog 并把 root 设为 /blog/。
+# 主目录， Hercules11 不用这么搞
+url: https://Hercules11.github.io
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -103,5 +105,7 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/Hercules11/Hercules11.github.io
+  # repo: https://github.com/Hercules11/Hercules11.github.io
+  repo: git@github.com:Hercules11/Hercules11.github.io.git
   branch: my-blog
+  token: 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

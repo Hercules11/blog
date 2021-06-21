@@ -1,7 +1,8 @@
-# Hercules11.github.io
-个人站点，内容大杂烩
-
-// TODO:在terminal 中用Ubuntu 提交，出现无权限的问题
+---
+title: use_github_pages_build_blog
+date: 2021-06-21 17:44:12
+tags: 实战教程
+---
 
 ## Github Pages 建站教程
 
@@ -82,3 +83,10 @@ deploy:
 ## Hexo 部署的原理
 
 当执行 `hexo deploy` 时，Hexo 会将 `public` 目录中的文件和目录推送至 `_config.yml` 中指定的远端仓库和分支中，并且**完全覆盖**该分支下的已有内容。
+
+## 自动化部署
+
+参考： [个人博客搭建指南](https://chuyang-fe.github.io/2021/03/28/%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E8%AE%B0%E5%BD%95/) 
+
+改一下部署的目的分支即可
+
