@@ -79,7 +79,7 @@ fun_features:
   # 为 subtitle 添加打字机效果
   # Typing animation for subtitle
   typing:
-    enable: true
+    enable: false
 
     # 打印速度，数字越大越慢
     # Typing speed, the larger the number, the slower
@@ -291,7 +291,7 @@ version:
 navbar:
   # 导航栏左侧的标题，为空则按 hexo config 中 `title` 显示
   # The title on the left side of the navigation bar. If empty, it is based on `title` in hexo config
-  blog_title: "羊小羊的博客"
+  blog_title: "王某某"
 
   # 导航栏毛玻璃特效，实验性功能，可能会造成页面滚动掉帧和抖动，部分浏览器不支持会自动不生效
   # Navigation bar frosted glass special animation. It is an experimental feature
@@ -310,10 +310,10 @@ navbar:
   # 导航栏菜单，可自行增减，key 用来关联 languages/*.yml，如不存在关联则显示 key 本身的值；icon 是 css class，可以省略；增加 name 可以强制显示指定名称
   # Navigation bar menu. `key` is used to associate languages/*.yml. If there is no association, the value of `key` itself will be displayed; if `icon` is a css class, it can be omitted; adding `name` can force the display of the specified name
   menu:
-    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
-    - { key: "关于羊小羊", link: "/about/", icon: "iconfont icon-user-fill" }
-    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
-    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "主页", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "关于", link: "/about/", icon: "iconfont icon-user-fill" }
+    - { key: "标签", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "归档", link: "/archives/", icon: "iconfont icon-archive-fill" }
     # - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     #- { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
 
@@ -415,7 +415,7 @@ footer:
 index:
   # 首页 Banner 头图，可以是相对路径或绝对路径，以下相同
   # Path of Banner image, can be a relative path or an absolute path, the same on other pages
-  banner_img: /images/background-images/seagull.jpeg
+  banner_img: /images/TahoeBeach_ZH-CN3786728560_1920x1080.jpg
 
   # 头图高度，屏幕百分比
   # Height ratio of banner image
@@ -434,7 +434,7 @@ index:
 
     # 为空则按 hexo config.subtitle 显示
     # If empty, text based on `subtitle` in hexo config
-    text: "We Are Bound To Be Free"
+    text: "黎明就在前方"
 
     # 通过 API 接口作为首页副标题的内容，必须返回的是 JSON 格式，如果请求失败则按 text 字段显示，该功能必须先开启 typing 打字机功能
     # Subtitle of the homepage through the API, must be returned a JSON. If the request fails, it will be displayed in `text` value. This feature must first enable the typing animation
@@ -487,7 +487,7 @@ index:
 # Post Page
 #---------------------------
 post:
-  banner_img: /img/default.png
+  banner_img: /images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg
   banner_img_height: 70
   banner_mask_alpha: 0.3
 
@@ -761,7 +761,7 @@ twikoo:
 # Archive Page
 #---------------------------
 archive:
-  banner_img: /images/background-images/flowers.jpeg
+  banner_img: /images/SunnyRainforest_ZH-CN1412617420_1920x1080.jpg
   banner_img_height: 100
   banner_mask_alpha: 0
   subtitle:
@@ -773,7 +773,7 @@ archive:
 #---------------------------
 category:
   enable: false
-  banner_img: /img/default.png
+  banner_img: /images/KallurLighthouse_ZH-CN3407251246_1920x1080.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
   subtitle:
@@ -803,7 +803,7 @@ category:
 #---------------------------
 tag:
   enable: true
-  banner_img: /images/background-images/lamb.jpeg
+  banner_img: /images/AerialTamul_ZH-CN3164679201_1920x1080.jpg
   banner_img_height: 100
   banner_mask_alpha: 0.2
   subtitle:
@@ -821,19 +821,19 @@ tag:
 #---------------------------
 about:
   enable: true
-  banner_img: /images/background-images/orange.jpeg
+  banner_img: /images/ColoradoColumbine_ZH-CN0901580141_1920x1080.jpg
   banner_img_height: 80
   banner_mask_alpha: 0
-  subtitle: '关于羊小羊😎'
+  subtitle: '关于'
   avatar: /images/about/avatar.JPG
-  name: "羊小羊 (William)"
+  name: "王某某"
   intro: "Knowledge is weightless, a treasure you can always carry easily."
   # 更多图标可从 https://hexo.fluid-dev.com/docs/icon/ 查找，`class` 代表图标的 css class，添加 `qrcode` 后，图标不再是链接而是悬浮二维码
   # More icons can be found from https://hexo.fluid-dev.com/docs/en/icon/  `class` is the css class of the icon. If adding `qrcode`, The icon is no longer a link, but a hovering QR code
   icons:
-    - { class: "iconfont icon-wechat-fill", qrcode: "/images/about/wechat.jpg" }
-    - { class: "iconfont icon-github-fill", link: "https://github.com/ChuYang-FE", tip: "羊小羊的GitHub" }
-    # - { class: "iconfont icon-douban-fill", link: "https://douban.com", tip: "豆瓣" }
+    - { class: "iconfont icon-wechat-fill", qrcode: "", tip: "豆瓣"  }
+    - { class: "iconfont icon-github-fill", link: "https://github.com/Hercules11", tip: "王某某的GitHub" }
+    - { class: "iconfont icon-douban-fill", link: "https://douban.com", tip: "豆瓣" }
 
 
 #---------------------------
@@ -844,7 +844,7 @@ about:
 # Custom Page through `hexo new page`
 #---------------------------
 page:
-  banner_img: /img/default.png
+  banner_img: /images/SaguaroLightning_ZH-CN4157442270_1920x1080.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
