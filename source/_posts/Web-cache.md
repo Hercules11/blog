@@ -4,7 +4,7 @@ date: 2021-06-27 20:00:34
 tags: 翻译 Wiki
 ---
 
-### [Web cache](https://en.wikipedia.org/wiki/Web_cache)
+### [Web cache](https://zh.wikipedia.org/wiki/Web%E7%BC%93%E5%AD%98)
 
 网络缓存，或者说 HTTP 缓存，是用来优化互联网的系统。在应用端和服务器端都有实现。图片或者其他文件的缓存，可以使得在浏览网页的时候，时延更小。
 
