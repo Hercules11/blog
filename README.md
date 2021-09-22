@@ -50,7 +50,7 @@ eg. `hexo new "post title with whitespace"` 会生成默认布局的以 post tit
 运行命令，生成静态文件，即要渲染到 Github Pages 的网页文件.
 
 ```bash
-hexo generate 
+hexo generate
 ```
 
 运行命令，启动服务器，查看效果。默认情况下，访问网址为： `http://localhost:4000/`。每次修改后，都要重新运行命令，查看更新效果。
@@ -64,7 +64,7 @@ hexo server
 首先安装 [hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git)
 
 ```bash
-npm install hexo-deployer-git --save	
+npm install hexo-deployer-git --save
 ```
 
 再修改 _config.yml 的配置
@@ -80,3 +80,5 @@ deploy:
 ## Hexo 部署的原理
 
 当执行 `hexo deploy` 时，Hexo 会将 `public` 目录中的文件和目录推送至 `_config.yml` 中指定的远端仓库和分支中，并且**完全覆盖**该分支下的已有内容。
+
+## [Fluid 配置指南](https://fluid-dev.github.io/hexo-fluid-docs/guide/)
