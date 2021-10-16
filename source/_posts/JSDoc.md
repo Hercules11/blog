@@ -1,12 +1,10 @@
 ---
-title: JSDoc
-date: 2021-06-29 19:56:03
+title: JSDoc 简要介绍
+date: 2021-07-04 19:56:03
 tags: 翻译 Wiki
 ---
 
 ### [JSDoc](https://en.wikipedia.org/wiki/JSDoc)
-
-看到页面没有中文选项，那我就来翻译一下。
 
 JSDoc 是一种用来注释 JavaScript 源代码的标记语言。使用包含 JSDoc 的注释，程序员可以创建描述程序接口的文档。这种注释，可以被各种工具处理，生成类似 HTML 和 富文本格式的文档。JSDoc 规范基于  [CC BY-SA 3.0](https://en.wikipedia.org/wiki/CC_BY-SA_3.0) 协议发布，与之对应的文档生成器和解析库是基于 [Apache License 2.0](https://en.wikipedia.org/wiki/Apache_License_2.0) 发布的免费软件。
 
@@ -126,5 +124,5 @@ function printCircle(circle) {
 
 ### 参见
 
-- [Comparison of documentation generators](https://en.wikipedia.org/wiki/Comparison_of_documentation_generators)
-- [Google Closure Tools](https://en.wikipedia.org/wiki/Google_Closure_Tools)
+- [文档生成器的对比](https://en.wikipedia.org/wiki/Comparison_of_documentation_generators)
+- [谷歌内部工具](https://en.wikipedia.org/wiki/Google_Closure_Tools)

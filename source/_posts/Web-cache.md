@@ -1,5 +1,5 @@
 ---
-title: Web cache
+title: Web cache 简要介绍
 date: 2021-06-27 20:00:34
 tags: 翻译 Wiki
 ---
