@@ -1,5 +1,5 @@
 ---
-title: bigfrontend 代码题（一）
+title: bigfrontend 代码题(一)
 date: 2021-10-19 12:56:53
 tags: 做题
 ---
@@ -59,7 +59,8 @@ function curry(func) {
 
 参考：[bind，apply，call三者的区别](https://zhuanlan.zhihu.com/p/82340026)
 
-<hr size="5px">
+<hr>
+
 
 # 2. 实现支持placeholder的curry()
 
@@ -114,7 +115,8 @@ curry.placeholder = Symbol()
 // 很巧妙，用了一个递归的思想
 ```
 
-<hr size="5px">
+<hr>
+
 
 # 3. 实现Array.prototype.flat()
 
@@ -193,7 +195,8 @@ function flat(arr, depth = 1) {
 // 这个迭代版本就是把元素一个一个剥开一层都推入stack 中，符合条件的，推入结果数组
 ```
 
-<hr size="5px">
+<hr>
+
 
 
 
