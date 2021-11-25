@@ -1,14 +1,14 @@
 ---
-title: CSS 超高频面试题
-date: 2021-11-21 00:01:46
+title: CSS高频面试题
+date: 2021-11-25 23:09:37
 tags: 学习总结
 ---
 
-CSS 面试题，精华篇
+CSS 面试题
 
 盒模型：
 
-<img src="../images/posts/photo_2021-11-21_00-39-09.jpg" align="left" />
+![](/blog/images/posts/photo_2021-11-21_00-39-09.jpg)
 
 在标准模型中，如果你给盒设置 `width` 和 `height`，实际设置的是 *content box*。 padding 和 border 再加上设置的宽高一起决定整个盒子的大小。默认浏览器会使用标准模型。如果需要使用替代模型，您可以通过为其设置 `box-sizing: border-box` 来实现。
 
