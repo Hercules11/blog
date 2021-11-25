@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+  <title>ES6模块中的export 与import - 王某某</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/","version":"1.8.11","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王某某</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ES6模块中的export 与import">
+              
+                ES6模块中的export 与import
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      wxc
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-11-19 01:44" pubdate>
+        2021年11月19日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      729 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      预计阅读耗时 
+      9
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ES6模块中的export 与import</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年11月19日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>细说ES6模块中的export 与import。</p>
+<ol>
+<li><p>导出语句必须在模块顶级，不能嵌套在某个块中（import 同理）</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 允许</span><br><span class="hljs-keyword">export</span> ... <br><span class="hljs-comment">// 不允许</span><br><span class="hljs-keyword">if</span> (condition) &#123; <br> <span class="hljs-keyword">export</span> ... <br>&#125; <br></code></pre></div></td></tr></table></figure></li>
+<li><p>命名导出 模块就好像是被导出的值的容器</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 允许</span><br><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><span class="hljs-keyword">export</span> &#123; foo &#125;; <br><br><span class="hljs-comment">// 允许</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><br><span class="hljs-comment">// 允许，但应该避免</span><br><span class="hljs-keyword">export</span> &#123; foo &#125;; <br><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br></code></pre></div></td></tr></table></figure></li>
+<li><p>别名必须在export 子句的大括号语法中指定（import 同理）</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><span class="hljs-keyword">export</span> &#123; foo <span class="hljs-keyword">as</span> myFoo &#125;;<br></code></pre></div></td></tr></table></figure></li>
+<li><p>ES6 模块系统会识别作为别名提供的 default 关键字</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><br><span class="hljs-comment">// 等同于 export default foo; </span><br><span class="hljs-keyword">export</span> &#123; foo <span class="hljs-keyword">as</span> <span class="hljs-keyword">default</span> &#125;; <br></code></pre></div></td></tr></table></figure></li>
+<li><p>正确示例</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 命名行内导出</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> baz = <span class="hljs-string">&#x27;baz&#x27;</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>, bar = <span class="hljs-string">&#x27;bar&#x27;</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span>* <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>&#123;&#125;  <span class="hljs-comment">// 一边声明就一边导出了</span><br><br><span class="hljs-comment">// 命名子句导出</span><br><span class="hljs-keyword">export</span> &#123; foo &#125;; <br><span class="hljs-keyword">export</span> &#123; foo, bar &#125;; <br><span class="hljs-keyword">export</span> &#123; foo <span class="hljs-keyword">as</span> myFoo, bar &#125;;  <span class="hljs-comment">// 给它加个容器，反正都是要加进来的</span><br><br><span class="hljs-comment">// 默认导出</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&#x27;foo&#x27;</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-number">123</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> /[a-z]*/; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123; <span class="hljs-attr">foo</span>: <span class="hljs-string">&#x27;foo&#x27;</span> &#125;; <br><span class="hljs-keyword">export</span> &#123; foo, bar <span class="hljs-keyword">as</span> <span class="hljs-keyword">default</span> &#125;; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> foo <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>*(<span class="hljs-params"></span>) </span>&#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> </span>&#123;&#125;  <span class="hljs-comment">// 记住别名在子句，默认不行内，一个模块一个默认导出</span><br></code></pre></div></td></tr></table></figure></li>
+<li><p>禁止项</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 会导致错误的不同形式：</span><br><br><span class="hljs-comment">// 行内默认导出中不能出现变量声明</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;bar&#x27;</span>;  <span class="hljs-comment">// 关键字太多，解释器受不了😫</span><br><br><span class="hljs-comment">// 只有标识符可以出现在 export 子句中</span><br><span class="hljs-keyword">export</span> &#123; <span class="hljs-number">123</span> <span class="hljs-keyword">as</span> foo &#125;<br><br><span class="hljs-comment">// 别名只能在 export 子句中出现</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span> <span class="hljs-keyword">as</span> myFoo; <span class="hljs-comment">// 过于奇怪，解释器不想理你</span><br></code></pre></div></td></tr></table></figure></li>
+</ol>
+<p>总结一下就是：</p>
+<ul>
+<li>可以在声明时候导出，或者默认导出</li>
+<li>可以把标识符放到括号里，可以在括号也就是子语句里面起别名</li>
+</ul>
+<hr>
+<ol>
+<li><p>与 export 类似，import 必须出现在 模块的顶级</p>
+</li>
+<li><p>命名导出可以使用 <code>*</code> 批量获取并赋值给保存导 出集合的别名，而无须列出每个标识符</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>, bar = <span class="hljs-string">&#x27;bar&#x27;</span>, baz = <span class="hljs-string">&#x27;baz&#x27;</span>; <br><span class="hljs-keyword">export</span> &#123; foo, bar, baz &#125; <br><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Foo <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>;  <span class="hljs-comment">// * 代表整个导出的对象</span><br><br><span class="hljs-built_in">console</span>.log(Foo.foo); <span class="hljs-comment">// foo </span><br><span class="hljs-built_in">console</span>.log(Foo.bar); <span class="hljs-comment">// bar </span><br><span class="hljs-built_in">console</span>.log(Foo.baz); <span class="hljs-comment">// baz</span><br></code></pre></div></td></tr></table></figure></li>
+<li><p>如果模块同时导出了命名导出和默认导出，则可以在 import 语句中同时取得它们。可以依次列出 特定导出的标识符来取得，也可以使用*来取得</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> foo, &#123; bar, baz &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>; <br><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> foo, bar, baz &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>; <br><br><span class="hljs-keyword">import</span> foo, * <span class="hljs-keyword">as</span> Foo <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>; <span class="hljs-comment">// 除默认导出外。其它的导出打包到 *</span><br></code></pre></div></td></tr></table></figure></li>
+</ol>
+<p>总结一下就是：</p>
+<ul>
+<li>默认导出，不加花括号，也就是说不用解构赋值</li>
+<li>在括号中，可以起别名，可以<code>default as xx</code> 正如在导出时 <code>xx as default</code></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">学习总结</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/21/CSS-%E8%B6%85%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E9%A2%98/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CSS 超高频面试题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/23/bigfrontend-%E4%BB%A3%E7%A0%81%E9%A2%98-%E4%BA%94/">
+                        <span class="hidden-mobile">bigfrontend 代码题(五)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"B8kWDiFEXDhqgdeaFDgF1J20-MdYXbMMI","appKey":"hgpr0J2gtv8uaHbnszwKJ4g9","placeholder":"说点什么","path":"window.location.pathname","avatar":"wavatar","meta":["nick"],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":null,"emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[],"appid":"B8kWDiFEXDhqgdeaFDgF1J20-MdYXbMMI","appkey":"hgpr0J2gtv8uaHbnszwKJ4g9"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
