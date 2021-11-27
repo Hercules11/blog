@@ -8,7 +8,7 @@ CSS 面试题
 
 盒模型：
 
-![](/blog/images/posts/photo_2021-11-21_00-39-09.jpg)
+![](../images/posts/photo_2021-11-21_00-39-09.jpg)
 
 在标准模型中，如果你给盒设置 `width` 和 `height`，实际设置的是 *content box*。 padding 和 border 再加上设置的宽高一起决定整个盒子的大小。默认浏览器会使用标准模型。如果需要使用替代模型，您可以通过为其设置 `box-sizing: border-box` 来实现。
 
