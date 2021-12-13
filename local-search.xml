@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>关于跨域CORS</title>
+    <link href="/blog/2021/12/13/%E5%85%B3%E4%BA%8E%E8%B7%A8%E5%9F%9FCORS/"/>
+    <url>/blog/2021/12/13/%E5%85%B3%E4%BA%8E%E8%B7%A8%E5%9F%9FCORS/</url>
+    
+    <content type="html"><![CDATA[<h1 id="浏览器的同源策略"><a href="#浏览器的同源策略" class="headerlink" title="浏览器的同源策略"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">浏览器的同源策略</a></h1><h1 id="跨源资源共享（CORS）"><a href="#跨源资源共享（CORS）" class="headerlink" title="跨源资源共享（CORS）"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS">跨源资源共享（CORS）</a></h1>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>记笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>HTTP 消息</title>
+    <link href="/blog/2021/12/13/HTTP-%E6%B6%88%E6%81%AF/"/>
+    <url>/blog/2021/12/13/HTTP-%E6%B6%88%E6%81%AF/</url>
+    
+    <content type="html"><![CDATA[<h1 id="HTTP消息"><a href="#HTTP消息" class="headerlink" title="HTTP消息"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Messages">HTTP消息</a></h1>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>记笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>package.json 文件中的软件包版本</title>
     <link href="/blog/2021/11/27/package-json-%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%89%88%E6%9C%AC/"/>
     <url>/blog/2021/11/27/package-json-%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%89%88%E6%9C%AC/</url>
