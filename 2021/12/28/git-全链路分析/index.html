@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="王某某">
 <meta property="og:description" content="本文将对 git 的日常使用，做一个全链路的分析，结合文档，做一个细致描述。 首先，在脑海中，准备基础概念： 在自己电脑上的环境称为local 本地环境，remote repo 远程仓库 是在github的服务器上。 本地环境又有三个位置：分别是 工作目录 又被称为工作区、工作树，暂存区 又被称为索引区，本地仓库。 了解基本概念后，开始进行操作，注意 git 是一个分布式版本控制系统，一切都为追踪">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://user-images.githubusercontent.com/43318823/147582097-e2acd0db-2fa5-43b2-9223-c0edda81030f.png">
 <meta property="article:published_time" content="2021-12-28T12:37:58.000Z">
-<meta property="article:modified_time" content="2021-12-28T14:24:53.779Z">
+<meta property="article:modified_time" content="2021-12-28T15:43:55.960Z">
 <meta property="article:author" content="wxc">
 <meta property="article:tag" content="知识总结">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/43318823/147582097-e2acd0db-2fa5-43b2-9223-c0edda81030f.png">
   
   <title>git 全链路分析 - 王某某</title>
 
@@ -243,6 +245,7 @@
 <p>在自己电脑上的环境称为<code>local</code> 本地环境，<code>remote repo</code> 远程仓库 是在github的服务器上。</p>
 <p>本地环境又有三个位置：分别是 <code>工作目录</code> 又被称为工作区、工作树，<code>暂存区</code> 又被称为索引区，<code>本地仓库</code>。</p>
 <p>了解基本概念后，开始进行操作，注意 git 是一个分布式版本控制系统，一切都为追踪管理文件而生。</p>
+<p><img src="https://user-images.githubusercontent.com/43318823/147582097-e2acd0db-2fa5-43b2-9223-c0edda81030f.png" srcset="/blog/img/loading.gif" lazyload></p>
 <p>当我们初始化一个 git 仓库后，也就开启了 git 使用之旅。</p>
 <p><code>git init</code> 创建一个 git 仓库，或者重新初始化一个已存在的仓库。想象一下，你有一个仓库，有货物没货物，你都可以派一个<strong>仓库管理员</strong>去管理它。</p>
 <p>当你对本地目录做了一些操作之后，比如增加文件、删除文件、给文件增加内容、删减内容，此时，你可以用<code>git add &lt;file&gt;</code> 来将操作的内容保存为一个快照（不管干了啥，通通看作是一个对象obj，有个标志符可以让你操作它），进行<strong>追踪 track，也叫做 staged</strong>。 一般地，可以使用 <code>git add .</code> 或者 <code>git add -A</code> 进行全部更改的追踪。</p>
