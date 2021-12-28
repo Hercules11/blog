@@ -181,18 +181,25 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/blog/2021/12/13/%E5%85%B3%E4%BA%8E%E8%B7%A8%E5%9F%9FCORS/" target="_self">
-          关于跨域CORS
+        <a href="/blog/2021/12/28/html%E6%9C%AA%E5%8D%A0%E6%BB%A1%E5%85%A8%E5%B1%8F/" target="_self">
+          html未占满全屏
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/blog/2021/12/13/%E5%85%B3%E4%BA%8E%E8%B7%A8%E5%9F%9FCORS/" target="_self">
+        <a href="/blog/2021/12/28/html%E6%9C%AA%E5%8D%A0%E6%BB%A1%E5%85%A8%E5%B1%8F/" target="_self">
           
           
             
           
-          浏览器的同源策略跨源资源共享（CORS）
+          解决 html, body 元素未占满全屏的问题
+设置
+123html, body &#123;    width: 100%&#125;
+
+后，并没有解决问题。
+因为浏览器默认按照窗口大小（viewport）来设置 html 元素大小。于是，当页面缩小的时候，html 变小，但是页面元素的尺寸是写死的，于是越界，侧边出现白边。
+解决办法是设置
+123html, body &#123;	min-w
         </a>
       </p>
 
@@ -200,8 +207,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-13 12:06" pubdate>
-              2021-12-13
+            <time datetime="2021-12-28 17:24" pubdate>
+              2021-12-28
             </time>
           </div>
         
@@ -210,7 +217,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/blog/tags/%E8%AE%B0%E7%AC%94%E8%AE%B0/">记笔记</a>
+              <a href="/blog/tags/bug-fix/">bug fix</a>
             
           </div>
         
@@ -224,18 +231,22 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/blog/2021/12/13/HTTP-%E6%B6%88%E6%81%AF/" target="_self">
-          HTTP 消息
+        <a href="/blog/2021/12/16/%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94%E7%94%9F%E6%88%90%E7%8B%AC%E4%B8%80%E6%97%A0%E4%BA%8C%E7%9A%84%E6%A0%87%E8%AF%86%E7%AC%A6/" target="_self">
+          算法——生成独一无二的标识符
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/blog/2021/12/13/HTTP-%E6%B6%88%E6%81%AF/" target="_self">
+        <a href="/blog/2021/12/16/%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94%E7%94%9F%E6%88%90%E7%8B%AC%E4%B8%80%E6%97%A0%E4%BA%8C%E7%9A%84%E6%A0%87%E8%AF%86%E7%AC%A6/" target="_self">
           
           
             
           
-          HTTP消息
+          153. uglify CSS class names如果你在项目中使用了css-loader， 你可以像这样通过localIdentName来变换class name。
+1localIdentName: &quot;[path][name]__[local]--[hash:base64:5]&quot;,
+
+你也可以传入自定义的getLocalIdent函数来自由生成class name。
+请完
         </a>
       </p>
 
@@ -243,8 +254,55 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-13 10:20" pubdate>
-              2021-12-13
+            <time datetime="2021-12-16 14:34" pubdate>
+              2021-12-16
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/blog/tags/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/blog/2021/12/15/%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8A%A8clear/" target="_self">
+          清除浮动clear
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/blog/2021/12/15/%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8A%A8clear/" target="_self">
+          
+          
+            
+          
+          clear clear CSS 属性指定一个元素是否必须移动(清除浮动后)到在它之前的浮动元素下面。clear 属性适用于浮动和非浮动元素。
+
+
+当应用于非浮动块时，它将非浮动块的边框边界移动到所有相关浮动元素外边界的下方。这个非浮动块的垂直外边距会折叠。
+另一方面，两个浮动元素的垂直外边距将不会折叠。当应用于浮动元素时，它将元素的外边界移动到所有相关的浮动元素外边框边界的下方。这会影响后面浮动元
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-12-15 16:49" pubdate>
+              2021-12-15
             </time>
           </div>
         
@@ -586,52 +644,6 @@ e.g. 创建一个 esm 兼容的包，
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2021-10-19 16:17" pubdate>
-              2021-10-19
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/blog/tags/%E5%81%9A%E9%A2%98/">做题</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/blog/2021/10/19/bigfrontend%20%E4%BB%A3%E7%A0%81%E9%A2%98(%E4%B8%80)/" target="_self">
-          bigfrontend 代码题(一)
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/blog/2021/10/19/bigfrontend%20%E4%BB%A3%E7%A0%81%E9%A2%98(%E4%B8%80)/" target="_self">
-          
-          
-            
-          
-          1. 实现curry()柯里化(Currying) 在JavaScript是一个常用的技巧。
-请实现一个curry()方法，接受一个function然后返回一个柯里化过后的function。
-这是一个例子
-1234567891011const join = (a, b, c) =&gt; &#123;   return `$&#123;a&#125;_$&#123;b&#125;_$&#123;c
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-19 12:56" pubdate>
               2021-10-19
             </time>
           </div>
