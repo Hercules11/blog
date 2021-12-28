@@ -8,7 +8,7 @@ tags: 记笔记
 
  **`clear`** [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) 属性指定一个元素**是否必须移动(清除浮动后)到在它之前的浮动元素下面**。`clear` 属性适用于浮动和非浮动元素。
 
-<div><iframe class="interactive" height="390" src="https://interactive-examples.mdn.mozilla.net/pages/css/clear.html" title="MDN Web Docs Interactive Example" loading="lazy"></iframe></div>
+<div style"width:100%;"><iframe class="interactive" height="390" src="https://interactive-examples.mdn.mozilla.net/pages/css/clear.html" title="MDN Web Docs Interactive Example" loading="lazy"></iframe></div>
 
 当应用于非浮动块时，它将非浮动块的[边框边界](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)移动到所有相关浮动元素[外边界](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)的下方。这个非浮动块的[垂直外边距](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)会折叠。
 
