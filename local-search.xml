@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>思考学习方法</title>
+    <link href="/blog/2021/12/28/%E6%80%9D%E8%80%83%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
+    <url>/blog/2021/12/28/%E6%80%9D%E8%80%83%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>为什么读那么多理论教程，不如实际操作一番，来得更加印象深刻呢？</p><p>因为现实世界是复杂的，语言文字对事物的描述，是对事物的一个基本面的快照，很难让你构建起一个事物的框架。于是所学过的知识点，便成了碎片信息，不便于存储利用。</p><p>大脑不擅长记忆存储信息，而擅长观察事物之间的联系。所以，知识点，如果不能形成一个良好检索的结构，比如树形，拓扑形，那么在需要检索它的时候，便会遇到很多阻碍，“记不住” 的现象也就随之发生了。</p><p>所以，符合大脑记忆规律的学习方法就是，理论和实践相结合。</p><p>话说了很多遍了，但还是要重复一次。</p><p>先理论，获取认知的基础点。比如 ts 是什么，解决了什么样的问题？</p><p>再实践，搭建起整体的架构。比如，在算法题中使用 ts, 做一下类型体操</p><p>紧接着，基于实践中的需要，开发具体的项目…</p><p>深入理论的学习，类型理论，自动推导…</p><p>在理论的扩展中，扩大实践活动。高手进阶之路</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>方法总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>git 全链路分析</title>
+    <link href="/blog/2021/12/28/git-%E5%85%A8%E9%93%BE%E8%B7%AF%E5%88%86%E6%9E%90/"/>
+    <url>/blog/2021/12/28/git-%E5%85%A8%E9%93%BE%E8%B7%AF%E5%88%86%E6%9E%90/</url>
+    
+    <content type="html"><![CDATA[<p>本文将对 git 的日常使用，做一个全链路的分析，结合文档，做一个细致描述。</p><p>首先，在脑海中，准备基础概念：</p><p>在自己电脑上的环境称为<code>local</code> 本地环境，<code>remote repo</code> 远程仓库 是在github的服务器上。</p><p>本地环境又有三个位置：分别是 <code>工作目录</code> 又被称为工作区、工作树，<code>暂存区</code> 又被称为索引区，<code>本地仓库</code>。</p><p>了解基本概念后，开始进行操作，注意 git 是一个分布式版本控制系统，一切都为追踪管理文件而生。</p><p>当我们初始化一个 git 仓库后，也就开启了 git 使用之旅。</p><p><code>git init</code> 创建一个 git 仓库，或者重新初始化一个已存在的仓库。想象一下，你有一个仓库，有货物没货物，你都可以派一个<strong>仓库管理员</strong>去管理它。</p><p>当你对本地目录做了一些操作之后，比如增加文件、删除文件、给文件增加内容、删减内容，此时，你可以用<code>git add &lt;file&gt;</code> 来将操作的内容保存为一个快照（不管干了啥，通通看作是一个对象obj，有个标志符可以让你操作它），进行<strong>追踪 track，也叫做 staged</strong>。 一般地，可以使用 <code>git add .</code> 或者 <code>git add -A</code> 进行全部更改的追踪。</p><p>现在你可以用 <code>git status</code> 来查看追踪的状态。(使用<code>git restore --staged &lt;file&gt;...</code> 取消追踪)</p><p>接下来，就可以进行提交操作，提交到本地仓库中去。使用的命令是<code>git commit -m &lt;msg&gt;</code> msg 的内容为log 信息，必须要写的。</p><p>git add 和 git commit 的操作，合并了就是 <code>git commit -am &lt;msg&gt;</code></p><p>现在，目光来到本地仓库。</p><p><code>git push</code> 将本地仓库的提交，推送到远程仓库。第一次推送，要指明仓库名和分支 <code>git push &lt;remote&gt; &lt;branch&gt;</code></p><p>完成从本地到远程的操作后，来看一下从远程到本地仓库的操作。</p><p><code>git clone</code> 将远程仓库，克隆到本地目录。</p><p><code>git pull</code> 获取远程仓库的更新，是<code>git push</code> 的逆向操作。</p><p>以上就是git 的日常使用命令。<code>git init</code> 初始化建仓库; <code>git commit -am &lt;msg&gt;</code> 提交到本地仓库; <code>git push</code>推送到远程仓库；</p><p><code>git pull</code> 从远程仓库拉取更新，是<code>git push</code> 的逆向操作；<code>git clone</code> 下载一个仓库到本地；</p><p>总之，要把每次对文件的操作看作是一个整体，进行相关操作。具体需要用到的命令也可以现用现查。</p><p>进一步学习：</p><ul><li><a href="https://ndpsoftware.com/git-cheatsheet.html#loc=index;">git 可视化工具</a></li><li><a href="https://learngitbranching.js.org/">Learn Git Branching</a></li><li><a href="https://onlywei.github.io/explain-git-with-d3">Explain Git With D3</a></li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>知识总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>html未占满全屏</title>
     <link href="/blog/2021/12/28/html%E6%9C%AA%E5%8D%A0%E6%BB%A1%E5%85%A8%E5%B1%8F/"/>
     <url>/blog/2021/12/28/html%E6%9C%AA%E5%8D%A0%E6%BB%A1%E5%85%A8%E5%B1%8F/</url>
