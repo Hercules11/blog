@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>require 是什么</title>
+    <link href="/blog/2022/01/09/require-%E6%98%AF%E4%BB%80%E4%B9%88/"/>
+    <url>/blog/2022/01/09/require-%E6%98%AF%E4%BB%80%E4%B9%88/</url>
+    
+    <content type="html"><![CDATA[<p>原文地址：<a href="https://nodejs.org/en/knowledge/getting-started/what-is-require/">What is require?</a></p><p>Nodejs 遵循 CommonJS 模块系统规则，内置的<code>require</code> 函数，是引入模块最简单的方法。<code>require</code> 基础功能是读取 Javascript 文件，执行文件，然后返回<code>exports</code> 对象。例子如下：</p><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs JavaScript"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;evaluating example.js&quot;</span>);<br><br><span class="hljs-keyword">var</span> invisible = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;invisible&quot;</span>);<br>&#125;<br><br><span class="hljs-built_in">exports</span>.message = <span class="hljs-string">&quot;hi&quot;</span>;<br><br><span class="hljs-built_in">exports</span>.say = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">exports</span>.message);<br>&#125;<br></code></pre></div></td></tr></table></figure><p>如果运行 <code>let example = require(&#39;./example.js&#39;)</code> , example.js 被计算求值，example 等于：</p><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;hi&quot;</span>,<br>  <span class="hljs-attr">say</span>: [<span class="hljs-built_in">Function</span>]<br>&#125;<br></code></pre></div></td></tr></table></figure><p>如果要将 <code>exports</code> 对象设置为函数或新对象，则必须使用 <code>module.exports</code> 对象。举个例子:</p><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;hello world&quot;</span>)<br>&#125;<br><br><span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./example2.js&#x27;</span>)() <span class="hljs-comment">//require itself and run the exports object</span><br></code></pre></div></td></tr></table></figure><p>值得注意的是，每当您随后需要一个已经需要的文件时，导出对象都会被缓存并重用。</p><figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">node&gt; require(<span class="hljs-string">&#x27;./example.js&#x27;</span>)<br>evaluating example.js<br>&#123; message: <span class="hljs-string">&#x27;hi&#x27;</span>, say: [Function] &#125;<br>node&gt; require(<span class="hljs-string">&#x27;./example.js&#x27;</span>)<br>&#123; message: <span class="hljs-string">&#x27;hi&#x27;</span>, say: [Function] &#125;<br>node&gt; require(<span class="hljs-string">&#x27;./example.js&#x27;</span>).message = <span class="hljs-string">&quot;hey&quot;</span> //<span class="hljs-built_in">set</span> the message to <span class="hljs-string">&quot;hey&quot;</span><br><span class="hljs-string">&#x27;hey&#x27;</span><br>node&gt; require(<span class="hljs-string">&#x27;./example.js&#x27;</span>) //One might think that this <span class="hljs-string">&quot;reloads&quot;</span> the file...<br>&#123; message: <span class="hljs-string">&#x27;hey&#x27;</span>, say: [Function] &#125; //...but the message is still <span class="hljs-string">&quot;hey&quot;</span> because of the module cache.<br></code></pre></div></td></tr></table></figure><p>从上面可以看到，example.js 是第一次计算的，但是所有后续调用都只需要调用模块缓存，而不是再次读取文件。如上所述，这偶尔会产生副作用。</p><p>require 查找文件的规则可能有点复杂，但一个简单的经验法则是，如果文件不以 “./“ 或 “/“，那么它要么被视为核心模块(并检查本地 Node.js 路径) ，要么被视为本地 node _ modules 文件夹中的依赖项。如果文件以 “./“  开头。它被认为是调用 require 的文件的相对文件。如果文件以 “/“ 开头，则认为它是绝对路径。注意: 你可以省略 “.js” 。如果需要的话，会自动添加。有关更多详细信息，请参阅官方文档。</p><p>另外需要注意的是：如果传递的文件名实际上是一个目录，那么它将首先在目录中查找 package.json 并加载 main 属性中引用的文件。否则，它将查找 index.js。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>学习总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ipconfig 信息解读</title>
+    <link href="/blog/2021/12/29/ipconfig-%E4%BF%A1%E6%81%AF%E8%A7%A3%E8%AF%BB/"/>
+    <url>/blog/2021/12/29/ipconfig-%E4%BF%A1%E6%81%AF%E8%A7%A3%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<p>因为有手机端调试网页的需求，于是找了一下手机端如何连接PC 端服务器方法。</p><p>之前解决过一次，因为没弄清楚原理，现在又忘了。</p><p>解决方案是：手机端浏览器地址栏输入<strong>无线网适配器的IPv4地址</strong>，对应的文件名也需要输入。</p><p>具体原理如下：</p><p>打开 <code>cmd</code> 命令行提示符窗口，</p><p>运行 <code>ipconfig</code>， 得到网络连接的相关信息。<code>ipconfig /all</code> 可以看到更加详细的信息。</p><p>首先了解一个概念，计算机是通过网卡，这个硬件来跟计算机网络系统来进行通讯的。网卡，又叫适配器，有一个类似于身份证一样的东西，唯一标识符，叫做<strong>物理地址：12个十六进制数，正好48位</strong>。</p><p>那么在PC 端所在的局域网中，每一个网络终端都会有一个IPv4 地址，用来进行通讯，数据的发送与接收。这个地址就是网卡和别的网卡进行通讯的标识符。手机与电脑通过WiFi 进行交互，也就是访问电脑端的<strong>无线网卡IPv4地址</strong>。</p><p>同理可得，以太网适配器中的IPv4 地址，就是和路由器网关进行通讯的标识符。</p><p>关于子网掩码：<a href="https://www.zhihu.com/question/56895036">如何理解子网掩码？</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>知识总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>思考学习方法</title>
     <link href="/blog/2021/12/28/%E6%80%9D%E8%80%83%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
     <url>/blog/2021/12/28/%E6%80%9D%E8%80%83%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/</url>
