@@ -4,6 +4,51 @@
   
   
   <entry>
+    <title>跨域解决方案</title>
+    <link href="/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2/"/>
+    <url>/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2/</url>
+    
+    <content type="html"><![CDATA[<ol><li><p>最推荐的方式：<strong>反向代理</strong></p><blockquote><p>什么是反向代理呢，站在客户端的角度，代理服务器的就是反向代理。客户端不知道自己连接的是那个服务器，都有代理服务器去决定转发的规则。</p><p>反向代理有诸多好处，比如：保障服务器的安全，因为它隐藏了真正的服务器端地址；负载均衡，通过转发策略向多个服务器进行请求转发；缓存静态内容；</p><p>最常用的反向代理服务器当属 Nginx.</p><figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">server &#123;<br>    listen              443 ssl;<br>    server_name         backend1.example.com;<br><br>    ssl_certificate     /etc/ssl/certs/server.crt;<br>    ssl_certificate_key /etc/ssl/certs/server.key;<br>    <span class="hljs-comment">#...</span><br>    location /yourapp &#123;<br>        proxy_pass http://url_to_app.com;<br>        <span class="hljs-comment">#...</span><br>    &#125;<br>&#125;<br><br></code></pre></div></td></tr></table></figure><p>​</p></blockquote></li><li><p>开发中使用的正向代理</p><blockquote><p>Webpack 构建的 Webpack-dev-server 插件支持代理的配置：</p><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">devSeerver: &#123;<br>  <span class="hljs-attr">proxy</span>: &#123;<br>    <span class="hljs-comment">// 以 /api 开头的请求会被转发到target 指定的地址</span><br>    <span class="hljs-string">&#x27;/api/&#x27;</span>: &#123;<br>      <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;http://localhost:8090&#x27;</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure><p>​</p></blockquote></li><li><p>CORS (Cross-Origin Resource Sharing)</p><blockquote><p>这种跨域方式，将请求类型分为两种——简单请求和非简单请求，分别做出处理</p><p>浏览器发送请求的时候会在头部的 Origin 字段中带上本次的 “源” （协议+域名+端口）信息，服务器端会返回能够接受的源，“*” 表示接受任意源的请求。</p></blockquote></li><li><p>Websocket 解决跨域</p><blockquote><p>Websocket 和 HTTP 一样，也是基于 TCP 的一种网络协议，与 HTTP (HTTPS) 对应的是 WS (WSS)，对于 Websocket 没有同源限制。</p></blockquote></li><li><p>JSONP (JSON with Padding)</p><blockquote><p>虽然 AJAX 请求必须同源，但是对 样式、js资源文件的请求却可以是不同源的。</p><p>于是哦，可以通过 script 标签，向另一个服务器端请求文件时带上参数。然后，请求脚本文件后，执行脚本。脚本使用请求 url 中的参数，完成取数据的操作。</p></blockquote></li></ol>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>读书笔记 了不起的JavaScript工程师</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>跨域解决方案</title>
+    <link href="/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1/"/>
+    <url>/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>跨域解决方案</title>
+    <link href="/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+    <url>/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>前端面试题（一）</title>
     <link href="/blog/2022/01/14/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <url>/blog/2022/01/14/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89/</url>
