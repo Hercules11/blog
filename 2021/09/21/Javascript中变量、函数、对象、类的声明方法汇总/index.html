@@ -24,7 +24,7 @@
 <meta property="og:description" content="变量  关注变量的声明符，let、const、var 旧时的 “var”  let — 现代的变量声明方式。 var — 老旧的变量声明方式。一般情况下，我们不会再使用它。但是，我们会在 旧时的 “var” 章节介绍 var 和 let 的微妙差别，以防你需要它们。 const — 类似于 let，但是变量的值无法被修改。  变量的命名：  变量名称必须仅包含字母，数字，符号 $ 和 _。  首字">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-21T00:07:16.000Z">
-<meta property="article:modified_time" content="2022-09-28T02:04:53.261Z">
+<meta property="article:modified_time" content="2022-09-28T02:05:03.459Z">
 <meta property="article:author" content="wxc">
 <meta property="article:tag" content="知识汇总">
 <meta name="twitter:card" content="summary_large_image">
@@ -82,7 +82,7 @@
 
 
   
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -312,7 +312,7 @@
 <p><a target="_blank" rel="noopener" href="https://zh.javascript.info/object">对象</a></p>
 <blockquote>
 <p>可以用下面两种语法中的任一种来创建一个空的对象（“空柜子”）：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> user = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Object</span>(); <span class="hljs-comment">// “构造函数” 的语法</span><br><span class="hljs-keyword">let</span> user = &#123;&#125;;  <span class="hljs-comment">// “字面量” 的语法</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> user = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(); <span class="hljs-comment">// “构造函数” 的语法</span><br><span class="hljs-keyword">let</span> user = &#123;&#125;;  <span class="hljs-comment">// “字面量” 的语法</span><br></code></pre></td></tr></table></figure>
 
 <p>属性命名没有限制。属性名可以是任何字符串或者 symbol（一种特殊的标志符类型，将在后面介绍）。</p>
 <p>其他类型会被自动地转换为字符串，<strong>值可以是任何类型</strong>。</p>
@@ -360,7 +360,7 @@
 <p><a target="_blank" rel="noopener" href="https://zh.javascript.info/class">类</a></p>
 <blockquote>
 <p>基本的类语法看起来像这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span> </span>&#123;<br>  prop = value; <span class="hljs-comment">// 属性</span><br><br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">...</span>)</span> &#123; <span class="hljs-comment">// 构造器</span><br>    <span class="hljs-comment">// ...</span><br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-title">method</span>(<span class="hljs-params">...</span>)</span> &#123;&#125; <span class="hljs-comment">// method</span><br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title">something</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// getter 方法</span><br>  <span class="hljs-keyword">set</span> <span class="hljs-title">something</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// setter 方法</span><br><br>  [<span class="hljs-built_in">Symbol</span>.iterator]() &#123;&#125; <span class="hljs-comment">// 有计算名称（computed name）的方法（此处为 symbol）</span><br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  prop = value; <span class="hljs-comment">// 属性</span><br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">...</span>) &#123; <span class="hljs-comment">// 构造器</span><br>    <span class="hljs-comment">// ...</span><br>  &#125;<br><br>  <span class="hljs-title function_">method</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// method</span><br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">something</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// getter 方法</span><br>  <span class="hljs-keyword">set</span> <span class="hljs-title function_">something</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// setter 方法</span><br><br>  [<span class="hljs-title class_">Symbol</span>.<span class="hljs-property">iterator</span>]() &#123;&#125; <span class="hljs-comment">// 有计算名称（computed name）的方法（此处为 symbol）</span><br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>技术上来说，<code>MyClass</code> 是一个函数（我们提供作为 <code>constructor</code> 的那个），而 methods、getters 和 settors 都被写入了 <code>MyClass.prototype</code>。</p>
 </blockquote>
