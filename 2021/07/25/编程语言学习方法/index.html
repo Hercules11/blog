@@ -13,10 +13,10 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
   <meta name="author" content="wxc">
   <meta name="keywords" content="personal website">
-  <meta name="description" content="现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了">
+  
+    <meta name="description" content="现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编程语言学习方法">
 <meta property="og:url" content="https://hercules11.github.io/blog/2021/07/25/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/index.html">
@@ -24,35 +24,31 @@
 <meta property="og:description" content="现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-25T07:09:15.000Z">
-<meta property="article:modified_time" content="2022-05-29T16:42:02.009Z">
+<meta property="article:modified_time" content="2022-09-28T02:04:53.261Z">
 <meta property="article:author" content="wxc">
 <meta property="article:tag" content="方法总结">
 <meta name="twitter:card" content="summary_large_image">
+  
+  
   
   <title>编程语言学习方法 - 王某某</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
 
+
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
   <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
@@ -61,21 +57,42 @@
 
 <link  rel="stylesheet" href="/blog/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.8.12","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/blog/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/blog/js/utils.js" ></script>
   <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/blog/">
       <strong>王某某</strong>
@@ -145,6 +162,7 @@
               &nbsp;<i class="iconfont icon-search"></i>&nbsp;
             </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
@@ -157,64 +175,76 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="编程语言学习方法">
-              
-                编程语言学习方法
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-author" aria-hidden="true"></i>
-      wxc
-    </span>
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-25 15:09" pubdate>
-        2021年7月25日 下午
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      2.5k 字
-    </span>
   
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      预计阅读耗时 8 分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">编程语言学习方法</span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-07-25 15:09" pubdate>
+          2021年7月25日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
@@ -223,22 +253,31 @@
 
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">编程语言学习方法</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2022年5月30日 凌晨
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2022年9月28日 上午
+                  
                 
               </p>
             
-            <div class="markdown-body">
-              <p>现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了自己原本是要解决问题来的。第一种路子也有问题，在对于这种语言的脾气秉性还没有了解的情况下大刀阔斧地拼凑代码，写出来的东西肯定不入流。说穿新鞋走老路，新瓶装旧酒，那都是小问题，真正严重的是这样的程序员可以在短时间内堆积大量充满缺陷的垃圾代码。由于通常开发阶段的测试完备程度有限，这些垃圾代码往往能通过这个阶段，从而潜伏下来，在后期成为整个项目的毒瘤，反反复复让后来的维护者陷入西西弗斯困境。</p>
+            
+              <div class="markdown-body">
+                
+                <p>现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了自己原本是要解决问题来的。第一种路子也有问题，在对于这种语言的脾气秉性还没有了解的情况下大刀阔斧地拼凑代码，写出来的东西肯定不入流。说穿新鞋走老路，新瓶装旧酒，那都是小问题，真正严重的是这样的程序员可以在短时间内堆积大量充满缺陷的垃圾代码。由于通常开发阶段的测试完备程度有限，这些垃圾代码往往能通过这个阶段，从而潜伏下来，在后期成为整个项目的毒瘤，反反复复让后来的维护者陷入西西弗斯困境。</p>
 <p>实际上语言学习有一定规律可循，对于已经掌握一门语言的开发者来说，对于一般的语言，完全可以以最快的速度，在几天至一周之内掌握其最常用的50%，而且保证路子基本正宗，没有出偏的弊病。其实真正写程序不怕完全不会，最怕一知半解的去攒解决方案。因为你完全不会，就自然会去认真查书学习，如果学习能力好的话，写出来的代码质量不会差。而一知半解，自己动手土法炼钢，那搞出来的基本上都是废铜烂铁。比如错误处理和序列化，很多人不去了解“正路子”，而是凭借自己的一知半解去攒野路子，这是最危险的。因此，即使时间再紧张，这些内容也是必须首先完整了解一遍的。掌握这些内容之后进入实际开发，即使有问题，也基本不会伤及项目大体。而开发者本人则可以安步当车，慢慢在实践中提高自己。</p>
 <p>以下列出一个学习提纲，主要针对的是有经验的人，初学者不合适。这个提纲只能用于一般的庸俗编程语言学习，目前在流行编程语言排行榜上排前20的基本上都是庸俗语言。如果你要学的是LISP之类非庸俗语言，或是某个软件中的二次开发语言，这里的建议未必合适。还是那句话，仅供参考。</p>
 <ol>
@@ -276,33 +315,75 @@
 <p>至此语言的基本部分就可以说掌握了，之后是做数据库、网络还是做图形，可以根据具体需求去搞，找相应的成熟框架或库，边做边学，加深理解。对于一个庸俗语言，我自己把上面的内容走一遍大概要花2-3周时间，不能算很快，但也耽误不了太多事情，毕竟不是每个月都学新语言。掌握了以上的内容，就给练武术打好了基本功，虽然不见得有多优秀，但是肯定是根正苗红，将来不必绕大弯子。就算是临时使用的语言，把上面这个提纲精简一下，只看蓝色重体字的部分，大致能在几天到一周内搞定，不算是太耗时，而且写出来的代码不会太不靠谱。</p>
 <p>以上提纲未设及内存模型。对于C/C++，这个问题很重要，要放在显著位置来考虑，但对于其他语言，这个问题被透明化了，除非你要做hardcore项目，否则不必太关注。<br>————————————————<br>版权声明：本文为CSDN博主「myan」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/myan/article/details/3144661">https://blog.csdn.net/myan/article/details/3144661</a></p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/blog/tags/%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">方法总结</a>
-                    
-                  </div>
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">#方法总结</a>
+      
+    </div>
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！<br>联系作者: atob("b3JhbmdlMjQ2d2FuZ0BnbWFpbC5jb20=")
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>编程语言学习方法</div>
+      <div>https://hercules11.github.io/blog/2021/07/25/编程语言学习方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年7月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
               
               
-                <div class="post-prevnext">
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2021/08/01/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/">
+                      <a href="/blog/2021/08/01/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" title="技术学习方法总结">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">技术学习方法总结</span>
                         <span class="visible-mobile">上一篇</span>
@@ -312,7 +393,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2021/07/18/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/">
+                      <a href="/blog/2021/07/18/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" title="英语学习方法">
                         <span class="hidden-mobile">英语学习方法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -328,19 +409,50 @@
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
@@ -365,32 +477,30 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-    
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
   
-
   
-</footer>
+  
+</div>
 
+  </footer>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   
   <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
@@ -409,10 +519,7 @@
 <script  src="/blog/js/events.js" ></script>
 <script  src="/blog/js/plugins.js" ></script>
 
-<!-- Plugins -->
 
-
-  <script  src="/blog/js/local-search.js" ></script>
 
 
 
@@ -422,45 +529,115 @@
 
 
 
-  
-
-
 
   
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
   
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
   
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
-  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/blog/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
