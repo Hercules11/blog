@@ -16,22 +16,22 @@
   <meta name="author" content="wxc">
   <meta name="keywords" content="personal website">
   
-    <meta name="description" content="from: 命令行与环境 命令行调用 Python 时，可以指定下列任意选项： 1python [-bBdEhiIOqsSuvVWx?] [-c command | -m module-name | script | - ] [args]  最常见的用例是启动时执行脚本： 1python myscript.py   通过运行 where python 可以查看 python 安装位置 1234C:">
+    <meta name="description" content="细说ES6模块中的export 与import。  导出语句必须在模块顶级，不能嵌套在某个块中（import 同理） 123456&#x2F;&#x2F; 允许export ... &#x2F;&#x2F; 不允许if (condition) &amp;#123;  export ... &amp;#125;  命名导出 模块就好像是被导出的值的容器 12345678910&#x2F;&#x2F; 允许const foo &#x3D; &amp;#x27;foo&amp;#x27;; export">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通过命令行使用Python">
-<meta property="og:url" content="https://hercules11.github.io/blog/2021/10/19/%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%BD%BF%E7%94%A8Python/index.html">
+<meta property="og:title" content="ES6模块中的export 与import">
+<meta property="og:url" content="https://hercules11.github.io/blog/2021/11/18/ES6%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84export-%E4%B8%8Eimport/index.html">
 <meta property="og:site_name" content="Hercules11">
-<meta property="og:description" content="from: 命令行与环境 命令行调用 Python 时，可以指定下列任意选项： 1python [-bBdEhiIOqsSuvVWx?] [-c command | -m module-name | script | - ] [args]  最常见的用例是启动时执行脚本： 1python myscript.py   通过运行 where python 可以查看 python 安装位置 1234C:">
+<meta property="og:description" content="细说ES6模块中的export 与import。  导出语句必须在模块顶级，不能嵌套在某个块中（import 同理） 123456&#x2F;&#x2F; 允许export ... &#x2F;&#x2F; 不允许if (condition) &amp;#123;  export ... &amp;#125;  命名导出 模块就好像是被导出的值的容器 12345678910&#x2F;&#x2F; 允许const foo &#x3D; &amp;#x27;foo&amp;#x27;; export">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-18T23:39:04.000Z">
-<meta property="article:modified_time" content="2024-04-18T02:44:48.742Z">
+<meta property="article:published_time" content="2021-11-18T17:44:23.000Z">
+<meta property="article:modified_time" content="2024-04-18T03:05:21.783Z">
 <meta property="article:author" content="wxc">
-<meta property="article:tag" content="文档阅读">
+<meta property="article:tag" content="学习总结">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>通过命令行使用Python - Hercules11</title>
+  <title>ES6模块中的export 与import - Hercules11</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -184,7 +184,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">通过命令行使用Python</span>
+            <span id="subtitle">ES6模块中的export 与import</span>
           
         </div>
 
@@ -200,8 +200,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-10-19 07:39" pubdate>
-          2021年10月19日 早上
+        <time datetime="2021-11-19 01:44" pubdate>
+          2021年11月19日 凌晨
         </time>
       </span>
     
@@ -213,7 +213,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1k 字
+          2k 字
         
       </span>
     
@@ -225,7 +225,7 @@
         
         
           <!-- compatible with older versions-->
-          预计阅读耗时 9 分钟
+          预计阅读耗时 17 分钟
         
       </span>
     
@@ -263,7 +263,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">通过命令行使用Python</h1>
+            <h1 style="display: none">ES6模块中的export 与import</h1>
             
               <p class="note note-info">
                 
@@ -277,45 +277,41 @@
             
               <div class="markdown-body">
                 
-                <p>from: <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/using/cmdline.html#">命令行与环境</a></p>
-<h3 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h3><p>调用 Python 时，可以指定下列任意选项：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python [-bBdEhiIOqsSuvVWx?] [-c <span class="hljs-built_in">command</span> | -m module-name | script | - ] [args]<br></code></pre></td></tr></table></figure>
-
-<p>最常见的用例是启动时执行脚本：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python myscript.py<br></code></pre></td></tr></table></figure>
-
-<blockquote>
-<p>通过运行 <code>where python</code> 可以查看 <code>python</code> 安装位置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Users\HP&gt;<span class="hljs-built_in">where</span> python<br>C:\Python27\python.exe<br>C:\Program Files\python\python.exe<br>C:\Users\HP\AppData\Local\Microsoft\WindowsApps\python.exe<br></code></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Users\HP&gt;<span class="hljs-built_in">where</span> py<br>C:\Windows\py.exe<br></code></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Users\HP&gt;<span class="hljs-built_in">where</span> python3<br>C:\Users\HP\AppData\Local\Microsoft\WindowsApps\python3.exe<br></code></pre></td></tr></table></figure>
-
-<p>不知不觉安装了这么多<code>python</code>！ 😂</p>
-</blockquote>
-<hr>
-<h3 id="接口选项"><a href="#接口选项" class="headerlink" title="接口选项"></a>接口选项</h3><p>解释器接口类似于 UNIX shell，但提供了额外的调用方法:</p>
+                <p>细说ES6模块中的export 与import。</p>
+<ol>
+<li><p>导出语句必须在模块顶级，不能嵌套在某个块中（import 同理）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 允许</span><br><span class="hljs-keyword">export</span> ... <br><span class="hljs-comment">// 不允许</span><br><span class="hljs-keyword">if</span> (condition) &#123; <br> <span class="hljs-keyword">export</span> ... <br>&#125; <br></code></pre></td></tr></table></figure></li>
+<li><p>命名导出 模块就好像是被导出的值的容器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 允许</span><br><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><span class="hljs-keyword">export</span> &#123; foo &#125;; <br><br><span class="hljs-comment">// 允许</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><br><span class="hljs-comment">// 允许，但应该避免</span><br><span class="hljs-keyword">export</span> &#123; foo &#125;; <br><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br></code></pre></td></tr></table></figure></li>
+<li><p>别名必须在export 子句的大括号语法中指定（import 同理）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><span class="hljs-keyword">export</span> &#123; foo <span class="hljs-keyword">as</span> myFoo &#125;;<br></code></pre></td></tr></table></figure></li>
+<li><p>ES6 模块系统会识别作为别名提供的 default 关键字</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>; <br><br><span class="hljs-comment">// 等同于 export default foo; </span><br><span class="hljs-keyword">export</span> &#123; foo <span class="hljs-keyword">as</span> <span class="hljs-keyword">default</span> &#125;; <br></code></pre></td></tr></table></figure></li>
+<li><p>正确示例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 命名行内导出</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> baz = <span class="hljs-string">&#x27;baz&#x27;</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>, bar = <span class="hljs-string">&#x27;bar&#x27;</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span>* <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span> &#123;&#125;  <span class="hljs-comment">// 一边声明就一边导出了</span><br><br><span class="hljs-comment">// 命名子句导出</span><br><span class="hljs-keyword">export</span> &#123; foo &#125;; <br><span class="hljs-keyword">export</span> &#123; foo, bar &#125;; <br><span class="hljs-keyword">export</span> &#123; foo <span class="hljs-keyword">as</span> myFoo, bar &#125;;  <span class="hljs-comment">// 给它加个容器，反正都是要加进来的</span><br><br><span class="hljs-comment">// 默认导出</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&#x27;foo&#x27;</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-number">123</span>; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> /[a-z]*/; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123; <span class="hljs-attr">foo</span>: <span class="hljs-string">&#x27;foo&#x27;</span> &#125;; <br><span class="hljs-keyword">export</span> &#123; foo, bar <span class="hljs-keyword">as</span> <span class="hljs-keyword">default</span> &#125;; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> foo <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span>*() &#123;&#125; <br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> &#123;&#125;  <span class="hljs-comment">// 记住别名在子句，默认不行内，一个模块一个默认导出</span><br></code></pre></td></tr></table></figure></li>
+<li><p>禁止项</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 会导致错误的不同形式：</span><br><br><span class="hljs-comment">// 行内默认导出中不能出现变量声明</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;bar&#x27;</span>;  <span class="hljs-comment">// 关键字太多，解释器受不了😫</span><br><br><span class="hljs-comment">// 只有标识符可以出现在 export 子句中</span><br><span class="hljs-keyword">export</span> &#123; <span class="hljs-number">123</span> <span class="hljs-keyword">as</span> foo &#125;<br><br><span class="hljs-comment">// 别名只能在 export 子句中出现</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span> <span class="hljs-keyword">as</span> myFoo; <span class="hljs-comment">// 过于奇怪，解释器不想理你</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>总结一下就是：</p>
 <ul>
-<li>用连接到 tty 设备的标准输入调用时，会提示输入并执行命令，<strong>输入 EOF （文件结束符，UNIX 中按 Ctrl-D，Windows 中按 Ctrl-Z, Enter）时终止</strong>。✨✨</li>
-<li>用文件名参数或以标准输入文件调用时，读取，并执行该脚本文件。</li>
-<li>用目录名参数调用时，从该目录读取、执行适当名称的脚本。</li>
-<li>用 <code>-c command</code> 调用时，执行 <em>command</em> 表示的 Python 语句。<em>command</em> 可以包含用换行符分隔的多条语句。注意，前导空白字符在 Python 语句中非常重要！✨✨</li>
-<li>用 <code>-m module-name</code> 调用时，在 Python 模块路径中查找指定的模块，并将其作为脚本执行。✨✨</li>
+<li>可以在声明时候导出，或者默认导出</li>
+<li>可以把标识符放到括号里，可以在括号也就是子语句里面起别名</li>
 </ul>
-<p>非交互模式下，先解析全部输入，再执行。</p>
-<p>接口选项会终结解释器读入的选项列表，所有后续参数都在 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.argv"><code>sys.argv</code></a> 里 – 注意，首个元素，即下标为零的元素（<code>sys.argv[0]</code>）是表示程序来源的字符串</p>
-<h3 id="通用选项"><a href="#通用选项" class="headerlink" title="通用选项"></a>通用选项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">-?<br>-h<br>--<span class="hljs-built_in">help</span><br><span class="hljs-comment"># 输出所有命令行选项的简介。</span><br></code></pre></td></tr></table></figure>
+<hr>
+<ol>
+<li><p>与 export 类似，import 必须出现在 模块的顶级</p>
+</li>
+<li><p>命名导出可以使用 <code>*</code> 批量获取并赋值给保存导 出集合的别名，而无须列出每个标识符</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span>, bar = <span class="hljs-string">&#x27;bar&#x27;</span>, baz = <span class="hljs-string">&#x27;baz&#x27;</span>; <br><span class="hljs-keyword">export</span> &#123; foo, bar, baz &#125; <br><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Foo</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>;  <span class="hljs-comment">// * 代表整个导出的对象</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Foo</span>.<span class="hljs-property">foo</span>); <span class="hljs-comment">// foo </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Foo</span>.<span class="hljs-property">bar</span>); <span class="hljs-comment">// bar </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Foo</span>.<span class="hljs-property">baz</span>); <span class="hljs-comment">// baz</span><br></code></pre></td></tr></table></figure></li>
+<li><p>如果模块同时导出了命名导出和默认导出，则可以在 import 语句中同时取得它们。可以依次列出 特定导出的标识符来取得，也可以使用*来取得</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> foo, &#123; bar, baz &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>; <br><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> foo, bar, baz &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>; <br><br><span class="hljs-keyword">import</span> foo, * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Foo</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./foo.js&#x27;</span>; <span class="hljs-comment">// 除默认导出外。其它的导出打包到 *</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>总结一下就是：</p>
+<ul>
+<li>默认导出，不加花括号，也就是说不用解构赋值</li>
+<li>在括号中，可以起别名，可以<code>default as xx</code> 正如在导出时 <code>xx as default</code></li>
+</ul>
 
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">-V<br>--version<br><span class="hljs-comment"># 输出 Python 版本号并退出</span><br></code></pre></td></tr></table></figure>
-
-<p>。示例如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Python 3.8.0b2+<br></code></pre></td></tr></table></figure>
-
-<p>输入两次 <code>V</code> 选项时，输出更多构建信息，例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">Python 3.8.0b2+ (3.8:0c076caaa8, Apr 20 2019, 21:55:00)<br>[GCC 6.2.0 20161005]<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -327,7 +323,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB/">#文档阅读</a>
+        <a href="/blog/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">#学习总结</a>
       
     </div>
   
@@ -339,8 +335,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>通过命令行使用Python</div>
-      <div>https://hercules11.github.io/blog/2021/10/19/通过命令行使用Python/</div>
+      <div>ES6模块中的export 与import</div>
+      <div>https://hercules11.github.io/blog/2021/11/18/ES6模块中的export-与import/</div>
     </div>
     <div class="license-meta">
       
@@ -352,7 +348,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年10月19日</div>
+          <div>2021年11月19日</div>
         </div>
       
       
@@ -384,9 +380,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2021/10/19/bigfrontend%20%E4%BB%A3%E7%A0%81%E9%A2%98(%E4%B8%80)/" title="bigfrontend 代码题(一)">
+                      <a href="/blog/2021/11/25/npm%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/" title="npm命令行参数">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">bigfrontend 代码题(一)</span>
+                        <span class="hidden-mobile">npm命令行参数</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -394,8 +390,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2021/09/21/Javascript%E4%B8%AD%E5%8F%98%E9%87%8F%E3%80%81%E5%87%BD%E6%95%B0%E3%80%81%E5%AF%B9%E8%B1%A1%E3%80%81%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/" title="Javascript中变量、函数、对象、类的声明方法汇总">
-                        <span class="hidden-mobile">Javascript中变量、函数、对象、类的声明方法汇总</span>
+                      <a href="/blog/2021/10/23/bigfrontend-%E4%BB%A3%E7%A0%81%E9%A2%98-%E4%BA%94/" title="bigfrontend 代码题(五)">
+                        <span class="hidden-mobile">bigfrontend 代码题(五)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
