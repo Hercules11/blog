@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="8. 手写shuffle()随机打乱一个数组能否手写一个shuffle() ? 当传入一个数组的时候，shuffle()需要更换元素的顺序，每一种最终的数列都需要被相等的概率生成。 比如 1const arr &#x3D; [1, 2, 3, 4]  以上的数组共有4! &#x3D; 24 中不同的排列 12345[1, 2, 3, 4][1, 2, 4, 3]...  你写的 shuffle() 需要按照相同的概率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bigfrontend 代码题(三)">
+<meta property="og:url" content="https://hercules11.github.io/blog/2021/10/20/bigfrontend-%E4%BB%A3%E7%A0%81%E9%A2%98-%E4%B8%89/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="8. 手写shuffle()随机打乱一个数组能否手写一个shuffle() ? 当传入一个数组的时候，shuffle()需要更换元素的顺序，每一种最终的数列都需要被相等的概率生成。 比如 1const arr &#x3D; [1, 2, 3, 4]  以上的数组共有4! &#x3D; 24 中不同的排列 12345[1, 2, 3, 4][1, 2, 4, 3]...  你写的 shuffle() 需要按照相同的概率">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-20T02:00:37.000Z">
+<meta property="article:modified_time" content="2024-04-18T02:44:48.738Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="做题">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>bigfrontend 代码题(三) - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>王某某</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">bigfrontend 代码题(三)</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-20 10:00" pubdate>
+          2021年10月20日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">bigfrontend 代码题(三)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年4月18日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="8-手写shuffle-随机打乱一个数组"><a href="#8-手写shuffle-随机打乱一个数组" class="headerlink" title="8. 手写shuffle()随机打乱一个数组"></a>8. 手写shuffle()随机打乱一个数组</h1><p>能否手写一个shuffle() ?</p>
+<p>当传入一个数组的时候，shuffle()需要更换元素的顺序，每一种最终的数列都需要被相等的概率生成。</p>
+<p>比如</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br></code></pre></td></tr></table></figure>
+
+<p>以上的数组共有4! = 24 中不同的排列</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>]<br>...<br><br><br></code></pre></td></tr></table></figure>
+
+<p>你写的 <code>shuffle()</code> 需要按照相同的概率(1/24)来返回上述排列中的一种。</p>
+<p><em>注意</em></p>
+<p>你写的 <code>shuffle()</code>会被调用很多次，计算出每一种出现的概率，然后根据<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%A8%99%E6%BA%96%E5%B7%AE">标准差</a>来判断</p>
+<p>ref: <a target="_blank" rel="noopener" href="https://javascript.info/task/shuffle">https://javascript.info/task/shuffle</a></p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment">  * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">any[]</span>&#125; <span class="hljs-variable">arr</span></span><br><span class="hljs-comment">  */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">shuffle</span>(<span class="hljs-params">array</span>) &#123;<br>  <span class="hljs-comment">// modify the arr inline to change the order randomly</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = array.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i--) &#123;<br>    <span class="hljs-keyword">let</span> j = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * (i + <span class="hljs-number">1</span>));<br>    [array[i], array[j]] = [array[j], array[i]];<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// function shuffle(array) &#123;</span><br><span class="hljs-comment">//  array.sort(() =&gt; Math.random() - 0.5);</span><br><span class="hljs-comment">// &#125;</span><br><span class="hljs-comment">// 用这个有问题</span><br><br></code></pre></td></tr></table></figure>
+
+<hr>
+
+<h1 id="9-解密消息"><a href="#9-解密消息" class="headerlink" title="9. 解密消息"></a>9. 解密消息</h1><p>在一个字符串的二维数组中，有一个隐藏字符串。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js">I B C A L K A<br>D R F C A E A<br>G H O E L A D <br></code></pre></td></tr></table></figure>
+
+<p>可以按照如下步骤找出隐藏消息</p>
+<ol>
+<li>从左上开始，向右下前进</li>
+<li>无法前进的时候，向右上前进</li>
+<li>无法前进的时候，向右下前进</li>
+<li>2和3的重复</li>
+</ol>
+<p>无法前进的时候，经过的字符就就是隐藏信息</p>
+<p>比如上面的二维数组的话，隐藏消息是<code>IROCLED</code></p>
+<p>注：如果没有的话，返回空字符串</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">string[][]</span>&#125; <span class="hljs-variable">message</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">string</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">message</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">let</span> result = <span class="hljs-string">&quot;&quot;</span>;<br>  <span class="hljs-keyword">let</span> cols = message[<span class="hljs-number">0</span>]?.<span class="hljs-property">length</span>;<br>  <span class="hljs-keyword">let</span> direction = <span class="hljs-number">1</span>, i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">while</span>(cols &gt; j) &#123;<br>    result += message[i][j];<br>    <span class="hljs-keyword">if</span>(!message[i+direction]) &#123;<br>      direction *= -<span class="hljs-number">1</span>;<br>    &#125;<br>    i += direction;<br>    j++;<br>  &#125;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="10-找出第一个不良版本"><a href="#10-找出第一个不良版本" class="headerlink" title="10. 找出第一个不良版本"></a>10. 找出第一个不良版本</h1><p>一个程序有多个版本，不知道什么时候开始有个bug混在其中。请你找到第一个坏掉的版本。</p>
+<p>特定版本是否有bug，可以用<code>isBad(revision)</code>进行判定。</p>
+<p><em>注意</em></p>
+<ol>
+<li>传入的都是非负整数</li>
+<li>如果没有找到，返回-1</li>
+</ol>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 二分法的妙用</span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> type TypIsBad = (version: number) =&gt; boolean</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">TypIsBad</span>&#125; isBad </span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">firstBadVersion</span>(<span class="hljs-params">isBad</span>) &#123;<br>	<span class="hljs-comment">// firstBadVersion receive a check function isBad</span><br>  <span class="hljs-comment">// and should return a closure which accepts a version number(integer)</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">version</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// write your code to return the first bad version</span><br>    <span class="hljs-comment">// if none found, return -1</span><br>    <span class="hljs-keyword">let</span> start = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">let</span> end = version;<br>    <span class="hljs-keyword">while</span>(start &lt;= end) &#123;<br>      <span class="hljs-keyword">let</span> mid = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>((start+end)/<span class="hljs-number">2</span>);<br>      <span class="hljs-keyword">if</span>(<span class="hljs-title function_">isBad</span>(mid)) &#123;<br>        end = mid - <span class="hljs-number">1</span>;<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        start = mid + <span class="hljs-number">1</span>;<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> start &lt;= version ? start : -<span class="hljs-number">1</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="11-什么是Composition-实现pipe"><a href="#11-什么是Composition-实现pipe" class="headerlink" title="11. 什么是Composition?实现pipe()"></a>11. 什么是Composition?实现pipe()</h1><p>什么是Composition? 其实并不难理解，看看<a target="_blank" rel="noopener" href="https://whatthefuck.is/composition">@dan_abramov ‘s 的说明</a>就知道了。</p>
+<p>现在需要你自己写一个<code>pipe()</code> 方法。</p>
+<p>假设有一些简单的四则运算方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">times</span> = (<span class="hljs-params">y</span>) =&gt;  <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x * y<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">plus</span> = (<span class="hljs-params">y</span>) =&gt; <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x + y<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">subtract</span> = (<span class="hljs-params">y</span>) =&gt; <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x - y<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">divide</span> = (<span class="hljs-params">y</span>) =&gt; <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x / y<br></code></pre></td></tr></table></figure>
+
+<p><code>pipe()</code> 可以用来生成新的计算方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">pipe</span>([<br>  <span class="hljs-title function_">times</span>(<span class="hljs-number">2</span>),<br>  <span class="hljs-title function_">times</span>(<span class="hljs-number">3</span>)<br>])  <br><span class="hljs-comment">// x * 2 * 3</span><br><br><span class="hljs-title function_">pipe</span>([<br>  <span class="hljs-title function_">times</span>(<span class="hljs-number">2</span>),<br>  <span class="hljs-title function_">plus</span>(<span class="hljs-number">3</span>),<br>  <span class="hljs-title function_">times</span>(<span class="hljs-number">4</span>)<br>]) <br><span class="hljs-comment">// (x * 2 + 3) * 4</span><br><br><span class="hljs-title function_">pipe</span>([<br>  <span class="hljs-title function_">times</span>(<span class="hljs-number">2</span>),<br>  <span class="hljs-title function_">subtract</span>(<span class="hljs-number">3</span>),<br>  <span class="hljs-title function_">divide</span>(<span class="hljs-number">4</span>)<br>]) <br><span class="hljs-comment">// (x * 2 - 3) / 4</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ol>
+<li>为了简单，可以假设传给<code>pipe()</code>的方法都只有一个参数</li>
+</ol>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Array&lt;(arg: any) =&gt; any&gt;</span>&#125; funcs </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">(arg: any) =&gt; any</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">pipe</span>(<span class="hljs-params">funcs</span>) &#123;<br>	<span class="hljs-comment">// your code here</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">arg</span> =&gt;</span> &#123;<br>		<span class="hljs-keyword">return</span> funcs.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">result, func</span>) =&gt;</span> &#123;<br>			<span class="hljs-keyword">return</span> func.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>, result);<br>		&#125;, arg)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="12-实现-Immutability-helper"><a href="#12-实现-Immutability-helper" class="headerlink" title="12. 实现 Immutability helper"></a>12. 实现 Immutability helper</h1><p>如果你使用React，你肯定会遇到想要修改state的一部分的情况。</p>
+<p>比如下面的state。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> state = &#123;<br>  <span class="hljs-attr">a</span>: &#123;<br>    <span class="hljs-attr">b</span>: &#123;<br>      <span class="hljs-attr">c</span>: <span class="hljs-number">1</span><br>    &#125;<br>  &#125;,<br>  <span class="hljs-attr">d</span>: <span class="hljs-number">2</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果我们想要修改<code>d</code>来生成一个新的state，我们可以用 <a target="_blank" rel="noopener" href="https://lodash.com/docs/4.17.15#cloneDeep">_.cloneDeep</a>，但是这样没必要因为<code>state.a</code>并不需要被clone。</p>
+<p>一个更好的办法是如下的浅拷贝</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> newState = &#123;<br>  ...state,<br>  <span class="hljs-attr">d</span>: <span class="hljs-number">3</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但是又有了新问题，如果我们同时需要修改<code>c</code>的话，我们需要写很复杂的代码，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> newState = &#123;<br>  ...state,<br>  <span class="hljs-attr">a</span>: &#123;<br>    ...state.<span class="hljs-property">a</span>,<br>    <span class="hljs-attr">b</span>: &#123;<br>       ...state.<span class="hljs-property">b</span>,<br>       <span class="hljs-attr">c</span>: <span class="hljs-number">2</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这显然还不如cloneDeep。</p>
+<p><a target="_blank" rel="noopener" href="https://reactjs.org/docs/update.html">Immutability Helper</a> 可以很好的解决这个问题。</p>
+<p>请实现你自己的Immutability helper <code>update()</code>，需要支持如下调用</p>
+<h3 id="1-push-array-添加元素到数组"><a href="#1-push-array-添加元素到数组" class="headerlink" title="1. {$push: array} 添加元素到数组"></a>1. <code>&#123;$push: array&#125;</code> 添加元素到数组</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br><span class="hljs-keyword">const</span> newArr = <span class="hljs-title function_">update</span>(arr, &#123;<span class="hljs-attr">$push</span>: [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]&#125;)<br><span class="hljs-comment">// [1, 2, 3, 4, 5, 6]</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-set-any-修改目标"><a href="#2-set-any-修改目标" class="headerlink" title="2. {$set: any} 修改目标"></a>2. {$set: any} 修改目标</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> state = &#123;<br>  <span class="hljs-attr">a</span>: &#123;<br>    <span class="hljs-attr">b</span>: &#123;<br>      <span class="hljs-attr">c</span>: <span class="hljs-number">1</span><br>    &#125;<br>  &#125;,<br>  <span class="hljs-attr">d</span>: <span class="hljs-number">2</span><br>&#125;<br><br><span class="hljs-keyword">const</span> newState = <span class="hljs-title function_">update</span>(<br>  state, <br>  &#123;<span class="hljs-attr">a</span>: &#123;<span class="hljs-attr">b</span>: &#123; <span class="hljs-attr">c</span>: &#123;<span class="hljs-attr">$set</span>: <span class="hljs-number">3</span>&#125;&#125;&#125;&#125;<br>)<br><span class="hljs-comment">/*</span><br><span class="hljs-comment">&#123;</span><br><span class="hljs-comment">  a: &#123;</span><br><span class="hljs-comment">    b: &#123;</span><br><span class="hljs-comment">      c: 3</span><br><span class="hljs-comment">    &#125;</span><br><span class="hljs-comment">  &#125;,</span><br><span class="hljs-comment">  d: 2</span><br><span class="hljs-comment">&#125;</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+
+<p>注意我们可以通过<code>$set</code>来修改数组中的元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br><span class="hljs-keyword">const</span> newArr = <span class="hljs-title function_">update</span>(<br>  arr, <br>  &#123;<span class="hljs-number">0</span>: &#123;<span class="hljs-attr">$set</span>: <span class="hljs-number">0</span>&#125;&#125;<br>)<br><span class="hljs-comment">//  [0, 2, 3, 4]</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-merge-object-合并到目标object"><a href="#3-merge-object-合并到目标object" class="headerlink" title="3. {$merge: object} 合并到目标object"></a>3. {$merge: object} 合并到目标object</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> state = &#123;<br>  <span class="hljs-attr">a</span>: &#123;<br>    <span class="hljs-attr">b</span>: &#123;<br>      <span class="hljs-attr">c</span>: <span class="hljs-number">1</span><br>    &#125;<br>  &#125;,<br>  <span class="hljs-attr">d</span>: <span class="hljs-number">2</span><br>&#125;<br><br><span class="hljs-keyword">const</span> newState = <span class="hljs-title function_">update</span>(<br>  state, <br>  &#123;<span class="hljs-attr">a</span>: &#123;<span class="hljs-attr">b</span>: &#123; <span class="hljs-attr">$merge</span>: &#123;<span class="hljs-attr">e</span>: <span class="hljs-number">5</span>&#125;&#125;&#125;&#125;<br>)<br><span class="hljs-comment">/*</span><br><span class="hljs-comment">&#123;</span><br><span class="hljs-comment">  a: &#123;</span><br><span class="hljs-comment">    b: &#123;</span><br><span class="hljs-comment">      c: 1,</span><br><span class="hljs-comment">      e: 5</span><br><span class="hljs-comment">    &#125;</span><br><span class="hljs-comment">  &#125;,</span><br><span class="hljs-comment">  d: 2</span><br><span class="hljs-comment">&#125;</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-apply-function-自定义修改"><a href="#4-apply-function-自定义修改" class="headerlink" title="4. {$apply: function} 自定义修改"></a>4. {$apply: function} 自定义修改</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br><span class="hljs-keyword">const</span> newArr = <span class="hljs-title function_">update</span>(arr, &#123;<span class="hljs-number">0</span>: &#123;<span class="hljs-attr">$apply</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item * <span class="hljs-number">2</span>&#125;&#125;)<br><span class="hljs-comment">// [2, 2, 3, 4]</span><br></code></pre></td></tr></table></figure>
+
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">any</span>&#125; <span class="hljs-variable">data</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Object</span>&#125; <span class="hljs-variable">command</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">data, command</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(command)) &#123;<br>    <span class="hljs-keyword">switch</span>(key) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;$push&#x27;</span>:<br>        <span class="hljs-keyword">return</span> [...data, ...value];<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;$set&#x27;</span>:<br>        <span class="hljs-keyword">return</span> value;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;$merge&#x27;</span>:<br>        <span class="hljs-keyword">if</span>(!(data <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Object</span>)) &#123;<br>          <span class="hljs-keyword">throw</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Bad merge&quot;</span>)<br>        &#125;<br>        <span class="hljs-keyword">return</span> &#123;...data, ...value&#125;;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;$apply&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">value</span>(data);<br>      <span class="hljs-attr">default</span>:<br>        <span class="hljs-keyword">if</span>(data <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Array</span>) &#123;<br>          <span class="hljs-keyword">const</span> res = [...data]; <span class="hljs-comment">// 做一个拷贝，原数组取值，现数组设置值</span><br>          res[key] = <span class="hljs-title function_">update</span>(data[key], value);<br>          <span class="hljs-keyword">return</span> res;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          <span class="hljs-keyword">return</span> &#123;<br>            ...data,<br>            [key]: <span class="hljs-title function_">update</span>(data[key], value)<br>          &#125;<br>        &#125;<br>    &#125;<br><br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 用到了递归，妙啊</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="13-利用栈-Stack-创建队列-Queue"><a href="#13-利用栈-Stack-创建队列-Queue" class="headerlink" title="13. 利用栈(Stack)创建队列(Queue)"></a>13. 利用栈(Stack)创建队列(Queue)</h1><p>在JavaScript中，我们可以用Array来充作Stack或者Queue.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br><br>arr.<span class="hljs-title function_">push</span>(<span class="hljs-number">5</span>) <span class="hljs-comment">// 变为 [1, 2, 3, 4, 5]</span><br>arr.<span class="hljs-title function_">pop</span>() <span class="hljs-comment">// 5, 数组变为 [1, 2, 3, 4]</span><br></code></pre></td></tr></table></figure>
+
+<p>上述是Stack的用法，以下则是Queue</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]<br><br>arr.<span class="hljs-title function_">push</span>(<span class="hljs-number">5</span>) <span class="hljs-comment">//  [1, 2, 3, 4, 5]</span><br>arr.<span class="hljs-title function_">shift</span>() <span class="hljs-comment">// 1, 现在数组是 [2, 3, 4, 5]</span><br></code></pre></td></tr></table></figure>
+
+<p>假设你有Stack，包含如下的方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;<br>  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123; <span class="hljs-comment">/* 添加元素到stack */</span> &#125;<br>  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* 获取top 元素 */</span> &#125;<br>  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* 弹出top 元素 */</span>&#125;<br>  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* 获取元素数量 */</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>你能否通过只使用Stack实现一个包含如下方法的Queue？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span> &#123;<br>  <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">element</span>) &#123; <span class="hljs-comment">/* 添加元素到Queue，类似于Array.prototype.push */</span> &#125;<br>  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* 获取头元素*/</span> &#125;<br>  <span class="hljs-title function_">dequeue</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* 弹出头元素，类似于Array.prototype.pop */</span> &#125;<br>  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* 获取元素数量 */</span> &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><em>注意</em></p>
+<p>请只使用Stack，不要使用Array。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/* you can use this Class which is bundled together with your code</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">class Stack &#123;</span><br><span class="hljs-comment">  push(element) &#123; // add element to stack &#125;</span><br><span class="hljs-comment">  peek() &#123; // get the top element &#125;</span><br><span class="hljs-comment">  pop() &#123; // remove the top element&#125;</span><br><span class="hljs-comment">  size() &#123; // count of element &#125;</span><br><span class="hljs-comment">&#125;</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-comment">/* Array is disabled in your code */</span><br><br><span class="hljs-comment">// you need to complete the following Class</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">element</span>) &#123; <br>    <span class="hljs-comment">// add new element to the rare</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span>.<span class="hljs-title function_">push</span>(element);<br>  &#125;<br>  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123; <br>    <span class="hljs-comment">// get the head element</span><br>    <span class="hljs-keyword">let</span> rStack = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_reverse</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span>);<br>    <span class="hljs-keyword">let</span> result = rStack.<span class="hljs-title function_">peek</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_reverse</span>(rStack);<br>    <span class="hljs-keyword">return</span> result;<br>  &#125;<br>  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123; <br>    <span class="hljs-comment">// return count of element</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span>.<span class="hljs-title function_">size</span>();<br>  &#125;<br>  <span class="hljs-title function_">dequeue</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// remove the head element</span><br>    <span class="hljs-keyword">let</span> rStack = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_reverse</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span>);<br>    <span class="hljs-keyword">let</span> result = rStack.<span class="hljs-title function_">pop</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">stack</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_reverse</span>(rStack);<br>    <span class="hljs-keyword">return</span> result;<br>  &#125;<br><br>  <span class="hljs-title function_">_reverse</span>(<span class="hljs-params">stack</span>) &#123;<br>    <span class="hljs-keyword">let</span> rStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();<br>    <span class="hljs-keyword">while</span>(stack.<span class="hljs-title function_">size</span>() &gt; <span class="hljs-number">0</span>) &#123;<br>      rStack.<span class="hljs-title function_">push</span>(stack.<span class="hljs-title function_">pop</span>());<br>    &#125;<br>    <span class="hljs-keyword">return</span> rStack;<br>  &#125;<br>&#125;<br><span class="hljs-comment">// 记得复习一下函数，对象，类的写法</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="14-实现memo"><a href="#14-实现memo" class="headerlink" title="14. 实现memo()"></a>14. 实现<code>memo()</code></h1><p><a target="_blank" rel="noopener" href="https://whatthefuck.is/memoization">Memoization</a> 是应用广泛的性能优化的手段，如果你开发过React应用，你一定不会对<code>React.memo</code>感到陌生。</p>
+<p>Memoization在算法题目中也经常用到，如果你可以用递归解决某个问题，那么很多时候加上Memoization可以得到更好的解法，甚至最终引导到动态规划的解法。</p>
+<p>那么，请实现你自己的<code>memo()</code> 函数。传入相同的参数的时候，直接返回上一次的结果而不经过计算。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">func</span> = (<span class="hljs-params">arg1, arg2</span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> arg1 + arg2<br>&#125;<br><br><span class="hljs-keyword">const</span> memoed = <span class="hljs-title function_">memo</span>(func)<br><br><span class="hljs-title function_">memoed</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <br><span class="hljs-comment">// 3， func 被调用</span><br><br><span class="hljs-title function_">memoed</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <br><span class="hljs-comment">// 3，func 未被调用 </span><br><br><span class="hljs-title function_">memoed</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>)<br><span class="hljs-comment">// 4，新参数，func 被调用</span><br></code></pre></td></tr></table></figure>
+
+<p>参数有可能不是字符串，所以你的<code>memo()</code>需要能接受第三个决定缓存key的参数，有点类似于<a target="_blank" rel="noopener" href="https://lodash.com/docs/4.17.15#memoize">_.memoize()</a> 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> memoed = <span class="hljs-title function_">memo</span>(func, <span class="hljs-function">() =&gt;</span> <span class="hljs-string">&#x27;samekey&#x27;</span>)<br><br><span class="hljs-title function_">memoed</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <br><span class="hljs-comment">// 3，func被调用，缓存key是 &#x27;samekey&#x27;</span><br><br><span class="hljs-title function_">memoed</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <br><span class="hljs-comment">// 3，因为key是一样的，3被直接返回，func未调用</span><br><br><span class="hljs-title function_">memoed</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>) <br><span class="hljs-comment">// 3，因为key是一样的，3被直接返回，func未调用</span><br></code></pre></td></tr></table></figure>
+
+<p>默认的key可以用<code>Array.from(arguments).join(&#39;_&#39;)</code>。</p>
+<p><em>注意</em></p>
+<p>这是一种空间换时间的优化，在实际面试中，请仔细分析时间空间复杂度。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Function</span>&#125; <span class="hljs-variable">func</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">(args:[]) =&gt; string </span>&#125;  [resolver] - cache key generator</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">memo</span>(<span class="hljs-params">func, resolver</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">const</span> cache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">memoried</span>(<span class="hljs-params">...args</span>) &#123;<br>    <span class="hljs-keyword">const</span> key = <span class="hljs-keyword">typeof</span> resolver === <span class="hljs-string">&#x27;function&#x27;</span> ? resolver.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args) : args.<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;_&#x27;</span>);<br>    <span class="hljs-keyword">if</span>(cache.<span class="hljs-title function_">has</span>(key)) &#123;<br>      <span class="hljs-keyword">return</span> cache.<span class="hljs-title function_">get</span>(key);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">let</span> result = func.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args);<br>      cache.<span class="hljs-title function_">set</span>(key, result);<br>      <span class="hljs-keyword">return</span> result;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="15-实现类似jQuery的DOM-wrapper"><a href="#15-实现类似jQuery的DOM-wrapper" class="headerlink" title="15. 实现类似jQuery的DOM wrapper"></a>15. 实现类似jQuery的DOM wrapper</h1><p>如果你使用过jQuery，你一定不会对下面的代码感到陌生。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js">$(<span class="hljs-string">&#x27;#button&#x27;</span>)<br>  .<span class="hljs-title function_">css</span>(<span class="hljs-string">&#x27;color&#x27;</span>, <span class="hljs-string">&#x27;#fff&#x27;</span>)<br>  .<span class="hljs-title function_">css</span>(<span class="hljs-string">&#x27;backgroundColor&#x27;</span>, <span class="hljs-string">&#x27;#000&#x27;</span>)<br>  .<span class="hljs-title function_">css</span>(<span class="hljs-string">&#x27;fontWeight&#x27;</span>, <span class="hljs-string">&#x27;bold&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>以上的代码把几处更改链接在一起，更改了按钮的背景色和文字颜色。</p>
+<p>链式操作的使用，让代码更具可读性。</p>
+<p>为了让上述代码可用，请实现自己的<code>$()</code>，只需要支持<code>css(propertyName: string, value: any)</code>即可。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">HTMLElement</span>&#125; <span class="hljs-variable">el</span> - element to be wrapped</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">$</span>(<span class="hljs-params">el</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-title function_">css</span>(<span class="hljs-params">prop, value</span>) &#123;<br>      el.<span class="hljs-property">style</span>[prop] = value;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 对象中的this 指的是自己，函数对象中的this 指的是调用函数的对象</span><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E5%81%9A%E9%A2%98/">#做题</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>bigfrontend 代码题(三)</div>
+      <div>https://hercules11.github.io/blog/2021/10/20/bigfrontend-代码题-三/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2021/10/21/bigfrontend-%E4%BB%A3%E7%A0%81%E9%A2%98-%E5%9B%9B/" title="bigfrontend 代码题(四)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">bigfrontend 代码题(四)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2021/10/19/bigfrontend%20%E4%BB%A3%E7%A0%81%E9%A2%98(%E4%BA%8C)/" title="bigfrontend 代码题(二)">
+                        <span class="hidden-mobile">bigfrontend 代码题(二)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

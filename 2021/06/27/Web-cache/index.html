@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="Web cache网络缓存，或者说 HTTP 缓存，是用来优化互联网的系统。在应用端和服务器端都有实现。图片或者其他文件的缓存，可以使得在浏览网页的时候，时延更小。 系统的部分介绍正向与反向缓存正向缓存是一个在 web 服务器之外，但是在客户端浏览器、ISP 或者公司网络之内的缓存。正向缓存只缓存被大量获取的内容。一个在客户端和服务器之间的代理服务器可以通过 HTTP 请求头来选择是否要存储 we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web cache 简要介绍">
+<meta property="og:url" content="https://hercules11.github.io/blog/2021/06/27/Web-cache/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="Web cache网络缓存，或者说 HTTP 缓存，是用来优化互联网的系统。在应用端和服务器端都有实现。图片或者其他文件的缓存，可以使得在浏览网页的时候，时延更小。 系统的部分介绍正向与反向缓存正向缓存是一个在 web 服务器之外，但是在客户端浏览器、ISP 或者公司网络之内的缓存。正向缓存只缓存被大量获取的内容。一个在客户端和服务器之间的代理服务器可以通过 HTTP 请求头来选择是否要存储 we">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-27T12:00:34.000Z">
+<meta property="article:modified_time" content="2024-04-18T02:44:48.738Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="翻译 Wiki">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Web cache 简要介绍 - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>王某某</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Web cache 简要介绍</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-06-27 20:00" pubdate>
+          2021年6月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Web cache 简要介绍</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年4月18日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Web-cache"><a href="#Web-cache" class="headerlink" title="Web cache"></a><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Web%E7%BC%93%E5%AD%98">Web cache</a></h3><p>网络缓存，或者说 HTTP 缓存，是用来优化互联网的系统。在应用端和服务器端都有实现。图片或者其他文件的缓存，可以使得在浏览网页的时候，时延更小。</p>
+<h4 id="系统的部分介绍"><a href="#系统的部分介绍" class="headerlink" title="系统的部分介绍"></a>系统的部分介绍</h4><h5 id="正向与反向缓存"><a href="#正向与反向缓存" class="headerlink" title="正向与反向缓存"></a>正向与反向缓存</h5><p>正向缓存是一个在 web 服务器之外，但是在客户端浏览器、ISP 或者公司网络之内的缓存。正向缓存只缓存被大量获取的内容。一个在客户端和服务器之间的代理服务器可以通过 HTTP 请求头来选择是否要存储 web 内容。</p>
+<p>反向缓存位在于一个或者多个 web 服务器前面，用来加速来自网络的请求，和缩减请求峰值的压力。通常表现为一个内容分发系统，在整个网络中保存各点的内容副本。</p>
+<h5 id="HTTP-选项"><a href="#HTTP-选项" class="headerlink" title="HTTP 选项"></a>HTTP 选项</h5><p>超文本传输协议定义了用于控制缓存的三种基本机制：freshness, validation, and invalidation。这在来自服务器的 HTTP 响应消息的中被指定。</p>
+<p>Freshness 允许不在原始服务器上重新检查它而使用响应 ，并且可以由服务器和客户端控制。 例如，到期响应给出了文档过期的日期，并且 Cache-Control: max-age 指令告诉缓存响应可用的秒数。</p>
+<p>Validation 可用于检查缓存的响应过期后是否仍然良好的缓存响应。 例如，如果响应具有 Last-Modified 的 header，则缓存可以使用 If-Modified-Since header 来进行条件请求，以查看它是否已更改。 Etag（实体标签）机制也允许强和弱验证。</p>
+<p>Invalidation 通常是通过缓存传递的另一个请求的副作用。 例如，如果与缓存响应关联的URL随后获取发布，放置或删除请求，则缓存响应将无效。 许多 CDN 和网络设备制造商都用动态缓存替换了这个标准的HTTP缓存控制。</p>
+<h5 id="合法性"><a href="#合法性" class="headerlink" title="合法性"></a>合法性</h5><p>1998年，DMCA为美国法典（17U.S.C.§：512）增加了规则，以便为缓存而豁免系统运营商的版权责任</p>
+<h5 id="服务器端软件"><a href="#服务器端软件" class="headerlink" title="服务器端软件"></a>服务器端软件</h5><p>这是服务器端网络缓存软件列表。</p>
+<table>
+<thead>
+<tr>
+<th align="center">名字</th>
+<th align="center">操作系统</th>
+<th align="center">Forward mode</th>
+<th align="center">Reverse mode</th>
+<th align="center">许可证书</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Apache_HTTP_Server_for_S60">Apache HTTP Server</a></td>
+<td align="center">Windows, OS X, Linux, Unix, FreeBSD, Solaris, Novell NetWare, OS/2, TPF, OpenVMS and eComStation</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Apache_License_2.0">Apache License 2.0</a></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/AiScaler">aiScaler</a> Dynamic Cache Control</td>
+<td align="center">Linux</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ApplianSys#CACHEbox">ApplianSys CACHEbox</a></td>
+<td align="center">Linux</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Blue_Coat_Systems">Blue Coat</a> ProxySG</td>
+<td align="center">SGOS</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Nginx">Nginx</a></td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Linux">Linux</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/BSD">BSD variants</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/OS_X">OS X</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Solaris_(operating_system)">Solaris</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/AIX">AIX</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/HP-UX">HP-UX</a>, other <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/*nix">*nix</a> flavors</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">2-clause <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/BSD_licenses">BSD</a>-like</td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Microsoft_Forefront_Threat_Management_Gateway">Microsoft Forefront Threat Management Gateway</a></td>
+<td align="center">Windows</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Polipo">Polipo</a></td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Windows">Windows</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/OS_X">OS X</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Linux">Linux</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/OpenWrt">OpenWrt</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/FreeBSD">FreeBSD</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Squid_(software)">Squid</a></td>
+<td align="center">Linux, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Unix_filesystem">Unix</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Windows_10_version_history">Windows</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/GNU_General_Public_License">GNU General Public License</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Traffic_Server">Traffic Server</a></td>
+<td align="center">Linux, Unix</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Apache_License_2.0">Apache License 2.0</a></td>
+</tr>
+<tr>
+<td align="center">Untangle</td>
+<td align="center">Linux</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Varnish_(software)">Varnish</a></td>
+<td align="center">Linux, Unix</td>
+<td align="center">Yes (possible with a VMOD)</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/BSD_licenses">BSD</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/WinGate">WinGate</a></td>
+<td align="center">Windows</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a> / Free for 8 users</td>
+</tr>
+<tr>
+<td align="center">Nuster</td>
+<td align="center">Linux, Unix</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/GNU_General_Public_License">GNU General Public License</a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/McAfee">McAfee</a> Web Gateway</td>
+<td align="center">McAfee Linux Operating System</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proprietary_software">Proprietary</a></td>
+</tr>
+</tbody></table>
+<h5 id="进一步了解："><a href="#进一步了解：" class="headerlink" title="进一步了解："></a>进一步了解：</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_manifest_in_HTML5">Cache manifest in HTML5</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Content_delivery_network">Content delivery network</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Harvest_project">Harvest project</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proxy_server">Proxy server</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Web_accelerator">Web accelerator</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E7%BF%BB%E8%AF%91-Wiki/">#翻译 Wiki</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Web cache 简要介绍</div>
+      <div>https://hercules11.github.io/blog/2021/06/27/Web-cache/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年6月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2021/07/04/JSDoc/" title="JSDoc 简要介绍">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JSDoc 简要介绍</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2021/06/21/use-github-pages-build-blog/" title="使用Github Pages搭建博客">
+                        <span class="hidden-mobile">使用Github Pages搭建博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

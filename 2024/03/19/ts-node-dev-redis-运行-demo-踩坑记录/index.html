@@ -1,0 +1,624 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="运行一个后端的小 demo, 技术栈是 ts-node-dev + redis + express。耽误了一整天, 就做了这点事, 不写个文章记录一下，真对不起我花的这么多时间。 第一个坑点: 123error TS2688: Cannot find type definition file for &amp;#x27;ioredis&amp;#x27;.  The file is in the program">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ts-node-dev + redis 运行 demo 踩坑记录">
+<meta property="og:url" content="https://hercules11.github.io/blog/2024/03/19/ts-node-dev-redis-%E8%BF%90%E8%A1%8C-demo-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="运行一个后端的小 demo, 技术栈是 ts-node-dev + redis + express。耽误了一整天, 就做了这点事, 不写个文章记录一下，真对不起我花的这么多时间。 第一个坑点: 123error TS2688: Cannot find type definition file for &amp;#x27;ioredis&amp;#x27;.  The file is in the program">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-19T02:57:01.000Z">
+<meta property="article:modified_time" content="2024-04-18T02:59:13.449Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="后端开发">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ts-node-dev + redis 运行 demo 踩坑记录 - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>王某某</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">ts-node-dev + redis 运行 demo 踩坑记录</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-19 10:57" pubdate>
+          2024年3月19日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ts-node-dev + redis 运行 demo 踩坑记录</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年4月18日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>运行一个后端的小 demo, 技术栈是 ts-node-dev + redis + express。耽误了一整天, 就做了这点事, 不写个文章记录一下，真对不起我花的这么多时间。</p>
+<p>第一个坑点:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fortran">error TS2688: Cannot find <span class="hljs-keyword">type</span> definition <span class="hljs-keyword">file</span> for <span class="hljs-string">&#x27;ioredis&#x27;</span>.<br>  The <span class="hljs-keyword">file</span> is <span class="hljs-keyword">in</span> the <span class="hljs-function"><span class="hljs-keyword">program</span></span> because:<br>    <span class="hljs-built_in">Entry</span> point for <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">type</span> library <span class="hljs-string">&#x27;ioredis&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>这是 <code>tsconfig.json</code> 文件报的错。疑惑的是，我明明安装了 <code>@types/ioredis</code> 依赖包，似乎没有起作用。去搜索了一下原因，发现仓库赫然写着:</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ada">Author message:<br><br>This <span class="hljs-keyword">is</span> a stub types definition. ioredis provides its own <span class="hljs-keyword">type</span> <span class="hljs-type">definitions, </span>so you <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> need this installed.<br></code></pre></td></tr></table></figure>
+<p>也看了其他的解决方案，说是把版本降到 4.x。但是呢，我想着作者已经用 ts 升级了依赖，为什么还要走老路呢。于是我干脆利落地卸载了 <code>@types/ioredis</code>。发现问题并没有解决，<strong>遇事不绝，重启 vscode</strong>。再次打开项目时，第一个问题真的解决好了。</p>
+<p>第二个坑点：<br><code>error TS2339: Property &#39;userid&#39; does not exist on type &#39;Session &amp; Partial&lt;SessionData&gt;&#39;</code>, 这个问题一看就是定义的属性不存在于 <code>Seesion</code> 类型上面。但是这里我们需要把自定义的数据属性放到 <code>req.session</code> 对象上，就必须要用到自定义属性，怎么解决呢？去找了一些解决方案，发现可以使用 ts 的 <code>Declaring Merging</code> <strong>声明融合</strong>功能，为原先的类型扩充属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Session</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;express-session&quot;</span>;<br><br><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;express-session&quot;</span> &#123;<br>    <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Session</span> &#123;<br>        <span class="hljs-attr">userid</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-attr">loadedCount</span>: <span class="hljs-built_in">number</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>第三个坑点: 自定义的类型没有生效，查看了一些解决方案后，发现可以为 <code>tsconfig.json</code> 配置文件添加 <code>typeRoots</code> 属性值。<br>像这样</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-string">&quot;typeRoots&quot;</span>: [<br>      <span class="hljs-string">&quot;./src/types&quot;</span>, <span class="hljs-regexp">//</span> this is where you define your types<br>       <span class="hljs-string">&quot;./node_modules/@types&quot;</span> <span class="hljs-regexp">//</span>this where npm packages containing types are located<br>    ],                                  <span class="hljs-regexp">/* Specify multiple folders that act like &#x27;./</span>node_modules<span class="hljs-regexp">/@types&#x27;. */</span><br></code></pre></td></tr></table></figure>
+<p>定义了类型后，发现 vscode 的错误提示还是存在，没办法，再次重启。好了，红色波浪线不见了，但是命令行运行 <code>ts-node-dev --respawn src/index.ts</code> 还是报错, 属性不存在, 愁死我了。心想，<code>ts-node-dev</code> 是不是没有加载根目录的配置文件。看到启动 <code>ts-node-dev</code> 打印的 ts 版本与当前项目的 ts 版本不一致，让我觉得这样想准没错。找了半天文档，没看见啥命令行 options 可以打印当前的配置的。问题再度陷入了僵局，我左思右想，在 <code>ts-node-dev</code> 的 npm 仓库介绍，看到这样一句话</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">Tweaked <span class="hljs-keyword">version</span> of <span class="hljs-keyword">node</span><span class="hljs-title">-dev</span> that uses ts-<span class="hljs-keyword">node</span> <span class="hljs-title">under</span> the hood.<br></code></pre></td></tr></table></figure>
+<p>是不是应该从 <code>ts-node</code> 寻找突破口。<br>果然让我发现了 <code>--showConfig</code> 可以打印配置信息，前往 vscode 终端一试，发现我自定义的类型文件是包含在里面的。也就是说，定义的配置文件是加载到了，问题又进入了僵局。<br>接着搜索名，看看其他人有什么解决方案。</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">By default, `ts-node` does <span class="hljs-literal">not</span> load `files`, `include` <span class="hljs-literal">or</span> `exclude` from `tsconfig.json` on startup. The `--files` option enables it.<br><br><span class="hljs-title">See &lt;https:</span>//github.com/TypeStrong/ts-node#missing-types&gt;<br></code></pre></td></tr></table></figure>
+<p>终于破案了，这个坑太大了，谁能想得到。因为 <code>ts-node-dev</code> 是基于 <code>ts-node</code> 构建的，对于后者有效的配置，前者也有效。终于耗了我一整个下午的问题终于解决了。</p>
+<p>第四个坑点:<br><code>TypeError: Class constructor RedisStore cannot be invoked without &#39;new&#39;</code>。问题还是出在教学示例使用的依赖版本偏低了。升级后的依赖做了 breaking changes。找到了官方发布的 <a target="_blank" rel="noopener" href="https://github.com/tj/connect-redis/releases/tag/v7.0.0">release log</a>。重写了实例化 redisStore 的代码。现在一切正常了。</p>
+<p>总结反思：学习编程就是这样不断的发现问题，解决问题的过程。解决问题的思路，会越来越开阔，随着对问题的刨析，也会越来越清晰。这就是编程的魅力啊。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">#后端开发</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ts-node-dev + redis 运行 demo 踩坑记录</div>
+      <div>https://hercules11.github.io/blog/2024/03/19/ts-node-dev-redis-运行-demo-踩坑记录/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2024/03/25/Express-cors-%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%87%BD%E6%95%B0%E8%AE%BE%E7%BD%AE-Header-%E7%9A%84%E5%8C%BA%E5%88%AB/" title="Express cors 中间件和自定义中间件函数设置 Header 的区别">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Express cors 中间件和自定义中间件函数设置 Header 的区别</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2024/03/08/SSH%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E8%A6%81%E7%82%B9%E8%A7%A3%E6%9E%90/" title="SSH 远程登录要点解析">
+                        <span class="hidden-mobile">SSH 远程登录要点解析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

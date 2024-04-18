@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="1. 实现curry()柯里化(Currying) 在JavaScript是一个常用的技巧。 请实现一个curry()方法，接受一个function然后返回一个柯里化过后的function。 这是一个例子 1234567891011const join &#x3D; (a, b, c) &#x3D;&gt; &amp;#123;   return &#96;$&amp;#123;a&amp;#125;_$&amp;#123;b&amp;#125;_$&amp;#123;c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bigfrontend 代码题(一)">
+<meta property="og:url" content="https://hercules11.github.io/blog/2021/10/19/bigfrontend%20%E4%BB%A3%E7%A0%81%E9%A2%98(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="1. 实现curry()柯里化(Currying) 在JavaScript是一个常用的技巧。 请实现一个curry()方法，接受一个function然后返回一个柯里化过后的function。 这是一个例子 1234567891011const join &#x3D; (a, b, c) &#x3D;&gt; &amp;#123;   return &#96;$&amp;#123;a&amp;#125;_$&amp;#123;b&amp;#125;_$&amp;#123;c">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-19T04:56:53.000Z">
+<meta property="article:modified_time" content="2024-04-18T02:44:48.738Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="做题">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>bigfrontend 代码题(一) - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>王某某</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">bigfrontend 代码题(一)</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-19 12:56" pubdate>
+          2021年10月19日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">bigfrontend 代码题(一)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年4月18日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-实现curry"><a href="#1-实现curry" class="headerlink" title="1. 实现curry()"></a>1. 实现curry()</h1><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Currying">柯里化(Currying)</a> 在JavaScript是一个常用的技巧。</p>
+<p>请实现一个<code>curry()</code>方法，接受一个function然后返回一个柯里化过后的function。</p>
+<p>这是一个例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">join</span> = (<span class="hljs-params">a, b, c</span>) =&gt; &#123;<br>   <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;a&#125;</span>_<span class="hljs-subst">$&#123;b&#125;</span>_<span class="hljs-subst">$&#123;c&#125;</span>`</span><br>&#125;<br><br><span class="hljs-keyword">const</span> curriedJoin = <span class="hljs-title function_">curry</span>(join)<br><br><span class="hljs-title function_">curriedJoin</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>) <span class="hljs-comment">// &#x27;1_2_3&#x27;</span><br><br><span class="hljs-title function_">curriedJoin</span>(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>) <span class="hljs-comment">// &#x27;1_2_3&#x27;</span><br><br><span class="hljs-title function_">curriedJoin</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)(<span class="hljs-number">3</span>) <span class="hljs-comment">// &#x27;1_2_3&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>阅读更多</p>
+<p><a target="_blank" rel="noopener" href="https://javascript.info/currying-partials">https://javascript.info/currying-partials</a></p>
+<p><a target="_blank" rel="noopener" href="https://lodash.com/docs/4.17.15#curry">https://lodash.com/docs/4.17.15#curry</a></p>
+<hr>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">curry</span>(<span class="hljs-params">func</span>) &#123;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">curried</span>(<span class="hljs-params">...args</span>) &#123;<br>    <span class="hljs-keyword">if</span> (args.<span class="hljs-property">length</span> &gt;= func.<span class="hljs-property">length</span>) &#123;<br>      <span class="hljs-keyword">return</span> func.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">...args2</span>) &#123;<br>        <span class="hljs-keyword">return</span> curried.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args.<span class="hljs-title function_">concat</span>(args2));<br>      &#125;<br>    &#125;<br>  &#125;;<br><br>&#125;<br><span class="hljs-comment">// func.length 指的是函数定义的参数长度</span><br><span class="hljs-comment">// bind，apply，call三者都可以改变函数的this对象指向。</span><br><span class="hljs-comment">// 三者第一个参数都是this要指向的对象，如果如果没有这个参数或参数为undefined或null，则默认指向全局window。</span><br><span class="hljs-comment">// 三者都可以传参，但是apply是数组，而call是参数列表，且apply和call是一次性传入参数，而bind可以分为多次传入。</span><br><span class="hljs-comment">// bind 是返回绑定this之后的函数，便于稍后调用；apply 、call 则是立即执行 。</span><br></code></pre></td></tr></table></figure>
+
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82340026">bind，apply，call三者的区别</a></p>
+<hr>
+
+
+<h1 id="2-实现支持placeholder的curry"><a href="#2-实现支持placeholder的curry" class="headerlink" title="2. 实现支持placeholder的curry()"></a>2. 实现支持placeholder的curry()</h1><p>该问题紧接着<a target="_blank" rel="noopener" href="https://bigfrontend.dev/zh/problem/implement-curry">1. 实现curry()</a>。</p>
+<p>请实现一个支持placeholder的<code>curry()</code>，可以像这样使用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span>  <span class="hljs-title function_">join</span> = (<span class="hljs-params">a, b, c</span>) =&gt; &#123;<br>   <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;a&#125;</span>_<span class="hljs-subst">$&#123;b&#125;</span>_<span class="hljs-subst">$&#123;c&#125;</span>`</span><br>&#125;<br><br><span class="hljs-keyword">const</span> curriedJoin = <span class="hljs-title function_">curry</span>(join)<br><span class="hljs-keyword">const</span> _ = curry.<span class="hljs-property">placeholder</span><br><br><span class="hljs-title function_">curriedJoin</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>) <span class="hljs-comment">// &#x27;1_2_3&#x27;</span><br><br><span class="hljs-title function_">curriedJoin</span>(_, <span class="hljs-number">2</span>)(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>) <span class="hljs-comment">// &#x27;1_2_3&#x27;</span><br><br><span class="hljs-title function_">curriedJoin</span>(_, _, _)(<span class="hljs-number">1</span>)(_, <span class="hljs-number">3</span>)(<span class="hljs-number">2</span>) <span class="hljs-comment">// &#x27;1_2_3&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>阅读更多</p>
+<p><a target="_blank" rel="noopener" href="https://javascript.info/currying-partials">https://javascript.info/currying-partials</a></p>
+<p><a target="_blank" rel="noopener" href="https://lodash.com/docs/4.17.15#curry">https://lodash.com/docs/4.17.15#curry</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/planttheidea/curriable">https://github.com/planttheidea/curriable</a></p>
+<hr>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type"> Function </span>&#125; <span class="hljs-variable">func</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">curry</span>(<span class="hljs-params">func</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">curried</span>(<span class="hljs-params">...args</span>) &#123;<br>    <span class="hljs-keyword">const</span> complete = args.<span class="hljs-property">length</span> &gt;= func.<span class="hljs-property">length</span> &amp;&amp; !args.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, func.<span class="hljs-property">length</span>).<span class="hljs-title function_">includes</span>(curry.<span class="hljs-property">placeholder</span>);<br>    <span class="hljs-keyword">if</span>(complete) <span class="hljs-keyword">return</span> func.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args)<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">...newArgs</span>) &#123;<br>      <span class="hljs-comment">// replace placeholders in args with values from newArgs</span><br>      <span class="hljs-keyword">const</span> res = args.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">arg</span> =&gt;</span> arg === curry.<span class="hljs-property">placeholder</span> &amp;&amp; newArgs.<span class="hljs-property">length</span> ? newArgs.<span class="hljs-title function_">shift</span>() : arg);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title function_">curried</span>(...res, ...newArgs);<br>    &#125;<br>  &#125;<br>&#125;<br><br>curry.<span class="hljs-property">placeholder</span> = <span class="hljs-title class_">Symbol</span>()<br><span class="hljs-comment">// 很巧妙，用了一个递归的思想</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+
+
+<h1 id="3-实现Array-prototype-flat"><a href="#3-实现Array-prototype-flat" class="headerlink" title="3. 实现Array.prototype.flat()"></a>3. 实现Array.prototype.flat()</h1><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat">Array.prototype.flat()</a>可以用来扁平化数组。</p>
+<p>你能够自己实现一个flat么？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, [<span class="hljs-number">4</span>]]];<br><br><span class="hljs-title function_">flat</span>(arr)<br><span class="hljs-comment">// [1, 2, 3, [4]]</span><br><br><span class="hljs-title function_">flat</span>(arr, <span class="hljs-number">1</span>)<br><span class="hljs-comment">// [1, 2, 3, [4]]</span><br><br><span class="hljs-title function_">flat</span>(arr, <span class="hljs-number">2</span>)<br><span class="hljs-comment">// [1, 2, 3, 4]</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>追问</strong></p>
+<p>能否不用递归而用迭代的方式实现？</p>
+<hr>
+
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 递归版本</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type"> Array </span>&#125; <span class="hljs-variable">arr</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type"> number </span>&#125; <span class="hljs-variable">depth</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type"> Array </span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">flat</span>(<span class="hljs-params">arr, depth = <span class="hljs-number">1</span></span>) &#123;<br>  <span class="hljs-comment">// your imeplementation here</span><br>  <span class="hljs-keyword">let</span> result = []<br>  <span class="hljs-keyword">if</span>(depth &gt;= <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> item <span class="hljs-keyword">of</span> arr) &#123;<br>      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&#x27;object&#x27;</span>) &#123;<br>        result = result.<span class="hljs-title function_">concat</span>(<span class="hljs-title function_">flat</span>(item, depth-<span class="hljs-number">1</span>));<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        result.<span class="hljs-title function_">push</span>(item)<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> result;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> arr;<br>  &#125;<br><br>&#125;<br><br><span class="hljs-comment">// 迭代版本</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">flat</span>(<span class="hljs-params">arr, depth = <span class="hljs-number">1</span></span>) &#123;<br>  <span class="hljs-comment">// [[1,1] [[2],1], [[3, [4]],1]]</span><br>  <span class="hljs-comment">// [[[2],1], [[3, [4]],1]]</span><br>  <span class="hljs-comment">// [[2,0], [[3, [4]],1]]</span><br>  <span class="hljs-comment">// [[[3, [4]],1]]</span><br>  <span class="hljs-comment">// [[3, 0], [[4], 0]]</span><br>  <br>  <span class="hljs-keyword">const</span> result = []<br>  <span class="hljs-keyword">const</span> stack = [...arr.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> ([item, depth]))]<br>  <br>  <span class="hljs-keyword">while</span> (stack.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">const</span> [top, depth] = stack.<span class="hljs-title function_">pop</span>()<br>    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(top) &amp;&amp; depth &gt; <span class="hljs-number">0</span>) &#123;<br>      stack.<span class="hljs-title function_">push</span>(...top.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> ([item, depth - <span class="hljs-number">1</span>])))<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      result.<span class="hljs-title function_">push</span>(top)<br>    &#125;<br>  &#125;<br>  <br>  <span class="hljs-keyword">return</span> result.<span class="hljs-title function_">reverse</span>()<br>&#125;<br><span class="hljs-comment">// 这个迭代版本就是把元素一个一个剥开一层都推入stack 中，符合条件的，推入结果数组</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E5%81%9A%E9%A2%98/">#做题</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>bigfrontend 代码题(一)</div>
+      <div>https://hercules11.github.io/blog/2021/10/19/bigfrontend 代码题(一)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2021/10/19/bigfrontend%20%E4%BB%A3%E7%A0%81%E9%A2%98(%E4%BA%8C)/" title="bigfrontend 代码题(二)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">bigfrontend 代码题(二)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2021/10/19/%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%BD%BF%E7%94%A8Python/" title="通过命令行使用Python">
+                        <span class="hidden-mobile">通过命令行使用Python</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

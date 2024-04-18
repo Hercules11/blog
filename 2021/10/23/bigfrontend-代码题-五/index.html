@@ -1,0 +1,779 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="29. 实现async helper - sequence()该题目和11. 什么是Composition?实现pipe()有些类似。 请实现一个async helper - sequence()。sequence()像pipe() 那样将异步函数串联在一起。 本题目中的所有异步函数是如下interface。 123456type Callback &#x3D; (error: Error, data: a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bigfrontend 代码题(五)">
+<meta property="og:url" content="https://hercules11.github.io/blog/2021/10/23/bigfrontend-%E4%BB%A3%E7%A0%81%E9%A2%98-%E4%BA%94/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="29. 实现async helper - sequence()该题目和11. 什么是Composition?实现pipe()有些类似。 请实现一个async helper - sequence()。sequence()像pipe() 那样将异步函数串联在一起。 本题目中的所有异步函数是如下interface。 123456type Callback &#x3D; (error: Error, data: a">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-23T12:11:13.000Z">
+<meta property="article:modified_time" content="2024-04-18T02:44:48.739Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="做题">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>bigfrontend 代码题(五) - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>王某某</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">bigfrontend 代码题(五)</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-23 20:11" pubdate>
+          2021年10月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 115 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">bigfrontend 代码题(五)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年4月18日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="29-实现async-helper-sequence"><a href="#29-实现async-helper-sequence" class="headerlink" title="29. 实现async helper - sequence()"></a>29. 实现async helper - sequence()</h1><p>该题目和<a target="_blank" rel="noopener" href="https://bigfrontend.dev/zh/problem/what-is-composition-create-a-pipe">11. 什么是Composition?实现pipe()</a>有些类似。</p>
+<p>请实现一个async helper - <code>sequence()</code>。<code>sequence()</code>像<code>pipe()</code> 那样将异步函数串联在一起。</p>
+<p>本题目中的所有异步函数是如下interface。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Callback</span> = <span class="hljs-function">(<span class="hljs-params">error: <span class="hljs-built_in">Error</span>, data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span><br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">AsyncFunc</span> = <span class="hljs-function">(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">   callback: Callback,</span></span><br><span class="hljs-params"><span class="hljs-function">   data: <span class="hljs-built_in">any</span></span></span><br><span class="hljs-params"><span class="hljs-function"></span>) =&gt;</span> <span class="hljs-built_in">void</span><br></code></pre></td></tr></table></figure>
+
+<p>你的<code>sequence()</code>需要能接受一个<strong>AsyncFunc 数组</strong>，并且通过callback将之串联在一起。</p>
+<p>假设我们有一个异步函数把数字乘以2</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">asyncTimes2</span> = (<span class="hljs-params">callback, num</span>) =&gt; &#123;<br>   <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, num * <span class="hljs-number">2</span>), <span class="hljs-number">100</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>sequence()</code> 需要使以下成为可能</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> asyncTimes4 = <span class="hljs-title function_">sequence</span>(<br>  [<br>    asyncTimes2,<br>    asyncTimes2<br>  ]<br>)<br><br><span class="hljs-title function_">asyncTimes4</span>(<span class="hljs-function">(<span class="hljs-params">error, data</span>) =&gt;</span> &#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data) <span class="hljs-comment">// 4</span><br>&#125;, <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>当Error发生的时候，需要直接触发最后的callback，未执行的异步函数需要保持未被调用的状态。</p>
+<p><strong>再问问</strong></p>
+<p>能否使用Promise完成题目？能否不使用Promise完成该题目？</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/*</span><br><span class="hljs-comment">type Callback = (error: Error, data: any) =&gt; void</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">type AsyncFunc = (</span><br><span class="hljs-comment">   callback: Callback,</span><br><span class="hljs-comment">   data: any</span><br><span class="hljs-comment">) =&gt; void</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">AsyncFunc[]</span>&#125; <span class="hljs-variable">funcs</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">(callback: Callback) =&gt; void</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">sequence</span>(<span class="hljs-params">funcs</span>)&#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">sequenced</span>(<span class="hljs-params">callback, num</span>) &#123;<br>    <span class="hljs-keyword">if</span>(funcs.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, num);<br>    <span class="hljs-keyword">const</span> [first, ...rest] = funcs;<br>    <span class="hljs-title function_">first</span>(<span class="hljs-function">(<span class="hljs-params">error, data</span>) =&gt;</span> error ? <span class="hljs-title function_">callback</span>(error) : <span class="hljs-title function_">sequence</span>(rest)(callback, data), num)<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="30-实现async-helper-parallel"><a href="#30-实现async-helper-parallel" class="headerlink" title="30. 实现async helper - parallel()"></a>30. 实现async helper - parallel()</h1><p>本题目是 <a target="_blank" rel="noopener" href="https://bigfrontend.dev/zh/problem/implement-async-helper-sequence">29. 实现async helper - <code>sequence()</code></a>的延续。</p>
+<p>请实现async helper - <code>parallel()</code>！ <code>parallel()</code> 有点类似<code>Promise.all()</code>。和29题中的 <code>sequence()</code>不同，异步函数的执行没有先后顺序，在<code>parrallel()</code>中是同时触发。</p>
+<p>本题目中的所有异步函数是如下interface。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Callback</span> = <span class="hljs-function">(<span class="hljs-params">error: <span class="hljs-built_in">Error</span>, data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span><br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">AsyncFunc</span> = <span class="hljs-function">(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">   callback: Callback,</span></span><br><span class="hljs-params"><span class="hljs-function">   data: <span class="hljs-built_in">any</span></span></span><br><span class="hljs-params"><span class="hljs-function"></span>) =&gt;</span> <span class="hljs-built_in">void</span><br></code></pre></td></tr></table></figure>
+
+<p>你的<code>parallel()</code> 需要能 <strong>接受 AsyncFunc 数组</strong>，并且返回一个function，这个function将会在所有的异步函数完成或者error发生的时候被触发。</p>
+<p>假设我们有如下3个异步函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">async1</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>   <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-number">1</span>)<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">async2</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>   <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-number">2</span>)<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">async3</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>   <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-number">3</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>parallel()</code>需要使得以下成为可能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> all = <span class="hljs-title function_">parallel</span>(<br>  [<br>    async1,<br>    async2,<br>    async3<br>  ]<br>)<br><br><span class="hljs-title function_">all</span>(<span class="hljs-function">(<span class="hljs-params">error, data</span>) =&gt;</span> &#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data) <span class="hljs-comment">// [1, 2, 3]</span><br>&#125;, <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>当Error发生的时候，只有第一个error需要被传递到最后，剩下的error和data都被忽略。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/*</span><br><span class="hljs-comment">type Callback = (error: Error, data: any) =&gt; void</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">type AsyncFunc = (</span><br><span class="hljs-comment">   callback: Callback,</span><br><span class="hljs-comment">   data: any</span><br><span class="hljs-comment">) =&gt; void</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">promisify</span> = fn =&gt; <span class="hljs-function"><span class="hljs-params">input</span> =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">res, rej</span>) =&gt;</span> &#123;<br>  <span class="hljs-title function_">fn</span>(<span class="hljs-function">(<span class="hljs-params">error, output</span>) =&gt;</span> error ? <span class="hljs-title function_">rej</span>(error) : <span class="hljs-title function_">res</span>(output), input);<br>&#125;);<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">AsyncFunc[]</span>&#125; <span class="hljs-variable">funcs</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">(callback: Callback) =&gt; void</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">parallel</span>(<span class="hljs-params">funcs</span>)&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">cb, input</span>) =&gt;</span> &#123;<br>    <span class="hljs-title class_">Promise</span><br>    .<span class="hljs-title function_">all</span>(funcs.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">fn</span> =&gt;</span> <span class="hljs-title function_">promisify</span>(fn)(input)))<br>    .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">output</span> =&gt;</span> <span class="hljs-title function_">cb</span>(<span class="hljs-literal">undefined</span>, output))<br>    .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> <span class="hljs-title function_">cb</span>(error, <span class="hljs-literal">undefined</span>))<br>  &#125;<br>&#125;<br><br><br><span class="hljs-comment">// Promise 对象是由关键字 new 及其构造函数来创建的。</span><br><span class="hljs-comment">// 该构造函数会把一个叫做“处理器函数”（executor function）的函数作为它的参数。</span><br><span class="hljs-comment">// 这个“处理器函数”接受两个函数——resolve 和 reject ——作为其参数。当异步任务顺利完成且返回结果值时，会调用 resolve 函数；</span><br><span class="hljs-comment">// 而当异步任务失败且返回失败原因（通常是一个错误对象）时，会调用reject 函数。</span><br><br><br><span class="hljs-comment">// 有不明白的地方，在fn 利用input 执行完异步操作后，output 和error 是如何传到外面的？</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="31-实现async-helper-race"><a href="#31-实现async-helper-race" class="headerlink" title="31. 实现async helper - race()"></a>31. 实现async helper - race()</h1><p>这个题目是<a target="_blank" rel="noopener" href="https://bigfrontend.dev/zh/problem/implement-async-helper-parallel">30. 实现async helper - <code>parallel()</code></a>的后续。</p>
+<p>请实现一个async function helper - <code>race()</code> 。 <code>race()</code>有点类似<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race">Promise.race()</a>。 <code>parallel()</code>会等待所有的function执行结束，<code>race()</code>会在任何一个function结束或者产生error的时候调用最终的callback。</p>
+<p>本题目中的所有异步函数是如下interface。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Callback</span> = <span class="hljs-function">(<span class="hljs-params">error: <span class="hljs-built_in">Error</span>, data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span><br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">AsyncFunc</span> = <span class="hljs-function">(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">   callback: Callback,</span></span><br><span class="hljs-params"><span class="hljs-function">   data: <span class="hljs-built_in">any</span></span></span><br><span class="hljs-params"><span class="hljs-function"></span>) =&gt;</span> <span class="hljs-built_in">void</span><br></code></pre></td></tr></table></figure>
+
+<p>你的<code>race()</code> 需要 <strong>接受 AsyncFunc 数组</strong>，并且返回一个新的函数。这个函数会在任何一个function调用结束或者发生error的时候被调用。</p>
+<p>假设我们有如下3个async function。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">async1</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>   <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-number">1</span>), <span class="hljs-number">300</span>)<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">async2</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-number">2</span>), <span class="hljs-number">100</span>)<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">async3</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>   <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">callback</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-number">3</span>), <span class="hljs-number">200</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>你的<code>race()</code> 需要使得如下逻辑成立。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> first = <span class="hljs-title function_">race</span>(<br>  [<br>    async1,<br>    async2,<br>    async3<br>  ]<br>)<br><br><span class="hljs-title function_">first</span>(<span class="hljs-function">(<span class="hljs-params">error, data</span>) =&gt;</span> &#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data) <br>   <span class="hljs-comment">// 2, 因为2是第一个成功执行的结果</span><br>&#125;, <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/*</span><br><span class="hljs-comment">type Callback = (error: Error, data: any) =&gt; void</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">type AsyncFunc = (</span><br><span class="hljs-comment">   callback: Callback,</span><br><span class="hljs-comment">   data: any</span><br><span class="hljs-comment">) =&gt; void</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">AsyncFunc[]</span>&#125; <span class="hljs-variable">funcs</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">(callback: Callback) =&gt; void</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">race</span>(<span class="hljs-params">funcs</span>)&#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">let</span> flag = <span class="hljs-literal">false</span>;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">cb, data</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-title function_">cbWrapper</span> = (<span class="hljs-params">...args</span>) =&gt; &#123;<br>      <span class="hljs-keyword">if</span>(flag) <span class="hljs-keyword">return</span>;<br>      <span class="hljs-title function_">cb</span>(...args);<br>      flag = <span class="hljs-literal">true</span>;<br>    &#125;<br><br>    funcs.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">func</span> =&gt;</span> <span class="hljs-title function_">func</span>(cbWrapper, data));<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="32-实现Promise-all"><a href="#32-实现Promise-all" class="headerlink" title="32. 实现Promise.all()"></a>32. 实现Promise.all()</h1><blockquote>
+<p>Promise.all(iterable) 方法返回一个 Promise 实例，此实例在 iterable 参数内所有的 promise 都“完成（resolved）”或参数中不包含 promise 时回调完成（resolve）；如果参数中 promise 有一个失败（rejected），此实例回调失败（reject），失败的原因是第一个失败 promise 的结果。</p>
+</blockquote>
+<p>source - <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all">MDN</a></p>
+<p>你能否实现自己的 <code>Promise.all()</code> ?</p>
+<p><em>注意</em></p>
+<p><strong>请不要直接使用Promise.all()</strong> ，这并不能帮助你提升。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Array&lt;any&gt;</span>&#125; <span class="hljs-variable">promises</span> - notice input might have non-Promises</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">Promise&lt;any[]&gt;</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">all</span>(<span class="hljs-params">promises</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">let</span> result = [];<br>  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> promise <span class="hljs-keyword">of</span> promises) &#123;<br>    result.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">await</span> promise);<br>  &#125;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br><br><span class="hljs-comment">// 可以看出，用async 和await 更符合直觉</span><br><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">all</span>(<span class="hljs-params">promises</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">res, rej</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">let</span> result = [];<br><br>    <span class="hljs-keyword">if</span>(promises.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-title function_">res</span>(result);<br><br>    <span class="hljs-keyword">let</span> countPending = promises.<span class="hljs-property">length</span>;<br>    promises.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">promise, index</span>) =&gt;</span> &#123;<br>      <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(promise).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> &#123;<br>        result[index] = value;<br>        countPending--;<br>        <span class="hljs-keyword">if</span>(countPending === <span class="hljs-number">0</span>) &#123;<br>          <span class="hljs-title function_">res</span>(result);<br>        &#125;<br>      &#125;, rej)<br>    &#125;)<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="33-实现Promise-allSettled"><a href="#33-实现Promise-allSettled" class="headerlink" title="33. 实现Promise.allSettled()"></a>33. 实现Promise.allSettled()</h1><blockquote>
+<p>Promise.allSettled()方法返回一个在所有给定的promise都已经fulfilled或rejected后的promise，并带有一个对象数组，每个对象表示对应的promise结果。</p>
+</blockquote>
+<ul>
+<li>from <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled">MDN</a></li>
+</ul>
+<p>和<code>Promise.all()</code>不同，<code>Promise.allSettled()</code> 会等待所有的promise直到fulfill或者reject。</p>
+<p>你能实现自己的<code>Promise.allSettled()</code> 吗?</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Array&lt;any&gt;</span>&#125; <span class="hljs-variable">promises</span> - notice that input might contains non-promises</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">Promise&lt;Array&lt;&#123;status: &#x27;fulfilled&#x27;, value: any</span>&#125; | &#123;status: &#x27;rejected&#x27;, reason: any&#125;&gt;&gt;&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">allSettled</span>(<span class="hljs-params">promises</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(promises.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">promise</span> =&gt;</span> <br>  <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(promise).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;fulfilled&quot;</span>,<br>      value<br>    &#125;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-params">reason</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;rejected&quot;</span>,<br>      reason<br>    &#125;<br>  &#125;)<br>  ))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="34-实现Promise-any"><a href="#34-实现Promise-any" class="headerlink" title="34. 实现Promise.any()"></a>34. 实现Promise.any()</h1><blockquote>
+<p>Promise.any() 接收一个Promise可迭代对象，只要其中的一个 promise 成功，就返回那个已经成功的 promise 。如果可迭代对象中没有一个 promise 成功（即所有的 promises 都失败/拒绝），就返回一个失败的 promise 和AggregateError类型的实例，它是 Error 的一个子类，用于把单一的错误集合在一起。本质上，这个方法和Promise.all()是相反的。</p>
+</blockquote>
+<ul>
+<li>from <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/any">MDN</a></li>
+</ul>
+<p>你能实现自己的<code>Promise.any()</code>吗?</p>
+<p><em>注意</em></p>
+<p><code>AggregateError</code> 暂时还没有被Chrome支持。但是你仍然可以使用它因为我们在judge你的code时候添加了AggregateError。</p>
+<p>你可以这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">AggregateError</span>(<br>  <span class="hljs-string">&#x27;No Promise in Promise.any was resolved&#x27;</span>, <br>  errors<br>)<br></code></pre></td></tr></table></figure>
+
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Array&lt;Promise&gt;</span>&#125; <span class="hljs-variable">promises</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">Promise</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">any</span>(<span class="hljs-params">promises</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">res, rej</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">let</span> isFullfilled = <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">let</span> errors = [];<br>    promises.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">promise, index</span>) =&gt;</span> &#123;<br>      promise.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span>(!isFullfilled) &#123;<br>          <span class="hljs-title function_">res</span>(data);<br>          isFullfilled = <span class="hljs-literal">true</span>;<br>        &#125;<br>      &#125;, <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>        errors[index] = error;<br>        <span class="hljs-keyword">if</span>(errors.<span class="hljs-property">length</span> === promises.<span class="hljs-property">length</span>) &#123;<br>          <span class="hljs-title function_">rej</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AggregateError</span>(<span class="hljs-string">&#x27;none resolved&#x27;</span>, errors));<br>        &#125;<br>      &#125;)<br>    &#125;)<br>  &#125;)<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="35-实现Promise-race"><a href="#35-实现Promise-race" class="headerlink" title="35. 实现Promise.race()"></a>35. 实现Promise.race()</h1><p>该问题有些类似 <a target="_blank" rel="noopener" href="https://bigfrontend.dev/zh/problem/implement-async-helper-race">31. 实现async helper - <code>race()</code></a>，只不过处理的是Promise。</p>
+<blockquote>
+<p>Promise.race(iterable) 方法返回一个 promise，一旦迭代器中的某个promise解决或拒绝，返回的 promise就会解决或拒绝。source: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/race">MDN</a></p>
+</blockquote>
+<p>你能实现自己的<code>Promise.race()</code>吗？</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Array&lt;Promise&gt;</span>&#125; <span class="hljs-variable">promises</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">Promise</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">race</span>(<span class="hljs-params">promises</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">return</span> !promises.<span class="hljs-property">length</span> ? <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>() : <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">res, rej</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> promise <span class="hljs-keyword">of</span> promises) &#123;<br>      <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(promise).<span class="hljs-title function_">then</span>(res, rej);<br>      <span class="hljs-comment">// promise.then(res, rej);</span><br>    &#125;<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="36-实现一个-fake-timer-setTimeout"><a href="#36-实现一个-fake-timer-setTimeout" class="headerlink" title="36. 实现一个 fake timer(setTimeout)"></a>36. 实现一个 fake timer(setTimeout)</h1><p><code>setTimeout</code> 可以设定未来的任务，但是其执行时间并不精确。(<a target="_blank" rel="noopener" href="https://javascript.info/event-loop">Event Loop</a>)。</p>
+<p>大多数时候这都不是问题，但是在test的时候却有些头疼。</p>
+<p>比如，<a target="_blank" rel="noopener" href="https://bigfrontend.dev/zh/problem/implement-throttle-with-leading-and-trailing-option">5. 手写throttle()并支持leading 和 trailing</a> 中我们就需要比较精确的测试。</p>
+<p>你能否实现一个静态化的<code>setTimeout()</code>和<code>clearTimeout()</code>，而不再有Event Loop的问题。这也正是<a target="_blank" rel="noopener" href="https://github.com/sinonjs/fake-timers">FakeTimes</a> 的用途。</p>
+<p>“精确”的意思是，“假设所有的函数的执行耗时为0，同时时间戳从0开始，那么<code>setTimeout(func1, 100)</code>将会精确的在时间戳:100进行执行func1”。</p>
+<p>你需要同时修改<code>Date.now()</code>来提供新的时间戳。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FakeTimer</span> &#123;<br>  <span class="hljs-title function_">install</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// setTimeout(), clearTimeout(), and Date.now() </span><br>    <span class="hljs-comment">// are replaced</span><br>  &#125;<br><br>  <span class="hljs-title function_">uninstall</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// restore the original APIs</span><br>    <span class="hljs-comment">// setTimeout(), clearTimeout() and Date.now()</span><br>  &#125;<br><br>  <span class="hljs-title function_">tick</span>(<span class="hljs-params"></span>) &#123;<br>     <span class="hljs-comment">// run all the schedule functions in order</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输入的代码将会大概像这样进行测试。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> fakeTimer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FakeTimer</span>()<br>fakeTimer.<span class="hljs-title function_">install</span>()<br><br><span class="hljs-keyword">const</span> logs = []<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">log</span> = (<span class="hljs-params">arg</span>) =&gt; &#123;<br>   logs.<span class="hljs-title function_">push</span>([<span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(), arg])<br>&#125;<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;A&#x27;</span>), <span class="hljs-number">100</span>)<br><span class="hljs-comment">// log &#x27;A&#x27; at 100</span><br><br><span class="hljs-keyword">const</span> b = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;B&#x27;</span>), <span class="hljs-number">110</span>)<br><span class="hljs-built_in">clearTimeout</span>(b)<br><span class="hljs-comment">// b is set but cleared</span><br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;C&#x27;</span>), <span class="hljs-number">200</span>)<br><br><span class="hljs-title function_">expect</span>(logs).<span class="hljs-title function_">toEqual</span>([[<span class="hljs-number">100</span>, <span class="hljs-string">&#x27;A&#x27;</span>], [<span class="hljs-number">200</span>, <span class="hljs-string">&#x27;C&#x27;</span>]])<br><br>fakeTimer.<span class="hljs-title function_">uninstall</span>()<br></code></pre></td></tr></table></figure>
+
+<p><em>注意</em></p>
+<p>测试的时候只会用到<code>Date.now()</code>，其他的时间相关的函数可以忽略。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FakeTimer</span> &#123;<br><span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">original</span> = &#123;<br>    <span class="hljs-attr">setTimeout</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">setTimeout</span>,<br>    <span class="hljs-attr">clearTimeout</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">clearTimeout</span>,<br>    <span class="hljs-attr">dateNow</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-property">now</span><br>  &#125;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">currentTime</span> = <span class="hljs-number">0</span>;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span> = [];<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">timerId</span> = <span class="hljs-number">1</span>;<br>&#125;<br><br>  <span class="hljs-title function_">install</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// replace window.setTimeout, window.clearTimeout, Date.now</span><br>    <span class="hljs-comment">// with your implementation</span><br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">setTimeout</span> = <span class="hljs-function">(<span class="hljs-params">cb, time, ...args</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> id = <span class="hljs-variable language_">this</span>.<span class="hljs-property">timerId</span>++;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">push</span>(&#123;<br>        cb,<br>        <span class="hljs-attr">time</span>: time+<span class="hljs-variable language_">this</span>.<span class="hljs-property">currentTime</span>,<br>        id,<br>        args<br>      &#125;)<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">a,b</span>) =&gt;</span> a.<span class="hljs-property">time</span> - b.<span class="hljs-property">time</span>);<br>    <span class="hljs-keyword">return</span> id;      <br>    &#125;<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">clearTimeout</span> = <span class="hljs-function"><span class="hljs-params">toRemoveId</span> =&gt;</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">obj</span> =&gt;</span> obj.<span class="hljs-property">id</span> !== toRemoveId);<br>    &#125;<br>    <span class="hljs-title class_">Date</span>.<span class="hljs-property">now</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">currentTime</span>;<br>    &#125;<br>  &#125;<br>  <br>  <span class="hljs-title function_">uninstall</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// restore the original implementation of</span><br>    <span class="hljs-comment">// window.setTimeout, window.clearTimeout, Date.now</span><br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">setTimeout</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">original</span>.<span class="hljs-property">setTimeout</span>;<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">clearTimeout</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">original</span>.<span class="hljs-property">clearTimeout</span>;<br>    <span class="hljs-title class_">Date</span>.<span class="hljs-property">now</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">original</span>.<span class="hljs-property">dateNow</span>;<br>  &#125;<br>  <br>  <span class="hljs-title function_">tick</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// run the scheduled functions without waiting</span><br>    <span class="hljs-keyword">while</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-property">length</span>) &#123;<br>      <span class="hljs-keyword">let</span> &#123; cb, time, args&#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">shift</span>();<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">currentTime</span> = time;<br>      <span class="hljs-title function_">cb</span>(...args);<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 本质上是构造一个类，去替换掉原生的计时器方法</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="37-手写Binary-Search-unique"><a href="#37-手写Binary-Search-unique" class="headerlink" title="37. 手写Binary Search (unique)"></a>37. 手写Binary Search (unique)</h1><p>即使是前端的面试，基本的算法比如<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Binary_search_algorithm">二分查找</a>被问到的可能性还是有的。</p>
+<p><strong>请实现一个二分查找，对象是不重复，升序整数数组</strong>。</p>
+<p>请不要直接使用<code>Array.prototype.indexOf()</code>，这不是本题的目的。</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number[]</span>&#125; <span class="hljs-variable">arr</span> - ascending unique array</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; <span class="hljs-variable">target</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">number</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">binarySearch</span>(<span class="hljs-params">arr, target</span>)&#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">let</span> start = <span class="hljs-number">0</span>, end = arr.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">while</span>(start &lt;= end) &#123;<br>    <span class="hljs-keyword">let</span> mid = <span class="hljs-built_in">parseInt</span>((start+end) / <span class="hljs-number">2</span>);<br>    <span class="hljs-keyword">if</span>(target === arr[mid]) &#123;<br>      <span class="hljs-keyword">return</span> mid;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(target &lt; arr[mid]) &#123;<br>      end = mid - <span class="hljs-number">1</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      start = mid + <span class="hljs-number">1</span>;<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="38-实现jest-spyOn"><a href="#38-实现jest-spyOn" class="headerlink" title="38. 实现jest.spyOn()"></a>38. 实现jest.spyOn()</h1><p>如果你写过单元测试的话，一定很熟悉<code>Spy</code>的用法。</p>
+<p><strong>请自己实现一个spyOn(object, methodName)</strong> ，类似于 <a target="_blank" rel="noopener" href="https://jestjs.io/docs/en/jest-object#jestspyonobject-methodname">jest.spyOn()</a>。</p>
+<p>以下是<code>spyOn</code>需要完成的内容。</p>
+<ol>
+<li>spy被调用的时候，原来的method也需要被调用。</li>
+<li>spy需要又一个<code>calls</code>数组，数组中含有所有调用的参数</li>
+</ol>
+<p>以下代码说明了一切。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> obj = &#123;<br>   <span class="hljs-attr">data</span>: <span class="hljs-number">1</span>, <br>   <span class="hljs-title function_">increment</span>(<span class="hljs-params">num</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span> += num<br>   &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> spy = <span class="hljs-title function_">spyOn</span>(obj, <span class="hljs-string">&#x27;increment&#x27;</span>)<br><br>obj.<span class="hljs-title function_">increment</span>(<span class="hljs-number">1</span>)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">data</span>) <span class="hljs-comment">// 2</span><br><br>obj.<span class="hljs-title function_">increment</span>(<span class="hljs-number">2</span>)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">data</span>) <span class="hljs-comment">// 4</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(spy.<span class="hljs-property">calls</span>)<br><span class="hljs-comment">// [ [1], [2] ]</span><br></code></pre></td></tr></table></figure>
+
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">object</span>&#125; <span class="hljs-variable">obj</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">string</span>&#125; <span class="hljs-variable">methodName</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">spyOn</span>(<span class="hljs-params">obj, methodName</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">const</span> method = obj[methodName];<br>  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> method !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;methodName&#125;</span> is not a function`</span>);<br>  &#125;<br>  <span class="hljs-keyword">const</span> calls = [];<br>  obj[methodName] = <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> &#123;<br>    calls.<span class="hljs-title function_">push</span>(args);<br>    method.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args)<br>  &#125;<br>  <span class="hljs-keyword">return</span> &#123; calls &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="39-手写range"><a href="#39-手写range" class="headerlink" title="39. 手写range()"></a>39. 手写range()</h1><p>请实现一个<code>range(from, to)</code> 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> num <span class="hljs-keyword">of</span> <span class="hljs-title function_">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">4</span>)) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num)  <br>&#125;<br><span class="hljs-comment">// 1</span><br><span class="hljs-comment">// 2</span><br><span class="hljs-comment">// 3</span><br><span class="hljs-comment">// 4</span><br></code></pre></td></tr></table></figure>
+
+<p>这个题目非常简单，注意你不一定必须要返回一个数组，你能想到除了for循环之外更多更炫酷的解法吗？</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">integer</span>&#125; <span class="hljs-variable">from</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">integer</span>&#125; <span class="hljs-variable">to</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">range</span>(<span class="hljs-params"><span class="hljs-keyword">from</span>, to</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">let</span> result = [];<br>  <span class="hljs-keyword">while</span>(<span class="hljs-keyword">from</span> &lt;= to) &#123;<br>    result.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">from</span>++);<br>  &#125;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br><br><span class="hljs-comment">// 2. implement iterable/iterator protocol</span><br><span class="hljs-comment">// for ... of uses interable protocol</span><br><span class="hljs-comment">// [Symbol.iterator]: () =&gt;  Iterator</span><br><span class="hljs-comment">// next: () =&gt; &#123;done: bolean, value?: any&#125; </span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">range</span>(<span class="hljs-params"><span class="hljs-keyword">from</span>, to</span>) &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-comment">// iterable protocol</span><br>    [<span class="hljs-title class_">Symbol</span>.<span class="hljs-property">iterator</span>]() &#123;<br>      <span class="hljs-comment">// iterator protocol</span><br>      <span class="hljs-keyword">return</span> &#123;<br>        <span class="hljs-title function_">next</span>(<span class="hljs-params"></span>) &#123;<br>          <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-attr">done</span>: <span class="hljs-keyword">from</span> &gt; to,<br>            <span class="hljs-attr">value</span>: <span class="hljs-keyword">from</span>++<br>          &#125;<br>        &#125;<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="40-实现Bubble-Sort"><a href="#40-实现Bubble-Sort" class="headerlink" title="40. 实现Bubble Sort"></a>40. 实现Bubble Sort</h1><p>即使是前端开发，也需要掌握基本的排序算法。</p>
+<p>请手写<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort</a>。</p>
+<p>请直接修改传入的数组，不要返回新数组。</p>
+<p><em>追问</em></p>
+<p>时间空间复杂度是多少？是否是稳定的排序？</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number[]</span>&#125; <span class="hljs-variable">arr</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">bubbleSort</span>(<span class="hljs-params">arr</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; arr.<span class="hljs-property">length</span>-<span class="hljs-number">1</span>; i++) &#123; <span class="hljs-comment">// 要遍历的次数</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; arr.<span class="hljs-property">length</span>-<span class="hljs-number">1</span>-i; j++) &#123; <span class="hljs-comment">// 具体遍历的索引</span><br>      <span class="hljs-keyword">if</span>(arr[j] &gt; arr[j+<span class="hljs-number">1</span>]) &#123;<br>        [arr[j] ,arr[j+<span class="hljs-number">1</span>]] = [arr[j+<span class="hljs-number">1</span>], arr[j]];<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br><br><br><span class="hljs-comment">// 维基百科的示例代码</span><br><span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">bubble_sort</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>	<span class="hljs-keyword">var</span> i, j, temp;<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>; i++)<br>		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">length</span> - <span class="hljs-number">1</span> - i; j++)<br>			<span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>[j] &gt; <span class="hljs-variable language_">this</span>[j + <span class="hljs-number">1</span>]) &#123;<br>				temp = <span class="hljs-variable language_">this</span>[j];<br>				<span class="hljs-variable language_">this</span>[j] = <span class="hljs-variable language_">this</span>[j + <span class="hljs-number">1</span>];<br>				<span class="hljs-variable language_">this</span>[j + <span class="hljs-number">1</span>] = temp;<br>			&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;<br>&#125;;<br><span class="hljs-keyword">var</span> num = [<span class="hljs-number">22</span>, <span class="hljs-number">34</span>, <span class="hljs-number">3</span>, <span class="hljs-number">32</span>, <span class="hljs-number">82</span>, <span class="hljs-number">55</span>, <span class="hljs-number">89</span>, <span class="hljs-number">50</span>, <span class="hljs-number">37</span>, <span class="hljs-number">5</span>, <span class="hljs-number">64</span>, <span class="hljs-number">35</span>, <span class="hljs-number">9</span>, <span class="hljs-number">70</span>];<br>num.<span class="hljs-title function_">bubble_sort</span>();<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; num.<span class="hljs-property">length</span>; i++)<br>	<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span> += num[i] + <span class="hljs-string">&quot; &quot;</span>;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="41-手写Merge-Sort"><a href="#41-手写Merge-Sort" class="headerlink" title="41. 手写Merge Sort"></a>41. 手写Merge Sort</h1><p>即使是前端开发，也需要掌握基本的排序算法。</p>
+<p>请手写<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Merge_sort">Merge Sort</a>。</p>
+<p>请直接修改传入的数组，不要返回新数组。</p>
+<p><em>追问</em></p>
+<p>时间空间复杂度是多少？是否是稳定的排序？</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 维基百科版本</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">left, right</span>)&#123;<br>  <span class="hljs-keyword">var</span> result = [];<br>  <span class="hljs-keyword">while</span>(left.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span> &amp;&amp; right.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-keyword">if</span>(left[<span class="hljs-number">0</span>] &lt; right[<span class="hljs-number">0</span>])&#123;<br>      result.<span class="hljs-title function_">push</span>(left.<span class="hljs-title function_">shift</span>());<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>      result.<span class="hljs-title function_">push</span>(right.<span class="hljs-title function_">shift</span>());<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> result.<span class="hljs-title function_">concat</span>(left, right);<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>)&#123;<br>  <span class="hljs-keyword">if</span>(arr.<span class="hljs-property">length</span> &lt;=<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> arr;<br>  <span class="hljs-keyword">var</span> middle = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(arr.<span class="hljs-property">length</span> / <span class="hljs-number">2</span>);<br>  <span class="hljs-keyword">var</span> left = arr.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, middle);<br>  <span class="hljs-keyword">var</span> right = arr.<span class="hljs-title function_">slice</span>(middle);<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">merge</span>(<span class="hljs-title function_">mergeSort</span>(left), <span class="hljs-title function_">mergeSort</span>(right));<br>&#125;<br><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number[]</span>&#125; <span class="hljs-variable">arr</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>) &#123;<br>  <span class="hljs-keyword">if</span> (arr.<span class="hljs-property">length</span> &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span><br><br>  <span class="hljs-keyword">let</span> mid = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(arr.<span class="hljs-property">length</span> / <span class="hljs-number">2</span>)<br>  <span class="hljs-keyword">let</span> left = arr.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, mid)<br>  <span class="hljs-keyword">let</span> right = arr.<span class="hljs-title function_">slice</span>(mid)<br>  <br>  <span class="hljs-title function_">mergeSort</span>(left)<br>  <span class="hljs-title function_">mergeSort</span>(right)<br>  <br>  <span class="hljs-keyword">let</span> l = <span class="hljs-number">0</span>, r = <span class="hljs-number">0</span><br>  <span class="hljs-keyword">while</span> (l &lt; left.<span class="hljs-property">length</span> || r &lt; right.<span class="hljs-property">length</span>)<br>    arr[l+r] = (r === right.<span class="hljs-property">length</span> || left[l] &lt;= right[r]) ? left[l++] : right[r++] <span class="hljs-comment">// ⭐⭐</span><br>&#125;<br><span class="hljs-comment">// 很巧妙啊，双指针的写法</span><br><span class="hljs-comment">// r===right.length 是为了让右数组用完后,可以继续进行左数组的赋值.</span><br><span class="hljs-comment">// 如果是左数组用完,判断式子自然为false, 执行右数组的赋值</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="42-手写-Insertion-Sort"><a href="#42-手写-Insertion-Sort" class="headerlink" title="42. 手写 Insertion Sort"></a>42. 手写 Insertion Sort</h1><p>即使是前端开发，也需要掌握基本的排序算法。</p>
+<p>请手写<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Insertion_sort">Insertion Sort</a>。</p>
+<p>请直接修改传入的数组，不要返回新数组。</p>
+<p><em>追问</em></p>
+<p>时间空间复杂度是多少？是否是稳定的排序？</p>
+<p>ans:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number[]</span>&#125; <span class="hljs-variable">arr</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">insertionSort</span>(<span class="hljs-params">arr</span>) &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">1</span>; i&lt;arr.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-keyword">let</span> key = arr[i];<br>    <span class="hljs-keyword">let</span> j = i - <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">while</span>(j &gt;= <span class="hljs-number">0</span> &amp;&amp; arr[j] &gt; key) &#123;<br>      arr[j+<span class="hljs-number">1</span>] = arr[j];<br>      j--;<br>    &#125;<br>    arr[j+<span class="hljs-number">1</span>] = key;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 插入排序的核心在于, 一个一个比较,腾笼换鸟</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E5%81%9A%E9%A2%98/">#做题</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>bigfrontend 代码题(五)</div>
+      <div>https://hercules11.github.io/blog/2021/10/23/bigfrontend-代码题-五/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2021/11/19/ES6%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84export-%E4%B8%8Eimport/" title="ES6模块中的export 与import">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ES6模块中的export 与import</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2021/10/21/bigfrontend-%E4%BB%A3%E7%A0%81%E9%A2%98-%E5%9B%9B/" title="bigfrontend 代码题(四)">
+                        <span class="hidden-mobile">bigfrontend 代码题(四)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

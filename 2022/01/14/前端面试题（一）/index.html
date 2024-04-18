@@ -1,0 +1,985 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="H5新特性  拖拽释放（Drap and drop) API ondrop 自定义属性 data-id 语义化标签，header、nav、footer、aside、article、section 音频自动播放属性 autoplay 画布 Canvas 离线存储 localStorage、会话存储 sessionStorage 表单控件，calendar、date、time、email、url、se">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端面试题（一）">
+<meta property="og:url" content="https://hercules11.github.io/blog/2022/01/14/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="H5新特性  拖拽释放（Drap and drop) API ondrop 自定义属性 data-id 语义化标签，header、nav、footer、aside、article、section 音频自动播放属性 autoplay 画布 Canvas 离线存储 localStorage、会话存储 sessionStorage 表单控件，calendar、date、time、email、url、se">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-14T11:30:21.000Z">
+<meta property="article:modified_time" content="2024-04-18T02:44:48.741Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="知识总结">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>前端面试题（一） - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>王某某</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">前端面试题（一）</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-14 19:30" pubdate>
+          2022年1月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 89 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">前端面试题（一）</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年4月18日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>H5新特性</p>
+<ul>
+<li>拖拽释放（Drap and drop) API ondrop</li>
+<li>自定义属性 data-id</li>
+<li><strong>语义化标签，header、nav、footer、aside、article、section</strong></li>
+<li>音频自动播放属性 autoplay</li>
+<li>画布 Canvas</li>
+<li>离线存储 localStorage、会话存储 sessionStorage</li>
+<li>表单控件，calendar、date、time、email、url、search</li>
+<li>新技术，web worker、web socket、geolocation</li>
+</ul>
+<p>C3新特性</p>
+<ul>
+<li>颜色新增，RGBA、HSLA模式</li>
+<li>文字阴影，text-shadow</li>
+<li>盒模型，box-sizing</li>
+<li>渐变，linear-gradient、radial-gradient</li>
+<li>过度，transition <code>&lt;animation-name&gt;</code></li>
+<li>自定义动画 animate @keyframe</li>
+<li>媒体查询，@media screen and (max-width: 800px) { … }</li>
+<li><strong>弹性布局，flex</strong></li>
+</ul>
+<p>H5浏览器存储有哪些</p>
+<ul>
+<li><strong>cookie，在控制台输入<code>document.cookie</code> 可以看到当前页面的cookie值，是一个字符串，以分号分隔</strong>，<code>&#39;_octo=GH1.1.647075200.1634350299; tz=Etc%2FGMT-8&#39;</code>。cookie 始终在同源的 http 请求中携带。</li>
+<li>localStorage，本地化持久存储，只要用户不删除，就一直存在。在控制台输入<code>sessionStorage </code>得到 <code>Storage &#123;length: 0&#125;</code></li>
+<li>sessionStorage，面向session 的浏览器存储，因此只存在于一个页面的生命周期内。在控制台输入<code>localStorage</code>得到 <code>Storage &#123;ref-selector:helloqingfeng/Awsome-Front-End-learning-resource:branch: &#39;&#123;&quot;refs&quot;:[&quot;master&quot;,&quot;gh-pages&quot;],&quot;cacheKey&quot;:&quot;v0:1472661172.0&quot;&#125;&#39;, ref-selector:baozouai/shop-admin:branch: &#39;&#123;...&#125;&#39;</code></li>
+<li>indexedDB，<code>IDBFactory &#123;&#125;</code></li>
+<li>window对象上的全局变量</li>
+</ul>
+<p>盒子水平垂直居中</p>
+<ul>
+<li><strong>margin: 0 auto;</strong></li>
+<li>display: table-cell;</li>
+<li><strong>display: flex; jusitify-content: center; align-items: center;</strong></li>
+<li>.parent { position: relative } .child { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)}</li>
+</ul>
+<p>CSS盒模型</p>
+<ul>
+<li>box model 指的是css 中所有元素都可以看作是一个个的盒子，包括内容、内边距、边框、外边距。</li>
+<li>盒模型分两种<ul>
+<li>w3c 标准盒模型，称为标准盒模型。<strong>height 属性指的是 content 内容区域的大小</strong></li>
+<li>ie 标准盒模型，怪异盒模型。<strong>height 属性指的是 content+border+padding 的大小</strong></li>
+</ul>
+</li>
+</ul>
+<p>块级元素和行内元素的区别</p>
+<ul>
+<li><strong>块级元素占一行，填满父元素。可以设置 width、height、margin、padding 属性</strong></li>
+<li>行内元素随着内容宽度变化而变化。自动换行。宽高无效，水平方向的margin、padding有效</li>
+</ul>
+<p>选择器权重</p>
+<ul>
+<li><code>!important &gt; 行内样式 &gt; ID 选择器 &gt; 类选择器、伪类、属性 &gt; 标签、伪元素 &gt; 通配符 &gt; 继承 &gt; 浏览器默认属性</code></li>
+<li>权重计算方式为选择符中ID <code>选择器的数量 x 100 + 类、伪类、伪元素的数量 x 10 + 标签、伪元素的数量</code>。<strong>div#app.child[name=”appName”] 的权重值为 a=1,b=2,c=1 ➡ 1+100+10x2 = 121</strong></li>
+</ul>
+<p>语义化标签</p>
+<ul>
+<li>利用html 的原生样式减少css 样式的书写。</li>
+<li><strong>有利于SEO ，便于浏览器理解页面结构</strong></li>
+<li>样式丢失的时候也能呈现较为清晰的页面结构</li>
+<li>常见的语义化标签<ul>
+<li><code>&lt;header&gt;</code> 、<code>&lt;section&gt;</code> 、<code>&lt;article&gt;</code> 、<code>&lt;aside&gt;</code> 、<code>&lt;footer&gt;</code></li>
+</ul>
+</li>
+</ul>
+<p>H5 事件举例</p>
+<ul>
+<li>通过 <code>on+&lt;事件名字&gt;</code> 的形式，作为元素的属性进行指定</li>
+<li><strong>onblur 失去焦点、onchange 元素改变、onclick 单击鼠标</strong>、onkeydown 按下按键时候触发、onkeypress 按下并松开时触发、onkeyup 松开按键时触发。</li>
+</ul>
+<p>H5 input 元素 type 值举例</p>
+<ul>
+<li>button、checkbox、<strong>color 拾色器、date 日期字段、month 定义月、time 定义时间</strong>、email、file、hidden 隐藏输入字段、image 输入图像、number 带有微调spinner 控件的字段、password、radio、search、submit、text、url</li>
+</ul>
+<p>css 三角形制作</p>
+<ul>
+<li><strong>画三角形的实质是设置内容宽高为0，显示其中一条边界线</strong>。</li>
+<li>.triangle { width: 0; height: 0; border 50px solid transparent; border-bottom: 100px solid green;}</li>
+</ul>
+<p>css 中的单位，px、em、rem</p>
+<ul>
+<li>px 像素，绝对单位，相对于显示器屏幕分辨率而言。是计算机系统的数字化图像长度单位</li>
+<li>em 相对于当前元素内文本的字体尺寸</li>
+<li><strong>rem 相对于根元素的字体尺寸</strong>， html 根元素默认 16px。</li>
+</ul>
+<p>display: none 和 visibility： hidden 区别</p>
+<ul>
+<li><strong>display: none 元素隐藏，占据的空间消失</strong></li>
+<li>visibility： hidden 元素不可见，仍然占据页面空间</li>
+</ul>
+<p>position 属性的值有哪些</p>
+<ul>
+<li>static：元素默认值</li>
+<li><strong>relative：相对于元素原来在文档流中的定位</strong></li>
+<li><strong>absolute：相对于最近的非 static 定位祖先元素进行定位</strong></li>
+<li>fixed：相对于相对于屏幕视口（viewport）的位置进行定位</li>
+<li>sticky：相对它的最近滚动祖先和最近块级祖先进行定位</li>
+</ul>
+<p>雪碧图</p>
+<ul>
+<li><strong>将网站上用到的一些图片合并到一张图片上，通过减少网络请求来提高性能</strong>。</li>
+<li>缺点，图片位置需要精确的指定，利用background、background-position 属性，增加了css 样式的编写难度。</li>
+</ul>
+<p>css3 新增伪类，伪元素</p>
+<ul>
+<li>:first-of-type 父元素的首个p元素、:last-of-type 最后的p元素</li>
+<li><strong>:nth-child(n) 括号中表达式（an+b）匹配到的元素集合（n=0，1，2，3…），还有odd、even 可用</strong></li>
+<li>:not(p) 非p元素、:enabled 表单控件的可用状态、:disabled 禁用表单控件、:checked 单选框或者复选框被选中。</li>
+<li>::first-line 样式添加到文本的首字母，::first-line 样式添加到文本的首行。</li>
+<li>低版本的IE中，不兼容双冒号，继续使用单冒号的伪元素。</li>
+<li>伪元素一般指的是特殊位置，而伪类，是特殊状态</li>
+</ul>
+<p>图片懒加载原理</p>
+<ul>
+<li>核心是，监控图片位置，在合适的位置将其加载出来。</li>
+<li>设置图片的data-set 属性，为图片的url。当图片的顶点坐标Y小于页面和浏览器高度时，将data-set 内url 属性赋值给src。涉及到的API包括obj.getBoundingClientRect().top;document.documentElement.clientHeight;</li>
+</ul>
+<p>JS 基本类型，引用类型</p>
+<ul>
+<li><strong>基本数据类型：number, string, boolean, null, undefined</strong></li>
+<li>引用数据类型：function, object, Array</li>
+<li>undefined 表示变量声明但是未初始化的值</li>
+<li>null 表示准备用来保存对象，但还没有真正保存对象的值</li>
+<li>undefined 派生至 null</li>
+</ul>
+<p>创建对象的几种方式</p>
+<ul>
+<li><strong>字面量对象， <code>let o1 = &#123; name: &#39;01&#39;&#125;</code></strong></li>
+<li>new 一个对象，<code>let o2 = new Object(&#123; name: &#39;02&#39;&#125;)</code></li>
+<li>显式的构造函数，<code>let o3 = function() &#123; this.name = &#39;03&#39;&#125;;</code></li>
+<li>Object.create()，<code>let o = &#123; name: &#39;04&#39;&#125;; let o3 = Object.create(o)</code></li>
+</ul>
+<p>区分数组和对象</p>
+<ul>
+<li><strong>Array.isArray()，</strong><ul>
+<li>Aarray.isArray([]) // true</li>
+<li>Array.isArray({}) // false</li>
+</ul>
+</li>
+<li><strong>instanceof，</strong><ul>
+<li>[] instanceof Array // true</li>
+<li>{} instanceof Array // false</li>
+</ul>
+</li>
+<li>constructor，<ul>
+<li>{}.constructor // 返回object</li>
+<li>[].constructor // 返回Array</li>
+</ul>
+</li>
+<li>Object.prototype.toString.call()，<ul>
+<li>Object.prototype.toString.call([]) //[“object Array”]</li>
+<li>Object.prototype.toString.call({}) // [“object Object”]</li>
+</ul>
+</li>
+</ul>
+<p>伪数组（类数组）转化</p>
+<ul>
+<li>伪数组具有length 属性，以及按照数组索引的方式存储数据。</li>
+<li>转化方式<ul>
+<li><strong>Array.from()</strong></li>
+<li><strong>[].slice.call(eleArr) 或者 Array.prototype.slice.call(eleArr)</strong></li>
+</ul>
+</li>
+</ul>
+<p>遍历对象属性</p>
+<ul>
+<li>Object.keys() 可枚举，非继承属性。for…in 还包括继承的可枚举属性</li>
+<li>Object.getOwnPropertyNames() 可枚举，不可枚举，非继承属性</li>
+<li><strong>hasOwnProperty() 判断对象是否有某个属性</strong></li>
+</ul>
+<p>src 和 href 区别</p>
+<ul>
+<li>src (source) 资源，指向的内容会嵌入到标签所在位置，比如脚本，图片，iframe。解析到此类元素时。<strong>浏览器会暂停其他元素的下载和处理</strong>。知道将该元素加载、编译、执行完毕。</li>
+<li>href (hypertext reference) 建立和当前元素的链接。会并行下载i资源，不会停止对当前文档的处理。</li>
+</ul>
+<p>dom 事件模型</p>
+<ul>
+<li><strong>元素发生一个事件，父元素也感受到了。那么就有了一个先后执行的问题。</strong></li>
+<li>事件由根元素开始触发，向内传播 —— 事件捕获</li>
+<li>事件由目标元素，一直传播到根元素 —— 事件冒泡</li>
+<li>addEventListener 默认为事件冒泡机制</li>
+<li>可以用 e.stopPropagation(); 或者 return false; 或者 e.preventDefault(); 停止事件在冒泡链上进一步扩大</li>
+</ul>
+<p>js 定时器</p>
+<ul>
+<li>setTimeout() —— 在指定毫秒数后运行函数，一般用来模拟异步操作。</li>
+<li>setInterval() —— 按照设置的时间间隔运行函数，<strong>直到 clearInterval() 或者窗口被关闭</strong></li>
+</ul>
+<p>回调函数</p>
+<ul>
+<li>软件模块之间的接口，从调用方式上可以分为 3 类，<strong>同步调用、异步调用、回调</strong></li>
+<li>同步调用就是通常所说的调用函数，一步一步执行，这是一种阻塞式调用，函数执行完毕才会返回。</li>
+<li>异步调用，是一种类似于消息或者事件的机制。接口的服务在收到某种讯息或发生某种事件的时候，主动通知调用方。</li>
+<li>回调函数就是一个通过函数指针调用的函数。把函数指针（地址）作为函数参数传递给另一个函数。</li>
+</ul>
+<p>什么是闭包</p>
+<ul>
+<li>闭包，closure，可以理解为一个封闭空间，一个定义在函数内部的函数。<strong>它可以通过作用域链访问外部函数的变量空间</strong>。</li>
+<li>可以利用闭包的这个性质，保存外部变量，当然也会造成一些性能损失。</li>
+</ul>
+<p>原型的理解</p>
+<ul>
+<li>原型的作用是为了<strong>实现继承，和扩展对象的一种代码重用机制</strong>。</li>
+<li>js 中的所有元素，都可以看作是对象，他们都有一个 prototype 属性，它的值是一个对象，叫做原型，这个prototype 属性又有自己的 prototype 属性。最终链接到 Object 对象。</li>
+<li>prototype 属性，有一个 constructor 属性。可以用来构造对象的实例。</li>
+</ul>
+<p>说下 this</p>
+<ul>
+<li>this 是一个标识符，<strong>用来指代函数执行的上下文执行环境</strong>。</li>
+<li>讲 this，就一定要说一下对象的构造机制。在构造对象的时候，this 赋值为一个Object 实例，然后向其中添加属性方法。那么，对这个对象内部的函数，this 可以在它的变量表中，找到 this 所指代的对象。</li>
+<li>那么一般地调用对象内部的方法，this 就是 函数前面的对象。从对象可以找到函数，那么函数内部的this, 指的就是这个对象。</li>
+<li>另一个函数回调，要通过apply、call 手动声明函数的执行上下文，this 指代的是什么。</li>
+<li>箭头函数，没有自己的this, 它使用的是自己定义环境中的this 指代的对象。通过作用域链是使用this。</li>
+</ul>
+<p>统计出现最多的字符</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> obj = &#123;&#125;; <span class="hljs-comment">// 先定义一个空对象,稍后使用.</span><br><span class="hljs-keyword">var</span> maxChar=<span class="hljs-string">&#x27;&#x27;</span>; <span class="hljs-comment">// 要输出的字符</span><br><span class="hljs-keyword">var</span> maxN=<span class="hljs-number">0</span>;<span class="hljs-comment">// 字符数量</span><br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; str.<span class="hljs-property">length</span>; i++) &#123; <span class="hljs-comment">//   循环字符串中每一项</span><br>    <span class="hljs-keyword">var</span> k = str[i]; <span class="hljs-comment">// 把每一项保存给变量 k (对这一步不理解可先熟悉 for循环机制);</span><br><br>    <span class="hljs-keyword">if</span> (obj[k]) &#123;<br><br>        obj[k]++;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        obj[k] = <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(obj[k]&gt;maxN)&#123;<br>        maxChar=k;<br>        maxN=obj[maxChar];<br>    &#125;<br>&#125;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(maxChar, maxN);<br></code></pre></td></tr></table></figure>
+
+<p>内存泄漏</p>
+<ul>
+<li>一些不再使用的变量，依然占据着内存空间，称为内存泄漏，（浪费掉了）</li>
+</ul>
+<p>事件循环</p>
+<ul>
+<li>js 是一个单线程的语言。这意味着同一时间只能做一件事。</li>
+<li>单线程不意味着阻塞，<strong>实现单线程非阻塞的方法是事件循环</strong>。</li>
+<li>js 中的任务可以分为同步任务和异步任务<ul>
+<li>同步任务就是立即执行的任务，会直接进入到主线程中执行</li>
+<li>异步任务，异步执行的任务，比如ajax网络请求，setTimeout 定时函数</li>
+<li>同步任务执行完毕，就会去任务队列中的任务，推入主线程执行。</li>
+</ul>
+</li>
+<li>异步任务又分为宏任务和微任务<ul>
+<li>执行机制为执行完宏任务后，执行所有微任务。再进行查看是有宏任务</li>
+<li>常见的微任务有，Promise.then，MutationObserver，process.nextTick</li>
+</ul>
+</li>
+</ul>
+<p>Promise</p>
+<ul>
+<li>promise 是一个有状态的对象</li>
+<li>将异步操作的结果和对应的处理函数结合起来</li>
+<li>将异步操作以同步操作的流程表达出来，避免回调地狱</li>
+<li>Promise 的构造函数接收一个回调，回调有两个参数 <code>resolve reject</code>，成功就调用resolve，表示promise 状态fulled，结果为resolve 返回的结果。实例化的Promise，返回的对象可以调用 then()  方法，then()  方法接收两个参数，onResolve 和 onReject 对应promise 成功或者失败的状态</li>
+</ul>
+<p>手写 Promise</p>
+<ul>
+<li><p>```js<br>class Promise {</p>
+<pre><code class="hljs">constructor(handler) &#123;
+    // define initial state
+    this.status = &quot;pending&quot;;
+    this.onFulfilledCallbacks = [];
+    this.onRejectedCallbacks = [];
+    
+    // define basic transition function
+    const resolve = value =&gt; &#123;
+        if (this.status === &quot;pending&quot;) &#123;
+            this.status = &quot;fulfilled&quot;;
+            this.value = value;
+            this.onFulfilledCallbacks.forEach(fn =&gt; fn(value));
+        &#125;
+    &#125;;
+
+    const reject = value =&gt; &#123;
+        if (this.status === &quot;pending&quot;) &#123;
+            this.status = &quot;rejected&quot;;
+            this.value = value;
+            this.onRejectedCallbacks.forEach(fn =&gt; fn(value));
+        &#125;
+    &#125;;
+
+    try &#123;
+        // call outer function passed in
+        handler(resolve, reject);
+    &#125; catch (err) &#123;
+        reject(err);
+    &#125;
+&#125;
+
+then(onFulfilled, onRejected) &#123;
+    // support chain call
+    return new Promise((resolve, reject) =&gt; &#123;
+        // define handler
+        if (this.status === &quot;pending&quot;) &#123;
+            this.onFulfilledCallbacks.push(() =&gt; &#123;
+                try &#123;
+                    // if return value is promise, resolve it.
+                    const fulfilledFromLastPromise = onFulfilled(this.value);
+                    if (fulfilledFromLastPromise instanceof Promise) &#123;
+                        fulfilledFromLastPromise.then(resolve, reject);
+                    &#125; else &#123;
+                        resolve(fulfilledFromLastPromise);
+                    &#125;
+                &#125; catch (err) &#123;
+                    reject(err);
+                &#125;
+            &#125;);
+            this.onRejectedCallbacks.push(() =&gt; &#123;
+                try &#123;
+                    const rejectedFromLastPromise = onRejected(this.value);
+                    if (rejectedFromLastPromise instanceof Promise) &#123;
+                        rejectedFromLastPromise.then(resolve, reject);
+                    &#125; else &#123;
+                        reject(rejectedFromLastPromise);
+                    &#125;
+                &#125; catch (err) &#123;
+                    reject(err);
+                &#125;
+            &#125;);
+        &#125;
+
+        if (this.status === &quot;fulfilled&quot;) &#123;
+            try &#123;
+                const fulfilledFromLastPromise = onFulfilled(this.value);
+                if (fulfilledFromLastPromise instanceof Promise) &#123;
+                    fulfilledFromLastPromise.then(resolve, reject);
+                &#125; else &#123;
+                    resolve(fulfilledFromLastPromise);
+                &#125;
+            &#125; catch (err) &#123;
+                reject(err);
+            &#125;
+
+        &#125;
+
+        if (this.status === &quot;rejected&quot;) &#123;
+            try &#123;
+                const rejectedFromLastPromise = onRejected(this.value);
+                if (rejectedFromLastPromise instanceof Promise) &#123;
+                    rejectedFromLastPromise.then(resolve, reject);
+                &#125; else &#123;
+                    reject(rejectedFromLastPromise);
+                &#125;
+            &#125; catch (err) &#123;
+                reject(err);
+            &#125;
+        &#125;
+    &#125;);
+
+&#125;
+</code></pre>
+<p>}</p>
+<p>// testing code<br>let p1 = new Promise((resolve, reject) =&gt; {</p>
+<pre><code class="hljs">setTimeout(() =&gt; resolve(&#39;resolved first one&#39;), 1000);
+</code></pre>
+<p>});<br>p1.then((res) =&gt; {</p>
+<pre><code class="hljs">console.log(res);
+return new Promise(resolve =&gt; &#123;
+    setTimeout(() =&gt; resolve(&#39;resolved second one&#39;), 1000);
+&#125;);
+</code></pre>
+<p>}).then(res =&gt; {</p>
+<pre><code class="hljs">console.log(res);
+</code></pre>
+<p>});</p>
+<p>// 1 sec later, ‘resolved first one’<br>// 1 sec later, ‘resolved second one’</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><br>实现 <span class="hljs-built_in">Promise</span>.all, <span class="hljs-built_in">Promise</span>.race, <span class="hljs-built_in">Promise</span>.resolve <span class="hljs-keyword">and</span> <span class="hljs-built_in">Promise</span>.reject<br><br>- ```<span class="language-javascript">js</span><br><span class="language-javascript">  <span class="hljs-title class_">Promise</span>.<span class="hljs-property">all</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">promises</span>) &#123;</span><br><span class="language-javascript">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">          <span class="hljs-keyword">let</span> counter = <span class="hljs-number">0</span>;</span><br><span class="language-javascript">          <span class="hljs-keyword">const</span> result = [];</span><br><span class="language-javascript">          <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; promises.<span class="hljs-property">length</span>; i++) &#123;</span><br><span class="language-javascript">              <span class="hljs-comment">// resolve revery promise, return result when every resolved</span></span><br><span class="language-javascript">              <span class="hljs-comment">// when reject, return reject(err)</span></span><br><span class="language-javascript">              <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(promises[i]).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;</span><br><span class="language-javascript">                  result[i] = res;</span><br><span class="language-javascript">                  counter += <span class="hljs-number">1</span>;</span><br><span class="language-javascript">                  <span class="hljs-comment">// this check need to be here, otherwise counter would remain 0 till forloop is done</span></span><br><span class="language-javascript">                  <span class="hljs-keyword">if</span> (counter === promises.<span class="hljs-property">length</span>) &#123;</span><br><span class="language-javascript">                      <span class="hljs-title function_">resolve</span>(result);</span><br><span class="language-javascript">                  &#125;</span><br><span class="language-javascript">              &#125;, <span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;</span><br><span class="language-javascript">                  <span class="hljs-title function_">reject</span>(err);</span><br><span class="language-javascript">              &#125;);</span><br><span class="language-javascript">          &#125;</span><br><span class="language-javascript">      &#125;);</span><br><span class="language-javascript">  &#125;;</span><br><span class="language-javascript">  </span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> promise1 = <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-number">3</span>);</span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> promise2 = <span class="hljs-number">42</span>;</span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> promise3 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">      <span class="hljs-built_in">setTimeout</span>(resolve, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;foo&#x27;</span>);</span><br><span class="language-javascript">  &#125;);</span><br><span class="language-javascript">  </span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> newPromise = <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([promise1, promise2, promise3]).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">values</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(values);</span><br><span class="language-javascript">  &#125;);</span><br><span class="language-javascript">  </span><br><span class="language-javascript">  <span class="hljs-comment">// after 100ms, output:  Array [3, 42, &quot;foo&quot;]</span></span><br></code></pre></td></tr></table></figure></li>
+<li><p>```js<br>Promise.race = function (promises) {</p>
+<pre><code class="hljs">return new Promise((resolve, reject) =&gt; &#123;
+    for (let p of promises) &#123;
+        // iterate every promise, return the first one
+        Promise.resolve(p).then(res =&gt; resolve(res), err =&gt; reject(err));
+    &#125;
+&#125;);
+</code></pre>
+<p>}</p>
+<p>// testing<br>const promise1 = new Promise((resolve, reject) =&gt; {</p>
+<pre><code class="hljs">setTimeout(resolve, 500, &#39;one&#39;);
+</code></pre>
+<p>});<br>const promise2 = new Promise((resolve, reject) =&gt; {</p>
+<pre><code class="hljs">setTimeout(resolve, 100, &#39;two&#39;);
+</code></pre>
+<p>});<br>Promise.race([promise1, promise2]).then((value) =&gt; {</p>
+<pre><code class="hljs">console.log(value);
+// Both resolve, but promise2 is faster
+</code></pre>
+<p>}, err =&gt; console.log(err));<br>// expected output: “two”</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><br>- ```<span class="language-javascript">js</span><br><span class="language-javascript">  <span class="hljs-title class_">Promise</span>.<span class="hljs-property">resolve</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) &#123;</span><br><span class="language-javascript">      <span class="hljs-keyword">if</span> (value <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Promise</span>) &#123;</span><br><span class="language-javascript">          <span class="hljs-keyword">return</span> value;</span><br><span class="language-javascript">      &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="language-javascript">          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">              <span class="hljs-title function_">resolve</span>(value);</span><br><span class="language-javascript">          &#125;);</span><br><span class="language-javascript">      &#125;</span><br><span class="language-javascript">  &#125;;</span><br><span class="language-javascript">  </span><br><span class="language-javascript">  <span class="hljs-title class_">Promise</span>.<span class="hljs-property">reject</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">reason</span>) &#123;</span><br><span class="language-javascript">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> <span class="hljs-title function_">reject</span>(reason));</span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">  </span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> p1 = <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve1</span>(<span class="hljs-string">&quot;Success&quot;</span>);</span><br><span class="language-javascript">  p1.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res)); <span class="hljs-comment">// &quot;Success&quot;</span></span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> p2 = <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject1</span>(<span class="hljs-string">&quot;No&quot;</span>); </span><br><span class="language-javascript">  p2.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">_</span> =&gt;</span> &#123; &#125;, <span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)); <span class="hljs-comment">// &quot;No&quot;</span></span><br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">#知识总结</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>前端面试题（一）</div>
+      <div>https://hercules11.github.io/blog/2022/01/14/前端面试题（一）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2/" title="跨域解决方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">跨域解决方案</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2022/01/09/express-middleware%E7%AE%80%E6%98%93%E5%AE%9E%E7%8E%B0/" title="Express Middleware 的简易实现">
+                        <span class="hidden-mobile">Express Middleware 的简易实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
