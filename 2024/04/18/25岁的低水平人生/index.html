@@ -16,22 +16,22 @@
   <meta name="author" content="wxc">
   <meta name="keywords" content="personal website">
   
-    <meta name="description" content="变量  关注变量的声明符，let、const、var 旧时的 “var”  let — 现代的变量声明方式。 var — 老旧的变量声明方式。一般情况下，我们不会再使用它。但是，我们会在 旧时的 “var” 章节介绍 var 和 let 的微妙差别，以防你需要它们。 const — 类似于 let，但是变量的值无法被修改。  变量的命名：  变量名称必须仅包含字母，数字，符号 $ 和 _。  首字">
+    <meta name="description" content="年前刚满了 25 岁，现在四舍五入也算是接近 30 岁的人了。可是，至今没有什么拿得出手的东西，在社会上立足。其实也还好，工作了两年多，身上还有几万存款，够我躺平几个月好好想想我到底要干什么。 以前在学校（高中以前），成绩尚可，就心高气傲地宣告，自己是要做大事的人，要维护世界和平，促进人类共同发展。现在想想，真够可笑的，温饱尚不能够，更别提理想了。到了大学，才是人生步入低谷的开始。开始接触社会了，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Javascript中变量、函数、对象、类的声明方法汇总">
-<meta property="og:url" content="https://hercules11.github.io/blog/2021/09/21/Javascript%E4%B8%AD%E5%8F%98%E9%87%8F%E3%80%81%E5%87%BD%E6%95%B0%E3%80%81%E5%AF%B9%E8%B1%A1%E3%80%81%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:title" content="25岁的低水平人生">
+<meta property="og:url" content="https://hercules11.github.io/blog/2024/04/18/25%E5%B2%81%E7%9A%84%E4%BD%8E%E6%B0%B4%E5%B9%B3%E4%BA%BA%E7%94%9F/index.html">
 <meta property="og:site_name" content="Hercules11">
-<meta property="og:description" content="变量  关注变量的声明符，let、const、var 旧时的 “var”  let — 现代的变量声明方式。 var — 老旧的变量声明方式。一般情况下，我们不会再使用它。但是，我们会在 旧时的 “var” 章节介绍 var 和 let 的微妙差别，以防你需要它们。 const — 类似于 let，但是变量的值无法被修改。  变量的命名：  变量名称必须仅包含字母，数字，符号 $ 和 _。  首字">
+<meta property="og:description" content="年前刚满了 25 岁，现在四舍五入也算是接近 30 岁的人了。可是，至今没有什么拿得出手的东西，在社会上立足。其实也还好，工作了两年多，身上还有几万存款，够我躺平几个月好好想想我到底要干什么。 以前在学校（高中以前），成绩尚可，就心高气傲地宣告，自己是要做大事的人，要维护世界和平，促进人类共同发展。现在想想，真够可笑的，温饱尚不能够，更别提理想了。到了大学，才是人生步入低谷的开始。开始接触社会了，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-21T00:07:16.000Z">
+<meta property="article:published_time" content="2024-04-18T03:48:52.000Z">
 <meta property="article:modified_time" content="2024-04-18T09:57:12.469Z">
 <meta property="article:author" content="wxc">
-<meta property="article:tag" content="知识汇总">
+<meta property="article:tag" content="人生感悟">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Javascript中变量、函数、对象、类的声明方法汇总 - Hercules11</title>
+  <title>25岁的低水平人生 - Hercules11</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -184,7 +184,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">Javascript中变量、函数、对象、类的声明方法汇总</span>
+            <span id="subtitle">25岁的低水平人生</span>
           
         </div>
 
@@ -200,8 +200,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-09-21 08:07" pubdate>
-          2021年9月21日 早上
+        <time datetime="2024-04-18 11:48" pubdate>
+          2024年4月18日 中午
         </time>
       </span>
     
@@ -213,7 +213,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.2k 字
+          3.4k 字
         
       </span>
     
@@ -225,7 +225,7 @@
         
         
           <!-- compatible with older versions-->
-          预计阅读耗时 19 分钟
+          预计阅读耗时 29 分钟
         
       </span>
     
@@ -263,7 +263,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Javascript中变量、函数、对象、类的声明方法汇总</h1>
+            <h1 style="display: none">25岁的低水平人生</h1>
             
               <p class="note note-info">
                 
@@ -277,108 +277,28 @@
             
               <div class="markdown-body">
                 
-                <p><a target="_blank" rel="noopener" href="https://zh.javascript.info/variables">变量</a></p>
-<blockquote>
-<p>关注变量的声明符，<code>let</code>、<code>const</code>、<code>var</code> <a target="_blank" rel="noopener" href="https://zh.javascript.info/var">旧时的 “var”</a></p>
-<ul>
-<li><code>let</code> — 现代的变量声明方式。</li>
-<li><code>var</code> — 老旧的变量声明方式。一般情况下，我们不会再使用它。但是，我们会在 <a target="_blank" rel="noopener" href="https://zh.javascript.info/var">旧时的 “var”</a> 章节介绍 <code>var</code> 和 <code>let</code> 的微妙差别，以防你需要它们。</li>
-<li><code>const</code> — 类似于 <code>let</code>，但是变量的值无法被修改。</li>
-</ul>
-<p>变量的命名：</p>
-<ul>
-<li><p>变量名称必须仅包含字母，数字，符号 <code>$</code> 和 <code>_</code>。</p>
+                <p>年前刚满了 25 岁，现在四舍五入也算是接近 30 岁的人了。可是，至今没有什么拿得出手的东西，在社会上立足。其实也还好，工作了两年多，身上还有几万存款，够我躺平几个月好好想想我到底要干什么。</p>
+<p>以前在学校（高中以前），成绩尚可，就心高气傲地宣告，自己是要做大事的人，要维护世界和平，促进人类共同发展。现在想想，真够可笑的，温饱尚不能够，更别提理想了。到了大学，才是人生步入低谷的开始。开始接触社会了，开始用到学习以外的其他技能了，开始处理各种人际关系了。各种让我不适应。假设存在一种正常人的生活方式，那么我离这种正常的生活方式差距挺大的。</p>
+<p>倒不是我矫情，读完本科出来，原以为已经到社会中上的水平了，其实连前50%都不到。看过深圳市的工资水平调查，我的薪资在就是就是行业也就前75%的水平。也真是够低的。</p>
+<p>那么，好好想一想，是什么原因导致的这个结果？</p>
+<ol>
+<li><p>性格原因，不敢尝试更高薪资的工作，怕承受不了老板的期望，不敢去面试高薪的工作，怕被拒绝，不敢主动解决问题，怕担上事情。</p>
 </li>
-<li><p>首字符必须非数字。</p>
+<li><p>技术水平不行，学习的方式还是以前那种遍历知识点式的学习。回顾过往的学习经历，高中开始，喜欢学习偏难怪的知识点，以此为荣；结果高考也就上个普通一本；上了大学，继续之前的学习方式，以考促学，好歹学了点东西，但也都是把知识点塞进脑子里，过一段时间就忘了；后面学习了 office 二级，六十多分飘过，技能也学的一般。可能好处在于初步具备了按照需求学习的能力；后面学习c语言，记忆各种语法点，以为这就是编程，结果碰到写项目就死菜了；c语言考试也是背过去的；到后面，学习考研英语，以为可以弯道超车，出奇制胜，结果只剩在图书馆蹭 wifi 刷知乎, 最后也就考了 72 , 还是低于自己的预期。。。</p>
 </li>
-</ul>
-<p>变量的连续声明用逗号分隔</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/function-basics">函数</a></p>
-<blockquote>
-<p>声明方式，function <functionName>([parameters]) { /* code */}</p>
-<ul>
-<li>作为参数传递给函数的值，会被复制到函数的局部变量。</li>
-<li>函数可以访问外部变量。但它只能从内到外起作用。函数外部的代码看不到函数内的局部变量。</li>
-<li>函数可以返回值。如果没有返回值，则其返回的结果是 <code>undefined</code></li>
-</ul>
-<p>函数命名：</p>
-<ul>
-<li>函数名应该清楚地描述函数的功能。当我们在代码中看到一个函数调用时，一个好的函数名能够让我们马上知道这个函数的功能是什么，会返回什么。</li>
-<li>一个函数是一个行为，所以函数名通常是动词。</li>
-<li>目前有许多优秀的函数名前缀，如 <code>create…</code>、<code>show…</code>、<code>get…</code>、<code>check…</code> 等等。使用它们来提示函数的作用吧。</li>
-</ul>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/object">对象</a></p>
-<blockquote>
-<p>可以用下面两种语法中的任一种来创建一个空的对象（“空柜子”）：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> user = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(); <span class="hljs-comment">// “构造函数” 的语法</span><br><span class="hljs-keyword">let</span> user = &#123;&#125;;  <span class="hljs-comment">// “字面量” 的语法</span><br></code></pre></td></tr></table></figure>
-
-<p>属性命名没有限制。属性名可以是任何字符串或者 symbol（一种特殊的标志符类型，将在后面介绍）。</p>
-<p>其他类型会被自动地转换为字符串，<strong>值可以是任何类型</strong>。</p>
-<p>可以用下面的方法访问属性：</p>
-<ul>
-<li>点符号: <code>obj.property</code>。</li>
-<li>方括号 <code>obj[&quot;property&quot;]</code>，方括号允许从变量中获取键，例如 <code>obj[varWithKey]</code>。</li>
-</ul>
-<p>其他操作：</p>
-<ul>
-<li>删除属性：<code>delete obj.prop</code>。</li>
-<li>**检查是否存在给定键的属性：<code>&quot;key&quot; in obj</code>**。</li>
-<li><strong>遍历对象：<code>for(let key in obj)</code> 循环</strong>。</li>
-</ul>
-<p>JavaScript 中还有很多其他类型的对象：</p>
-<ul>
-<li><code>Array</code> 用于存储有序数据集合，</li>
-<li><code>Date</code> 用于存储时间日期，</li>
-<li><code>Error</code> 用于存储错误信息。</li>
-<li>……等等。</li>
-</ul>
-<p>它们有着各自特别的特性，我们将在后面学习到。有时候大家会说“Array 类型”或“Date 类型”，但其实<strong>它们并不是自身所属的类型，而是属于一个对象类型即 “object”。它们以不同的方式对 “object” 做了一些扩展</strong>。</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/function-object">函数对象</a></p>
-<blockquote>
-<ul>
-<li><code>name</code> —— 函数的名字。通常取自函数定义，但如果函数定义时没设定函数名，JavaScript 会尝试通过函数的上下文猜一个函数名（例如把赋值的变量名取为函数名）。</li>
-<li><code>length</code> —— 函数定义时的入参的个数。Rest 参数不参与计数。</li>
-</ul>
-<p>如果函数是<strong>通过函数表达式的形式被声明的（不是在主代码流里），并且附带了名字，那么它被称为命名函数表达式（Named Function Expression）</strong>。这个名字可以用于在该函数内部进行自调用，例如递归调用等。</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/prototype-inheritance">函数原型</a></p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/prototype-inheritance#zong-jie">总结</a></p>
-<ul>
-<li>在 JavaScript 中，所有的对象都有一个隐藏的 <code>[[Prototype]]</code> 属性，它要么是另一个对象，要么就是 <code>null</code>。</li>
-<li>我们可以使用 <code>obj.__proto__</code> 访问它（历史遗留下来的 getter/setter，这儿还有其他方法，很快我们就会讲到）。</li>
-<li>通过 <code>[[Prototype]]</code> 引用的对象被称为“原型”。</li>
-<li>如果我们想要读取 <code>obj</code> 的一个属性或者调用一个方法，并且它不存在，那么 JavaScript 就会尝试在原型中查找它。</li>
-<li>写/删除操作直接在对象上进行，它们不使用原型（假设它是数据属性，不是 setter）。</li>
-<li>如果我们调用 <code>obj.method()</code>，而且 <code>method</code> 是从原型中获取的，<code>this</code> 仍然会引用 <code>obj</code>。因此，方法始终与当前对象一起使用，即使方法是继承的。</li>
-<li><code>for..in</code> 循环在其自身和继承的属性上进行迭代。所有其他的键/值获取方法仅对对象本身起作用。</li>
-</ul>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/class">类</a></p>
-<blockquote>
-<p>基本的类语法看起来像这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  prop = value; <span class="hljs-comment">// 属性</span><br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">...</span>) &#123; <span class="hljs-comment">// 构造器</span><br>    <span class="hljs-comment">// ...</span><br>  &#125;<br><br>  <span class="hljs-title function_">method</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// method</span><br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">something</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// getter 方法</span><br>  <span class="hljs-keyword">set</span> <span class="hljs-title function_">something</span>(<span class="hljs-params">...</span>) &#123;&#125; <span class="hljs-comment">// setter 方法</span><br><br>  [<span class="hljs-title class_">Symbol</span>.<span class="hljs-property">iterator</span>]() &#123;&#125; <span class="hljs-comment">// 有计算名称（computed name）的方法（此处为 symbol）</span><br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>技术上来说，<code>MyClass</code> 是一个函数（我们提供作为 <code>constructor</code> 的那个），而 methods、getters 和 settors 都被写入了 <code>MyClass.prototype</code>。</p>
-</blockquote>
-<p>总结一下：</p>
-<blockquote>
-<p><strong>JavaScript 中，一切都是对象</strong>。在一个函数对象中，可以声明基础变量，叫做静态属性，属于这个对象。</p>
-<p>this.[props] 声明的是对象实例化后的公有属性，可以用来进行方法操作。</p>
-<p>方法，又有好几种声明方法，函数式声明，函数表达式声明，对象键值对式的声明。</p>
-<ul>
-<li><p>键值对式的声明，一般用在对象中，作为属性存在；</p>
-</li>
-<li><p>函数声明，用在类中，作为对象原型中的方法存在，在函数对象中，做为私有方法存在；</p>
-</li>
-<li><p>函数表达式，有this，则公有，否，私有的。</p>
-</li>
-</ul>
-</blockquote>
-<p>See see: <a target="_blank" rel="noopener" href="https://github.com/Wscats/articles/issues/85">前端程序员经常忽视的一个JavaScript面试题</a></p>
+</ol>
+<p>到了大学毕业，也没决定要做什么好。</p>
+<p>毕业前期，觉得知乎上各种案例分析很好玩，就想着去做律师，也想着考个律师证书做法律援助，或者去县城做个公务员啥的。结果发现自己只是叶公好龙罢了。看到辅导书整页的案例分析，法理分析，顿时觉得无趣。又想着与其考完研究生再去考公务员，不如直接考三年，为了逼自己下定决定，买了150多块的考公书籍，后面发现没有什么能考的岗位，只有乡镇可选，又泄了气；看了军队文职，也觉得是一条出路，但想到各种萝卜坑，各种偏僻的小县城，真觉得没必要，也是买了资料书就放到一边了。我也不知道自己要干什么比较好，不认命，又没有确定的目标，也不会规划路径，真是秀逗了。</p>
+<p>也是受到知乎轮子哥的影响，说要做自己喜欢的事情，才有无穷的动力，也不用管工资高低，如果入不了行，也可以先干别的，再转进来。</p>
+<p>后面偶然搜了一下如何学习计算机，发现了 Teach-Yourself-CS 这篇文章，我大受震惊。于是在毕业前期，按照教程，开始学习《计算机系统要素》，并一直在脑海里默念（程序，架构，算法，数学，操作系统，网络，数据库，编译原理，分布式）彷佛学了这些以后，就可以成为计算机大神了。刚开始一个月，学习《计算机系统要素》，还挺顺利，挺有成就感的。按照与非门的逻辑，搭建更高复杂度的逻辑门电路。这个时候，我好像发现，厉害的人，做什么都厉害；菜鸡，通过一些事情的磨练，更可能成为一个熟练工。厉害的人，比如上海交大的迟先生，后面去了CMU，还帮老师改进研究生课程。菜鸡比如我，CPU 的逻辑搭建不出来，看答案，操作系统的逻辑搭建不出来，看别人解析也不会。</p>
+<p>或许，改进思维方式，才是让自己能力进阶的法门。</p>
+<p>20 年七月，毕业回到家，继续做着我的计算机成神的春秋大梦，在破烂的空屋，破烂的床上，用小桌子搭建一个平台。写着半生不熟的 Python，做计算机系统要素的项目。由于编程基础太差，又去花了一两个月学习 cs61a，有了成效之后，接着写计算机系统要素的项目。这种按照书本上提出的模式，去写代码程序的感觉真好，每天都觉得能力突飞猛进。</p>
+<p>借着在家考研的由头，在家已经蹲了半年了，家里蹲终究不是办法，父亲也不好跟别人说你家儿子毕业后在干嘛。为了避免过年时候的尴尬，也是因为疫情各地封禁，我决定只身前去广州找工作。于是 2021-01-22 去了大学城，找了一家青旅住了下来，一个月 七百的房租，房间里基本没有光线。我想这没什么大不了的，我要从这里飞到全世界的各个角落（又树立了一轮雄心壮志）。于是开始写简历，得了，写简历没啥可写的。还是要接地气一点，看看时下热门的行业，于是我又开始学习前端（毕业设计做过全栈的项目）。花了点时间学习 freecodecamp 上面的教程，把一些简单功能的写法记住了，写到了简历上（现在看来真是惨不忍睹，小儿科的东西）。也难怪投简历的时候，没人理我，只有培训公司愿意叫我面试了。转眼已经到了六月份，身上没多少钱了，当初出来的时候就问家里要了五千多，后面没敢找工作，也一直没和家里联系（混得差，没脸见人），真是够混蛋的。找了几天，只有几个培训班愿意要我试岗，面试。此时我的心气已经被磨平了，去找了<code>老陈打码</code>，我做毕业设计就是看的他的视频。他说我就不要要价那么低（五千），说十五元的盒饭卖五元，你敢买吗？给我介绍了一个培训课程，四千块，一个月速成。可是，那会我身上只有两千多了，房租生活费一个月接近一千五。无奈，只好去求助了老姐，他就叫我进工厂，借钱肯定是不行的。于是坐着姐夫的车，去了花都，租了一个月两百多的房子，也是没有日光。想着此时此刻，我又发下宏愿，我会从这里开始飞黄腾达。后续就是面试工厂文员、普工过于实诚，导致前面三家都没要我。去了圆通快递，做了两天快递分拣，一个月四千，月休两天。我一看有人要我了，连忙答应下来。就去干活了。但是组长迟迟不和我说签合同的事情，可能是怕我做不长。快递分拣，就是车来了，就要卸货，导致工作时间段很分散，早上五六点就要去干一段时间，真折磨人啊。我姐就叫我别干了，又去找了化妆品厂。这回面试学聪明了，我说以前是干快递的，想找份轻松的工作。于是，顺利入职zuoyi。</p>
+<p>除去以前做保安，做服务员的兼职经历不算，这算是第一份工作。工作内容挺简单的，就是给化妆品折叠盒子，贴标签，做罐装等等。底薪2600+200 全勤，加班算1.5 倍工资，单休。期间，组长看我比较有文化，就叫我担任贴标员的职位，还有质量检测的工位。一天上午四小时，下午四小时，其他没什么感觉，就是非常困，困得要死，不知道为什么。后面还经历了夜班半个月，真是欲仙欲死。整天都没活力。干了三个月，最后还是离职了，刚好一百天左右。周末在老姐家吃饭。平时就买一些饮料，还挺省钱的。攒了接近一万块。</p>
+<p>工厂离职后，我又开始想，我要干什么的问题了。想过做运营，当时还挺关注一个做出租房的小程序的。终究是没有下定决心。</p>
+<p>后面一段时间，我主要做了两件事，刷 leetcode 算法，学习 bigfrontend 上面的各种 problems。后面到了过年时间，就坐着姐夫的车回家过年了，羞愧不已，一年时间啥也没干，钱也没挣到。</p>
+<p>2022-02-10， 元宵节前几天，我买了去广州的车票，准备去深圳找工作，毕竟深圳的岗位更多一些。在那个两百多租金的出租屋里，我做了最后的准备，直接把电商项目抄到了简历上。从头到尾学，肯定是来不及了。2-19 就去了深圳，那会深圳特别冷，那天又更好写着大雨。去了提前在高德上订的青旅，去了之后才发现，一个小小的房间里，住满了五六个人，就和宿舍一样，和宣传图差太远了。我想了又想还是退订了。另外找一家，此时我也不知道要去哪，就觉得这里不行。下了楼(那家青旅在地图上根本找不到，听了接待人的指引，去到四楼才知道又有这么个地方，真是服气)。在楼下，徘徊着的时候，一个人（xm）叫住了我，她就像功夫里面的包租婆，拿着一大串钥匙那种，问我是不是要找房子。看她的样子不像是坏人，于是答应和她上去看看，1104。应该是 30 一天，住了两周。躺在床上写面试笔记，2-18 投了几家简历基本没人理，下午前公司 hr 问我岗位介绍上的东西会不会，我说会的，她就叫我去面试了。一开始还走错地方了，好在还是按时到达了公司。基本上就是问了几句，介绍了公司的产品，然后老板就送我送到了电梯口，我也不知道这是有戏的意思，没啥感觉。晚上 hr 就打电话来说面试通过了，问薪资能不能降低一点，我说 6000 已经是最低价了。然后她就说在考虑一下。周日又打了电话，说可以，周一去上班。2-28 日开启新的上班之旅。</p>
+<p>上班的日子还是比较清闲的，比起在工厂里面的日子，不知道好了多少倍，虽然和其他人不起来，工资还是低的可怜，但也足够我生存下来了。</p>
 
                 
               </div>
@@ -391,7 +311,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB/">#知识汇总</a>
+        <a href="/blog/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">#人生感悟</a>
       
     </div>
   
@@ -403,8 +323,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Javascript中变量、函数、对象、类的声明方法汇总</div>
-      <div>https://hercules11.github.io/blog/2021/09/21/Javascript中变量、函数、对象、类的声明方法汇总/</div>
+      <div>25岁的低水平人生</div>
+      <div>https://hercules11.github.io/blog/2024/04/18/25岁的低水平人生/</div>
     </div>
     <div class="license-meta">
       
@@ -416,7 +336,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年9月21日</div>
+          <div>2024年4月18日</div>
         </div>
       
       
@@ -448,18 +368,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2021/10/18/%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%BD%BF%E7%94%A8Python/" title="通过命令行使用Python">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">通过命令行使用Python</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2021/09/02/%E5%87%BD%E6%95%B0%E7%9A%84apply%E3%80%81call%E3%80%81bind-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/" title="函数的apply、call、bind 方法的区别">
-                        <span class="hidden-mobile">函数的apply、call、bind 方法的区别</span>
+                      <a href="/blog/2024/03/25/Express-cors-%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%87%BD%E6%95%B0%E8%AE%BE%E7%BD%AE-Header-%E7%9A%84%E5%8C%BA%E5%88%AB/" title="Express cors 中间件和自定义中间件函数设置 Header 的区别">
+                        <span class="hidden-mobile">Express cors 中间件和自定义中间件函数设置 Header 的区别</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
