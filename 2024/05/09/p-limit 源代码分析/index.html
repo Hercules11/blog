@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="之前在狼叔的了不起的Nodejs 书中接触到这个库，了解了一下，觉得很有意思。虽然实际工作中没有接触过大量并发的业务，但是了解一下极端情况下JS异步任务的调度也是挺不错的。 下面是智普清言的介绍：  p-limit 是一个 Node.js 和浏览器都支持的库，用于限制并发执行的数量。它基于 p-queue，是一个用于控制异步任务队列的库，可以确保同时只有指定数量的异步操作在进行。以下是一些可能使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="p-limit 源代码分析">
+<meta property="og:url" content="https://hercules11.github.io/blog/2024/05/09/p-limit%20%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="之前在狼叔的了不起的Nodejs 书中接触到这个库，了解了一下，觉得很有意思。虽然实际工作中没有接触过大量并发的业务，但是了解一下极端情况下JS异步任务的调度也是挺不错的。 下面是智普清言的介绍：  p-limit 是一个 Node.js 和浏览器都支持的库，用于限制并发执行的数量。它基于 p-queue，是一个用于控制异步任务队列的库，可以确保同时只有指定数量的异步操作在进行。以下是一些可能使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-09T16:26:23.000Z">
+<meta property="article:modified_time" content="2024-05-10T03:47:56.941Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="源代码分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>p-limit 源代码分析 - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Hercules11</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">p-limit 源代码分析</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-10 00:26" pubdate>
+          2024年5月10日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">p-limit 源代码分析</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2024年5月10日 中午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>之前在狼叔的了不起的Nodejs 书中接触到这个库，了解了一下，觉得很有意思。虽然实际工作中没有接触过大量并发的业务，但是了解一下极端情况下JS异步任务的调度也是挺不错的。</p>
+<p>下面是智普清言的介绍：</p>
+<blockquote>
+<p><code>p-limit</code> 是一个 Node.js 和浏览器都支持的库，用于限制并发执行的数量。它基于 <code>p-queue</code>，是一个用于控制异步任务队列的库，可以确保同时只有指定数量的异步操作在进行。<br>以下是一些可能使用 <code>p-limit</code> 的情况：</p>
+<ol>
+<li><strong>限制并发请求数量</strong>：在进行大量异步网络请求（例如使用 <code>fetch</code> 或 <code>axios</code>）时，为了避免服务器过载或达到API限制，可以使用 <code>p-limit</code> 来限制同时发出的请求数量。</li>
+<li><strong>资源密集型任务</strong>：当执行一些CPU或内存密集型的任务时，如果同时运行太多的任务可能会影响系统性能，使用 <code>p-limit</code> 可以确保系统资源得到合理分配。</li>
+<li><strong>文件处理</strong>：在处理大量文件读写操作时，为了防止磁盘I/O成为瓶颈，可以使用 <code>p-limit</code> 来限制并发文件操作的数量。</li>
+<li><strong>数据库操作</strong>：在进行数据库批量操作时，为了避免过多的并发连接导致数据库响应缓慢或超时，可以使用 <code>p-limit</code> 来限制并发数据库操作的数量。</li>
+<li><strong>API节流</strong>：如果你正在开发一个需要调用第三方服务API的应用，并且该API对请求频率有限制，使用 <code>p-limit</code> 可以帮助你控制请求的速率，避免触发API的限制。</li>
+<li><strong>提高成功率</strong>：在某些情况下，限制并发数可以提高任务的成功率，因为减少了同时操作可能导致的冲突或错误。<br>使用 <code>p-limit</code> 可以帮助你更好地控制异步流程，确保系统的稳定性和性能。它通过创建一个限制器实例，并指定最大并发数，然后使用这个限制器来包装异步任务，从而实现并发控制。</li>
+</ol>
+</blockquote>
+<p>下面是核心代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Queue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;yocto-queue&#x27;</span>; <span class="hljs-comment">// 一个双端队列</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">AsyncResource</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;#async_hooks&#x27;</span>; <span class="hljs-comment">// 提供简单的函数 bind 操作</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">pLimit</span>(<span class="hljs-params">concurrency</span>) &#123;<br>	<span class="hljs-keyword">if</span> (!((<span class="hljs-title class_">Number</span>.<span class="hljs-title function_">isInteger</span>(concurrency) || concurrency === <span class="hljs-title class_">Number</span>.<span class="hljs-property">POSITIVE_INFINITY</span>) &amp;&amp; concurrency &gt; <span class="hljs-number">0</span>)) &#123;<br>		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeError</span>(<span class="hljs-string">&#x27;Expected `concurrency` to be a number from 1 and up&#x27;</span>);<br>	&#125; <span class="hljs-comment">// 参数校验，必须为正整数</span><br><br>	<span class="hljs-keyword">const</span> queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Queue</span>();<br>	<span class="hljs-keyword">let</span> activeCount = <span class="hljs-number">0</span>;<br><br>		<span class="hljs-keyword">const</span> <span class="hljs-title function_">next</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>		activeCount--;<br><br>		<span class="hljs-keyword">if</span> (queue.<span class="hljs-property">size</span> &gt; <span class="hljs-number">0</span>) &#123;<br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;next 前&quot;</span>);<br>			queue.<span class="hljs-title function_">dequeue</span>()(); <span class="hljs-comment">// 开始执行第二个任务， run</span><br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;next 后&quot;</span>);<br>		&#125;<br>	&#125;;<br><br>	<span class="hljs-keyword">const</span> <span class="hljs-title function_">run</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">function_, resolve, arguments_</span>) =&gt; &#123;<br>		activeCount++;<br><br>		<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;res 前&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br>		<span class="hljs-keyword">const</span> result = (<span class="hljs-keyword">async</span> () =&gt; <span class="hljs-title function_">function_</span>(...arguments_))();<br>		<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;res 后&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br><br>		<span class="hljs-title function_">resolve</span>(result);<br><br>		<span class="hljs-keyword">try</span> &#123;<br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;await 前&quot;</span>, function_.<span class="hljs-title function_">toString</span>()); <span class="hljs-comment">// Promise.all 将第一个异步任务执行到这</span><br>			<span class="hljs-keyword">await</span> result;<br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;await 后&quot;</span>, function_.<span class="hljs-title function_">toString</span>()); <span class="hljs-comment">// 发现二、三都执行不了的时候，主线程又回到这里继续执行第一个</span><br>		&#125; <span class="hljs-keyword">catch</span> &#123;&#125;<br><br>		<span class="hljs-title function_">next</span>();<br>	&#125;;<br><br>	<span class="hljs-keyword">const</span> <span class="hljs-title function_">enqueue</span> = (<span class="hljs-params">function_, resolve, arguments_</span>) =&gt; &#123;<br>		<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;已经入队&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br>		queue.<span class="hljs-title function_">enqueue</span>(<br>			<span class="hljs-title class_">AsyncResource</span>.<span class="hljs-title function_">bind</span>(run.<span class="hljs-title function_">bind</span>(<span class="hljs-literal">undefined</span>, function_, resolve, arguments_)),<br>		);<br><br>		<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;异步开启&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br>		(<span class="hljs-keyword">async</span> () =&gt; &#123;<br>			<span class="hljs-comment">// This function needs to wait until the next microtask before comparing</span><br>			<span class="hljs-comment">// `activeCount` to `concurrency`, because `activeCount` is updated asynchronously</span><br>			<span class="hljs-comment">// when the run function is dequeued and called. The comparison in the if-statement</span><br>			<span class="hljs-comment">// needs to happen asynchronously as well to get an up-to-date value for `activeCount`.</span><br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;异步前&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br>			<span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(); <span class="hljs-comment">// 首先三个注册的异步任务都会指定到这个 await , 保存执行栈，后面的代码放到微任务队列。</span><br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;异步后&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br><br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;已经执行&quot;</span>, function_.<span class="hljs-title function_">toString</span>()); <span class="hljs-comment">// 当 Promise.all 执行第二、三个任务的时候，由于并发数量限制，所以又停在这里</span><br>			<span class="hljs-keyword">if</span> (activeCount &lt; concurrency &amp;&amp; queue.<span class="hljs-property">size</span> &gt; <span class="hljs-number">0</span>) &#123;<br>				<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;准备出队&quot;</span>, function_.<span class="hljs-title function_">toString</span>());<br>				queue.<span class="hljs-title function_">dequeue</span>()();<br>			&#125;<br>		&#125;)();<br>	&#125;;<br><br>	<span class="hljs-keyword">const</span> <span class="hljs-title function_">generator</span> = (<span class="hljs-params">function_, ...arguments_</span>) =&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>		<span class="hljs-title function_">enqueue</span>(function_, resolve, arguments_);<br>	&#125;); <span class="hljs-comment">// 把异步任务包装成 Promise, 把改变 Promise 状态的 resolve 和函数、参数入队</span><br><br>	<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperties</span>(generator, &#123;<br>		<span class="hljs-attr">activeCount</span>: &#123;<br>			<span class="hljs-attr">get</span>: <span class="hljs-function">() =&gt;</span> activeCount,<br>		&#125;,<br>		<span class="hljs-attr">pendingCount</span>: &#123;<br>			<span class="hljs-attr">get</span>: <span class="hljs-function">() =&gt;</span> queue.<span class="hljs-property">size</span>,<br>		&#125;,<br>		<span class="hljs-attr">clearQueue</span>: &#123;<br>			<span class="hljs-title function_">value</span>(<span class="hljs-params"></span>) &#123;<br>				queue.<span class="hljs-title function_">clear</span>();<br>			&#125;,<br>		&#125;,<br>	&#125;); <span class="hljs-comment">// 定义获取生成器的运行状态信息的函数</span><br><br>	<span class="hljs-keyword">return</span> generator;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>日志打印结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs js">已经入队 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>异步开启 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>异步前 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>已经入队 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>异步开启 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>异步前 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>已经入队 () =&gt; <span class="hljs-title function_">doSomething</span>()<br>异步开启 () =&gt; <span class="hljs-title function_">doSomething</span>()<br>异步前 () =&gt; <span class="hljs-title function_">doSomething</span>()<br><span class="hljs-title class_">All</span> <span class="hljs-title class_">Promise</span> 前<br>异步后 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>已经执行 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>准备出队 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>res 前 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>res 后 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br><span class="hljs-keyword">await</span> 前 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>异步后 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>已经执行 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>异步后 () =&gt; <span class="hljs-title function_">doSomething</span>()<br>已经执行 () =&gt; <span class="hljs-title function_">doSomething</span>()<br><span class="hljs-keyword">await</span> 后 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;foo&#x27;</span>)<br>next 前<br>res 前 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>res 后 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br><span class="hljs-keyword">await</span> 前 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>next 后<br><span class="hljs-keyword">await</span> 后 () =&gt; <span class="hljs-title function_">fetchSomething</span>(<span class="hljs-string">&#x27;bar&#x27;</span>)<br>next 前<br>res 前 () =&gt; <span class="hljs-title function_">doSomething</span>()<br>res 后 () =&gt; <span class="hljs-title function_">doSomething</span>()<br><span class="hljs-keyword">await</span> 前 () =&gt; <span class="hljs-title function_">doSomething</span>()<br>next 后<br><span class="hljs-keyword">await</span> 后 () =&gt; <span class="hljs-title function_">doSomething</span>()<br><span class="hljs-title class_">All</span> <span class="hljs-title class_">Promise</span> 后<br>[ <span class="hljs-literal">undefined</span>, <span class="hljs-literal">undefined</span>, <span class="hljs-literal">undefined</span> ]<br>foo<br>bar<br>doSomething<br></code></pre></td></tr></table></figure>
+
+<p>总结就是对嵌套调用的 async await ，await 调用的表达式，必须执行完整，才会往下执行。对于内部 await 阻塞的语句，会先执行可以执行的。被称为主线程代码（相对来说）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">asyncFunc1</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;async1 before&quot;</span>);<br>    <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>((<span class="hljs-keyword">async</span> () =&gt; &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;promise before&quot;</span>)<br>        <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;test&quot;</span>);<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;promise after&quot;</span>)<br>    &#125;)());<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;async1 after&quot;</span>)<br>&#125;<br><br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">asyncFunc2</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;async2 before&quot;</span>);<br>    <span class="hljs-title function_">asyncFunc1</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;async2 after&quot;</span>)<br>&#125;<br><br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">asyncFunc3</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;async3 before&quot;</span>);<br>    <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;test&quot;</span>)<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">asyncFunc2</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;async3 after&quot;</span>)<br>&#125;<br><br><span class="hljs-keyword">await</span> <span class="hljs-title function_">asyncFunc3</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;main func&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js">async3 before<br>async2 before<br>async1 before<br>promise before<br>async2 after<br>promise after<br>async3 after<br>async1 after<br>main func<br></code></pre></td></tr></table></figure>
+
+<p>疑问： async3 为什么在 async1之前？</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">#源代码分析</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>p-limit 源代码分析</div>
+      <div>https://hercules11.github.io/blog/2024/05/09/p-limit 源代码分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2024/05/08/%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%E5%B0%8F%E6%8A%84/" title="前端代码小抄发布">
+                        <span class="hidden-mobile">前端代码小抄发布</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
