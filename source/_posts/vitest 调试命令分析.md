@@ -4,9 +4,7 @@ date: 2024-07-12 15:26:23
 tags: 源代码分析
 ---
 
-问：PS E:\open-source-code\vue>  e:; cd 'e:\open-source-code\vue'; ${env:NODE_OPTIONS}=' --require "d:/Users/wxc/AppData/Local/Programs/Microsoft VS Code/resources/app/extensions/ms-vscode.js-debug/src/bootloader.js"  --inspect-publish-uid=http'; ${env:VSCODE_INSPECTOR_OPTIONS}=':::{"inspectorIpc":"\\\\.\\pipe\\node-cdp.12196-f5e0f071-16.sock","deferredMode":false,"waitForDebugger":"","execPath":"D:\\Program Files\\nodejs\\node.exe","onlyEntrypoint":false,"autoAttachMode":"always","fileCallback":"C:\\Users\\wxc\\AppData\\Local\\Temp\\node-debug-callback-21397b8897f6c36d"}'; & 'D:\Program Files\nodejs\node.exe' '.\node_modules\vitest\vitest.mjs' 'run' 'test\unit\features\directives\if.spec.ts'  Debugger attached 
-
-解释这一整条命令
+问：PS E:\open-source-code\vue>  e:; cd 'e:\open-source-code\vue'; ${env:NODE_OPTIONS}=' --require "d:/Users/wxc/AppData/Local/Programs/Microsoft VS Code/resources/app/extensions/ms-vscode.js-debug/src/bootloader.js"  --inspect-publish-uid=http'; ${env:VSCODE_INSPECTOR_OPTIONS}=':::{"inspectorIpc":"\\\\.\\pipe\\node-cdp.12196-f5e0f071-16.sock","deferredMode":false,"waitForDebugger":"","execPath":"D:\\Program Files\\nodejs\\node.exe","onlyEntrypoint":false,"autoAttachMode":"always","fileCallback":"C:\\Users\\wxc\\AppData\\Local\\Temp\\node-debug-callback-21397b8897f6c36d"}'; & 'D:\Program Files\nodejs\node.exe' '.\node_modules\vitest\vitest.mjs' 'run' 'test\unit\features\directives\if.spec.ts'  Debugger attached  解释这一整条命令
 
 这条命令是一段 PowerShell 脚本，用于在 Visual Studio Code（VS Code）调试环境中运行特定的 Node.js 程序，并且附加调试器。它主要用于在调试模式下运行 Vitest 测试。这是对这条命令的逐步解释：
 
