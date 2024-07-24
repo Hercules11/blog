@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>Node 模块系统介绍</title>
+    <link href="/blog/2024/07/24/Node%20%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/"/>
+    <url>/blog/2024/07/24/Node%20%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
+    
+    <content type="html"><![CDATA[<p>今天又被模块系统坑了一把，所有来做个总结。</p><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">namespace</span> <span class="hljs-title class_">SynchronousExecution</span> &#123;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>): <span class="hljs-built_in">void</span> &#123;<br><span class="hljs-keyword">const</span> readlineSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;readline-sync&quot;</span>);<br><br><span class="hljs-keyword">let</span> <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> = readlineSync.<span class="hljs-title function_">question</span>(<span class="hljs-string">&quot;What is your name? &quot;</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hi <span class="hljs-subst">$&#123;name&#125;</span>!`</span>);<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">weather</span>(<span class="hljs-params"></span>): <span class="hljs-built_in">void</span> &#123;<br><span class="hljs-keyword">const</span> open = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;open&quot;</span>).<span class="hljs-property">default</span>; <span class="hljs-comment">// 需要加个默认</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(open);<br><span class="hljs-title function_">open</span>(<span class="hljs-string">&quot;https://www.weather.com/&quot;</span>);<br>&#125;<br><br><span class="hljs-title function_">greet</span>();<br><span class="hljs-title function_">weather</span>();<br>&#125;<br><br></code></pre></td></tr></table></figure><p>先看下面这张图，</p><p><img src="/blog/images/Node-rules.jpg" alt="Node module"></p><p>首先确定当前文件使用的模块系统。</p><p>其次来看 Node 的官方文档，对 CommonJS 和 ES module 的介绍。</p><p>Node.js 把有下面这些特征的文件看作是 <a href="https://nodejs.org/api/modules.html">CommonJS modules</a>：</p><ul><li>有 <code>.mjs</code> 文件拓展名的</li><li>有 <code>.js</code> 文件拓展名，并且最近的父级 <code>package.json</code> 文件包含顶层的字段 <code>type</code>，值为<code>commonjs</code></li><li>详情见文档说明</li></ul><hr><p>ES module 和 CommonJS 的互相操作：</p><p>在 CommonJS 模块内部，可以使用动态 import() 来载入 ES modules，或者使用 require 同步载入 ES modules（前提是开启 –experimental-require-module），module.exports 对象作为 default export。</p><p>在 ES modules 模块内部，可以直接导入 CommonJS 模块。</p><p>ES modules 和 CommonJS 主要区别：</p><ul><li>ES modules 没有 require，exports 和 module.exports</li><li>ES modules 没有 _filename 和 _dirname，取而代之的是 import.meta.filename，和 import.meta.dirname</li><li>ES modules 没有 Addon Loading，替代方案为 module.createRequire() 或 process.dlopen</li><li>ES modules 没有 require.resolve，取而代之的是 import.meta.resolve.</li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>源代码分析</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Vue2 scheduler 源代码分析</title>
     <link href="/blog/2024/07/18/Vue2%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/"/>
     <url>/blog/2024/07/18/Vue2%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</url>
