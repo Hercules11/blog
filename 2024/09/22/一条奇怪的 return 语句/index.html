@@ -16,23 +16,22 @@
   <meta name="author" content="wxc">
   <meta name="keywords" content="personal website">
   
-    <meta name="description" content="最推荐的方式：反向代理  什么是反向代理呢，站在客户端的角度，代理服务器的就是反向代理。客户端不知道自己连接的是那个服务器，都有代理服务器去决定转发的规则。 反向代理有诸多好处，比如：保障服务器的安全，因为它隐藏了真正的服务器端地址；负载均衡，通过转发策略向多个服务器进行请求转发；缓存静态内容； 最常用的反向代理服务器当属 Nginx. 12345678910111213server &amp;#123">
+    <meta name="description" content="12345678910111213141516171819202122232425262728293031if (newVal) &amp;#123;  let size &#x3D; 0  let deg &#x3D; 450  const intervalId &#x3D; setInterval(() &#x3D;&gt; &amp;#123;    if (size &gt;&#x3D; 332) &amp;#123;      clearInterval(in">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨域解决方案">
-<meta property="og:url" content="https://hercules11.github.io/blog/2022/05/29/%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2/index.html">
+<meta property="og:title" content="一条奇怪的 return 语句">
+<meta property="og:url" content="https://hercules11.github.io/blog/2024/09/22/%E4%B8%80%E6%9D%A1%E5%A5%87%E6%80%AA%E7%9A%84%20return%20%E8%AF%AD%E5%8F%A5/index.html">
 <meta property="og:site_name" content="Hercules11">
-<meta property="og:description" content="最推荐的方式：反向代理  什么是反向代理呢，站在客户端的角度，代理服务器的就是反向代理。客户端不知道自己连接的是那个服务器，都有代理服务器去决定转发的规则。 反向代理有诸多好处，比如：保障服务器的安全，因为它隐藏了真正的服务器端地址；负载均衡，通过转发策略向多个服务器进行请求转发；缓存静态内容； 最常用的反向代理服务器当属 Nginx. 12345678910111213server &amp;#123">
+<meta property="og:description" content="12345678910111213141516171819202122232425262728293031if (newVal) &amp;#123;  let size &#x3D; 0  let deg &#x3D; 450  const intervalId &#x3D; setInterval(() &#x3D;&gt; &amp;#123;    if (size &gt;&#x3D; 332) &amp;#123;      clearInterval(in">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-29T15:46:37.000Z">
+<meta property="article:published_time" content="2024-09-22T15:26:23.000Z">
 <meta property="article:modified_time" content="2024-09-22T15:23:13.638Z">
 <meta property="article:author" content="wxc">
-<meta property="article:tag" content="读书笔记">
-<meta property="article:tag" content="了不起的JavaScript工程师">
+<meta property="article:tag" content="编程难题">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>跨域解决方案 - Hercules11</title>
+  <title>一条奇怪的 return 语句 - Hercules11</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -185,7 +184,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">跨域解决方案</span>
+            <span id="subtitle">一条奇怪的 return 语句</span>
           
         </div>
 
@@ -201,8 +200,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-29 23:46" pubdate>
-          2022年5月29日 晚上
+        <time datetime="2024-09-22 23:26" pubdate>
+          2024年9月22日 晚上
         </time>
       </span>
     
@@ -214,7 +213,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          956 字
+          1.5k 字
         
       </span>
     
@@ -226,7 +225,7 @@
         
         
           <!-- compatible with older versions-->
-          预计阅读耗时 8 分钟
+          预计阅读耗时 13 分钟
         
       </span>
     
@@ -264,7 +263,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">跨域解决方案</h1>
+            <h1 style="display: none">一条奇怪的 return 语句</h1>
             
               <p class="note note-info">
                 
@@ -278,43 +277,27 @@
             
               <div class="markdown-body">
                 
-                <ol>
-<li><p>最推荐的方式：<strong>反向代理</strong></p>
-<blockquote>
-<p>什么是反向代理呢，站在客户端的角度，代理服务器的就是反向代理。客户端不知道自己连接的是那个服务器，都有代理服务器去决定转发的规则。</p>
-<p>反向代理有诸多好处，比如：保障服务器的安全，因为它隐藏了真正的服务器端地址；负载均衡，通过转发策略向多个服务器进行请求转发；缓存静态内容；</p>
-<p>最常用的反向代理服务器当属 Nginx.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">server &#123;<br>    listen              443 ssl;<br>    server_name         backend1.example.com;<br><br>    ssl_certificate     /etc/ssl/certs/server.crt;<br>    ssl_certificate_key /etc/ssl/certs/server.key;<br>    <span class="hljs-comment">#...</span><br>    location /yourapp &#123;<br>        proxy_pass http://url_to_app.com;<br>        <span class="hljs-comment">#...</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+                <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">if</span> (newVal) &#123;<br>  <span class="hljs-keyword">let</span> size = <span class="hljs-number">0</span><br>  <span class="hljs-keyword">let</span> deg = <span class="hljs-number">450</span><br>  <span class="hljs-keyword">const</span> intervalId = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (size &gt;= <span class="hljs-number">332</span>) &#123;<br>      <span class="hljs-built_in">clearInterval</span>(intervalId)<br>      <span class="hljs-keyword">return</span><br>    &#125;<br>    size += <span class="hljs-number">332</span> / <span class="hljs-number">60</span><br>    deg -= <span class="hljs-number">6</span><br>    <span class="hljs-comment">// 确保 target 是 SVGElement 类型</span><br>    <span class="hljs-keyword">const</span> circle = target.<span class="hljs-property">value</span>.<span class="hljs-property">children</span>[<span class="hljs-number">0</span>] <span class="hljs-keyword">as</span> <span class="hljs-title class_">SVGElement</span><br>    <span class="hljs-keyword">const</span> dot = target.<span class="hljs-property">value</span>.<span class="hljs-property">children</span>[<span class="hljs-number">1</span>] <span class="hljs-keyword">as</span> <span class="hljs-title class_">SVGElement</span><br>    <span class="hljs-comment">// 使用 CSSStyleDeclaration 进行类型标注</span><br>    circle.<span class="hljs-property">style</span>.<span class="hljs-property">strokeDashoffset</span> = <span class="hljs-string">`<span class="hljs-subst">$&#123;size&#125;</span>px`</span><br>    dot.<span class="hljs-property">style</span>.<span class="hljs-property">transform</span> = <span class="hljs-string">`rotate(<span class="hljs-subst">$&#123;deg&#125;</span>deg)`</span><br>  &#125;, <span class="hljs-number">1000</span>)<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>  <span class="hljs-comment">// 恢复初始状态</span><br>  <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> // 完成后没有立即执行</span><br>  <span class="hljs-comment">// console.log(&#x27;恢复动画&#x27;)</span><br>  <span class="hljs-comment">// target.value.children[0].style[&#x27;stroke-dashoffset&#x27; as any] = &#x27;0px&#x27;</span><br>  <span class="hljs-comment">// target.value.children[1].style[&#x27;transform&#x27; as any] = &#x27;rotate(450deg)&#x27;</span><br>  <span class="hljs-comment">// 确保 target 是 SVGElement 类型</span><br>  <span class="hljs-keyword">const</span> circle = target.<span class="hljs-property">value</span>.<span class="hljs-property">children</span>[<span class="hljs-number">0</span>] <span class="hljs-keyword">as</span> <span class="hljs-title class_">SVGElement</span><br>  <span class="hljs-keyword">const</span> dot = target.<span class="hljs-property">value</span>.<span class="hljs-property">children</span>[<span class="hljs-number">1</span>] <span class="hljs-keyword">as</span> <span class="hljs-title class_">SVGElement</span><br><br>  <span class="hljs-comment">// 使用 CSSStyleDeclaration 进行类型标注</span><br>  circle.<span class="hljs-property">style</span>.<span class="hljs-property">strokeDashoffset</span> = <span class="hljs-string">&#x27;0px&#x27;</span><br>  dot.<span class="hljs-property">style</span>.<span class="hljs-property">transform</span> = <span class="hljs-string">&#x27;rotate(450deg)&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>​</p>
-</blockquote>
-</li>
-<li><p>开发中使用的正向代理</p>
-<blockquote>
-<p>Webpack 构建的 Webpack-dev-server 插件支持代理的配置：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-attr">devSeerver</span>: &#123;<br>  <span class="hljs-attr">proxy</span>: &#123;<br>    <span class="hljs-comment">// 以 /api 开头的请求会被转发到target 指定的地址</span><br>    <span class="hljs-string">&#x27;/api/&#x27;</span>: &#123;<br>      <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;http://localhost:8090&#x27;</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>​</p>
-</blockquote>
-</li>
-<li><p>CORS (Cross-Origin Resource Sharing)</p>
+
+<p>清除定时器 Id 后面的 return 语句，是我一开始写的时候没有加上去，导致多跑了一次调度，动画尺寸对不上。而且还出现一个问题，当newVal 值变为 false 时，else 内部的代码，执行了，但是效果没有渲染到页面上，令我百思不得其解。</p>
+<p>我想了好久，决定先解决动画尺寸问题，没想到 else 内部代码不执行的问题也自然而然地解决了。</p>
+<p>问了 chatgpt, 回答如下：</p>
 <blockquote>
-<p>这种跨域方式，将请求类型分为两种——简单请求和非简单请求，分别做出处理</p>
-<p>浏览器发送请求的时候会在头部的 Origin 字段中带上本次的 “源” （协议+域名+端口）信息，服务器端会返回能够接受的源，“*” 表示接受任意源的请求。</p>
+<p><strong>添加 <code>return</code> 的作用</strong>：</p>
+<ul>
+<li>当 <code>size</code> 达到 332 时，<code>clearInterval(intervalId)</code> 停止定时器，<code>return</code> 语句立即退出当前 <code>setInterval</code> 回调函数。</li>
+<li>如果没有 <code>return</code> 语句，即使定时器已被清除，<code>setInterval</code> 的回调函数仍然会继续执行剩下的代码，直到当前执行完毕。</li>
+<li>这种行为可能会导致在 <code>else</code> 分支中（<code>newVal</code> 为 <code>false</code> 的情况下）无法立即执行恢复动画的代码，因为定时器回调函数仍未完全退出，造成异步执行的错乱现象。</li>
+</ul>
+<p><strong>为何 <code>return</code> 使代码运行正常</strong>：</p>
+<ul>
+<li><code>return</code> 语句在定时器回调函数中添加了一个退出点。当满足 <code>size &gt;= 332</code> 的条件时，<code>clearInterval</code> 立即停止定时器的触发，并通过 <code>return</code> 退出当前的回调。</li>
+<li>这避免了回调中残余代码的执行，确保了在 <code>newVal</code> 为 <code>false</code> 时，立即执行 <code>else</code> 分支的逻辑，恢复动画至初始状态。</li>
+</ul>
 </blockquote>
-</li>
-<li><p>Websocket 解决跨域</p>
-<blockquote>
-<p>Websocket 和 HTTP 一样，也是基于 TCP 的一种网络协议，与 HTTP (HTTPS) 对应的是 WS (WSS)，对于 Websocket 没有同源限制。</p>
-</blockquote>
-</li>
-<li><p>JSONP (JSON with Padding)</p>
-<blockquote>
-<p>虽然 AJAX 请求必须同源，但是对 样式、js资源文件的请求却可以是不同源的。</p>
-<p>于是哦，可以通过 script 标签，向另一个服务器端请求文件时带上参数。然后，请求脚本文件后，执行脚本。脚本使用请求 url 中的参数，完成取数据的操作。</p>
-</blockquote>
-</li>
-</ol>
+<p>不是很能说服我，先放这里，以后有机会再来探索</p>
 
                 
               </div>
@@ -327,9 +310,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">#读书笔记</a>
-      
-        <a href="/blog/tags/%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84JavaScript%E5%B7%A5%E7%A8%8B%E5%B8%88/">#了不起的JavaScript工程师</a>
+        <a href="/blog/tags/%E7%BC%96%E7%A8%8B%E9%9A%BE%E9%A2%98/">#编程难题</a>
       
     </div>
   
@@ -341,8 +322,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>跨域解决方案</div>
-      <div>https://hercules11.github.io/blog/2022/05/29/跨域解决方案-2/</div>
+      <div>一条奇怪的 return 语句</div>
+      <div>https://hercules11.github.io/blog/2024/09/22/一条奇怪的 return 语句/</div>
     </div>
     <div class="license-meta">
       
@@ -354,7 +335,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年5月29日</div>
+          <div>2024年9月22日</div>
         </div>
       
       
@@ -386,18 +367,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2024/02/18/25%E5%B2%81%E7%9A%84%E4%BD%8E%E6%B0%B4%E5%B9%B3%E4%BA%BA%E7%94%9F/" title="25岁的低水平人生">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">25岁的低水平人生</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2022/01/14/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89/" title="前端面试题（一）">
-                        <span class="hidden-mobile">前端面试题（一）</span>
+                      <a href="/blog/2024/07/29/JS%E3%80%81TS%20%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" title="JS/TS 调试方法总结">
+                        <span class="hidden-mobile">JS/TS 调试方法总结</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
