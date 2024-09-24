@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>奇怪的换行</title>
+    <link href="/blog/2024/09/24/%E5%A5%87%E6%80%AA%E7%9A%84%E6%8D%A2%E8%A1%8C/"/>
+    <url>/blog/2024/09/24/%E5%A5%87%E6%80%AA%E7%9A%84%E6%8D%A2%E8%A1%8C/</url>
+    
+    <content type="html"><![CDATA[<p><img src="/blog/source/images/image-20240924102051222.png" alt="image-20240924102051222"></p><p>在一个 div 元素内部渲染了很多 span 子元素，并且 div 的样式被定义为：</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">width</span>: <span class="hljs-number">50%</span>;<br><span class="hljs-attribute">overflow</span>: hidden;<br></code></pre></td></tr></table></figure><p>正常情况下，不在 div 内容区域的元素都会被隐藏。</p><p>但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。</p><p>![image-20240924102051222](/blog/source/images/2024-09-24 102730.png)</p><p>使我百思不得其解。</p><p>问了chatgpt 后，觉得可能是样式没有正常生效。观察了一番，看到了每次换行前的一个元素是包含空格的。类似：</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>projector lens<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>（overflow）<br></code></pre></td></tr></table></figure><p>让我想到，可能是没有禁用换行引起的问题。</p><p>随后在父元素上加上了：</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">white-space</span>: nowrap;<br></code></pre></td></tr></table></figure><p>问题解决。</p><p>至于为什么会出这样的问题——渲染包含空格的 span 后，之后的元素另起一行？</p><p>是什么让渲染器猛然觉得自己要换行来着。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>编程难题</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>一条奇怪的 return 语句</title>
     <link href="/blog/2024/09/22/%E4%B8%80%E6%9D%A1%E5%A5%87%E6%80%AA%E7%9A%84%20return%20%E8%AF%AD%E5%8F%A5/"/>
     <url>/blog/2024/09/22/%E4%B8%80%E6%9D%A1%E5%A5%87%E6%80%AA%E7%9A%84%20return%20%E8%AF%AD%E5%8F%A5/</url>
