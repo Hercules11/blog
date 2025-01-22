@@ -4,6 +4,63 @@
   
   
   <entry>
+    <title>react 整体架构</title>
+    <link href="/blog/2025/01/23/react%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/"/>
+    <url>/blog/2025/01/23/react%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/</url>
+    
+    <content type="html"><![CDATA[<p>要理解一个技术，首先要知道一个前提，技术是用来解决问题的。那么，对于 react，这个前端领域最流行的技术框架之一，它要解决的问题是什么？</p><p>问题就是，传统的前端网页开发的效率很低。无论是 html 标签、 css 样式编写，还是 js 代码对相关元素的操作，尤其是在项目规模越来越大的情况下，项目的开发维护都是个大问题。那为什么 react 出现之前没有面临代码规模大的问题——因为 v8 引擎出现之前，大量js 代码的运行效率用户接受不了，也就谈不上有相关需求。v8 出现以后，使得规模大的代码运行效率变得可以接受后，解决大规模代码的项目才有价值。</p><p>react 分别从多个角度对前端开发进行了抽象，提高效率。因为频繁利用浏览器的 dom 操作接口效率低，所以引入虚拟 DOM，将对 dom 元素的操作转变为对虚拟 DOM 的操作。将 html 的编写转化为使用特定的 jsx 语法，以便进行更好地与 js 逻辑融合。将网页应用拆分成模块，引入组件化开发，降低心智负担。</p><p>引入了新的解决方案，那么也会出现一些问题要解决。比如组件的数据如何在组件树上进行共享？特定元素触发的事件如何传导到组件树指定的位置？以及数据的响应式特性，如何在组件树上实现跟随式的数据变化？</p><p>针对这些问题，react的开发者们给出了具体的代码。当然不是每一行代码都要自己想，很多子问题的解决方案都是可以复用的，比如 jsx 的解析语法啥的。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>技术框架</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>passive的语义和它的作用之间的关联</title>
+    <link href="/blog/2025/01/22/passive-%E7%9A%84%E8%AF%AD%E4%B9%89%E5%92%8C%E5%AE%83%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E8%81%94/"/>
+    <url>/blog/2025/01/22/passive-%E7%9A%84%E8%AF%AD%E4%B9%89%E5%92%8C%E5%AE%83%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E8%81%94/</url>
+    
+    <content type="html"><![CDATA[<p>![Node module](/blog/images/屏幕截图 2025-01-22 235400.png)</p><h3 id="从语义角度解释-passive"><a href="#从语义角度解释-passive" class="headerlink" title="从语义角度解释 passive"></a><strong>从语义角度解释 <code>passive</code></strong></h3><p><strong><code>passive</code></strong> 的字面意思是 <strong>“被动的”</strong> 或 <strong>“不主动干预的”</strong>。在事件监听器中，<code>passive</code> 的含义与它的语义高度契合，具体体现为：</p><hr><h3 id="1-被动的监听器"><a href="#1-被动的监听器" class="headerlink" title="1. 被动的监听器"></a><strong>1. 被动的监听器</strong></h3><ul><li><strong>默认行为</strong>：浏览器在触发某些事件（如 <code>touchmove</code>、<code>scroll</code>）时会等待事件监听器执行完成，以检查是否调用了 <code>preventDefault()</code> 来阻止默认行为。</li><li><strong><code>passive: true</code></strong> 的含义：声明监听器是“被动的”，即它不会主动干预或阻止事件的默认行为，浏览器可以直接处理默认行为（如页面滚动）而无需等待。</li></ul><p>这样，<code>passive</code> 的语义表现为一种“不干涉”的行为。</p><hr><h3 id="2-对比主动干预（non-passive）"><a href="#2-对比主动干预（non-passive）" class="headerlink" title="2. 对比主动干预（non-passive）"></a><strong>2. 对比主动干预（non-passive）</strong></h3><p>如果没有 <code>passive: true</code>，监听器可能会变成“主动干预者”，即通过调用 <code>preventDefault()</code> 改变事件的默认执行逻辑。此时，浏览器不得不等待监听器执行完，确定是否阻止默认行为。</p><ul><li><strong>主动监听器（非 <code>passive</code>）</strong>：监听器会干预默认行为，例如阻止滚动。</li><li><strong>被动监听器（<code>passive</code>）</strong>：监听器不干预默认行为，例如允许滚动正常发生。</li></ul><hr><h3 id="3-语义的核心：不干预默认行为"><a href="#3-语义的核心：不干预默认行为" class="headerlink" title="3. 语义的核心：不干预默认行为"></a><strong>3. 语义的核心：不干预默认行为</strong></h3><p><code>passive</code> 的设计初衷就是优化浏览器性能，避免事件监听器主动干预默认行为。因此，从语义上可以将其理解为：</p><ul><li><strong>“我只是观察事件，不会主动插手。”</strong></li><li><strong>“浏览器可以自由地处理事件的默认行为。”</strong></li></ul><p>这与 “被动” 的定义一致，即仅观察而不采取干预措施。</p><hr><h3 id="4-实际案例中的语义体现"><a href="#4-实际案例中的语义体现" class="headerlink" title="4. 实际案例中的语义体现"></a><strong>4. 实际案例中的语义体现</strong></h3><h4 id="没有-passive（默认情况下）"><a href="#没有-passive（默认情况下）" class="headerlink" title="没有 passive（默认情况下）"></a><strong>没有 <code>passive</code>（默认情况下）</strong></h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;touchmove&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) &#123;<br>  e.<span class="hljs-title function_">preventDefault</span>(); <span class="hljs-comment">// 明确阻止默认行为（滚动）。</span><br>&#125;, &#123; <span class="hljs-attr">passive</span>: <span class="hljs-literal">false</span> &#125;);<br></code></pre></td></tr></table></figure><p>这里监听器是“主动的”，会干预触摸事件并阻止页面滚动。</p><h4 id="设置-passive-true"><a href="#设置-passive-true" class="headerlink" title="设置 passive: true"></a><strong>设置 <code>passive: true</code></strong></h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;touchmove&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) &#123;<br>  <span class="hljs-comment">// 不会调用 preventDefault()，只观察，不干预。</span><br>&#125;, &#123; <span class="hljs-attr">passive</span>: <span class="hljs-literal">true</span> &#125;);<br></code></pre></td></tr></table></figure><p>这里监听器是“被动的”，不干预触摸事件的默认行为，页面滚动可以正常发生。</p><hr><h3 id="5-总结：语义与作用的契合"><a href="#5-总结：语义与作用的契合" class="headerlink" title="5. 总结：语义与作用的契合"></a><strong>5. 总结：语义与作用的契合</strong></h3><ul><li><p><strong><code>passive</code> 的语义</strong>：表示监听器仅处于“被动观察”的状态，不会主动干预事件的默认行为。</p></li><li><p>现实中的类比</p><p>：</p><ul><li>一个“主动”参与的观察者可能会插手正在发生的事情。</li><li>一个“被动”的观察者只记录发生的事情，而不试图改变它。</li></ul></li></ul><p><code>passive: true</code> 的设计正是基于这种“不干预”的语义逻辑，同时提升了浏览器的性能表现。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>技术细节</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>奇怪的换行</title>
+    <link href="/blog/2024/09/24/passive%E7%9A%84%E8%AF%AD%E4%B9%89%E5%92%8C%E5%AE%83%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E8%81%94/"/>
+    <url>/blog/2024/09/24/passive%E7%9A%84%E8%AF%AD%E4%B9%89%E5%92%8C%E5%AE%83%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E8%81%94/</url>
+    
+    <content type="html"><![CDATA[<p><img src="/blog/source/images/image-20240924102051222.png" alt="image-20240924102051222"></p><p>在一个 div 元素内部渲染了很多 span 子元素，并且 div 的样式被定义为：</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">width</span>: <span class="hljs-number">50%</span>;<br><span class="hljs-attribute">overflow</span>: hidden;<br></code></pre></td></tr></table></figure><p>正常情况下，不在 div 内容区域的元素都会被隐藏。</p><p>但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。</p><p>![image-20240924102051222](/blog/source/images/2024-09-24 102730.png)</p><p>使我百思不得其解。</p><p>问了chatgpt 后，觉得可能是样式没有正常生效。观察了一番，看到了每次换行前的一个元素是包含空格的。类似：</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>projector lens<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>（overflow）<br></code></pre></td></tr></table></figure><p>让我想到，可能是没有禁用换行引起的问题。</p><p>随后在父元素上加上了：</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">white-space</span>: nowrap;<br></code></pre></td></tr></table></figure><p>问题解决。</p><p>至于为什么会出这样的问题——渲染包含空格的 span 后，之后的元素另起一行？</p><p>是什么让渲染器猛然觉得自己要换行来着。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>编程难题</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>奇怪的换行</title>
     <link href="/blog/2024/09/24/%E5%A5%87%E6%80%AA%E7%9A%84%E6%8D%A2%E8%A1%8C/"/>
     <url>/blog/2024/09/24/%E5%A5%87%E6%80%AA%E7%9A%84%E6%8D%A2%E8%A1%8C/</url>
