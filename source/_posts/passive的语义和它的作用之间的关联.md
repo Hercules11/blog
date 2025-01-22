@@ -4,7 +4,7 @@ tags: 技术细节
 date: 2025-01-22 23:50:23
 ---
 
-![Node module](/blog/images/屏幕截图 2025-01-22 235400.png)
+![passive](/blog/images/2025-01-22-235400.png)
 
 ### **从语义角度解释 `passive`**
 
