@@ -16,16 +16,17 @@
   <meta name="author" content="wxc">
   <meta name="keywords" content="personal website">
   
-    <meta name="description" content="在一个 div 元素内部渲染了很多 span 子元素，并且 div 的样式被定义为： 12width: 50%;overflow: hidden;  正常情况下，不在 div 内容区域的元素都会被隐藏。 但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。 ![image-20240924102051222](&#x2F;blog&#x2F;source&#x2F;images&#x2F;2024-09-24 102730.png">
+    <meta name="description" content="在一个 div 元素内部渲染了很多 span 子元素，并且 div 的样式被定义为： 12width: 50%;overflow: hidden;  正常情况下，不在 div 内容区域的元素都会被隐藏。 但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。  使我百思不得其解。 问了chatgpt 后，觉得可能是样式没有正常生效。观察了一番，看到了每次换行前的一个元素是包含空格的。类似： 1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="奇怪的换行">
 <meta property="og:url" content="https://hercules11.github.io/blog/2024/09/24/%E5%A5%87%E6%80%AA%E7%9A%84%E6%8D%A2%E8%A1%8C/index.html">
 <meta property="og:site_name" content="Hercules11">
-<meta property="og:description" content="在一个 div 元素内部渲染了很多 span 子元素，并且 div 的样式被定义为： 12width: 50%;overflow: hidden;  正常情况下，不在 div 内容区域的元素都会被隐藏。 但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。 ![image-20240924102051222](&#x2F;blog&#x2F;source&#x2F;images&#x2F;2024-09-24 102730.png">
+<meta property="og:description" content="在一个 div 元素内部渲染了很多 span 子元素，并且 div 的样式被定义为： 12width: 50%;overflow: hidden;  正常情况下，不在 div 内容区域的元素都会被隐藏。 但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。  使我百思不得其解。 问了chatgpt 后，觉得可能是样式没有正常生效。观察了一番，看到了每次换行前的一个元素是包含空格的。类似： 1">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hercules11.github.io/blog/source/images/image-20240924102051222.png">
+<meta property="og:image" content="https://hercules11.github.io/blog/source/images/2024-09-24-102730.png">
 <meta property="article:published_time" content="2024-09-24T02:36:23.000Z">
-<meta property="article:modified_time" content="2025-01-22T16:05:50.921Z">
+<meta property="article:modified_time" content="2025-01-22T16:12:02.288Z">
 <meta property="article:author" content="wxc">
 <meta property="article:tag" content="编程难题">
 <meta name="twitter:card" content="summary_large_image">
@@ -215,7 +216,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          407 字
+          339 字
         
       </span>
     
@@ -227,7 +228,7 @@
         
         
           <!-- compatible with older versions-->
-          预计阅读耗时 4 分钟
+          预计阅读耗时 3 分钟
         
       </span>
     
@@ -285,7 +286,7 @@
 
 <p>正常情况下，不在 div 内容区域的元素都会被隐藏。</p>
 <p>但是偶尔有元素，不按预想的方式溢出隐藏，而是直接换行了。</p>
-<p>![image-20240924102051222](/blog/source/images/2024-09-24 102730.png)</p>
+<p><img src="/blog/source/images/2024-09-24-102730.png" srcset="/blog/img/loading.gif" lazyload alt="image-20240924102051222"></p>
 <p>使我百思不得其解。</p>
 <p>问了chatgpt 后，觉得可能是样式没有正常生效。观察了一番，看到了每次换行前的一个元素是包含空格的。类似：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>projector lens<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>（overflow）<br></code></pre></td></tr></table></figure>
