@@ -16,22 +16,24 @@
   <meta name="author" content="wxc">
   <meta name="keywords" content="personal website">
   
-    <meta name="description" content="解决 html, body 元素未占满全屏的问题 设置 123html, body &amp;#123;    width: 100%&amp;#125;  后，并没有解决问题。 因为浏览器默认按照窗口大小（viewport）来设置 html 元素大小。于是，当页面缩小的时候，html 变小，但是页面元素的尺寸是写死的，于是越界，侧边出现白边。 解决办法是设置 123html, body &amp;#123;	min-w">
+    <meta name="description" content="全网最优雅的 React 源码调试方式 被教程坑了一把，react 在 19 版本以后就删除了 umd 的构建方式，导致原作者文章中提供的方法失效了。 具体表现为，在将 react 和 react-dom 替换为外部引用（即包含react编译后的源代码到react源代码的映射的map文件）的时候，文件系统不支持 cjs 类型的模块引用。本身项目是由 webpack 打包起来的，但是当作者将 rea">
 <meta property="og:type" content="article">
-<meta property="og:title" content="html未占满全屏">
-<meta property="og:url" content="https://hercules11.github.io/blog/2021/12/28/html%E6%9C%AA%E5%8D%A0%E6%BB%A1%E5%85%A8%E5%B1%8F/index.html">
+<meta property="og:title" content="调试react源代码的步骤">
+<meta property="og:url" content="https://hercules11.github.io/blog/2025/01/28/%E8%B0%83%E8%AF%95react%E6%BA%90%E4%BB%A3%E7%A0%81%E7%9A%84%E6%AD%A5%E9%AA%A4/index.html">
 <meta property="og:site_name" content="Hercules11">
-<meta property="og:description" content="解决 html, body 元素未占满全屏的问题 设置 123html, body &amp;#123;    width: 100%&amp;#125;  后，并没有解决问题。 因为浏览器默认按照窗口大小（viewport）来设置 html 元素大小。于是，当页面缩小的时候，html 变小，但是页面元素的尺寸是写死的，于是越界，侧边出现白边。 解决办法是设置 123html, body &amp;#123;	min-w">
+<meta property="og:description" content="全网最优雅的 React 源码调试方式 被教程坑了一把，react 在 19 版本以后就删除了 umd 的构建方式，导致原作者文章中提供的方法失效了。 具体表现为，在将 react 和 react-dom 替换为外部引用（即包含react编译后的源代码到react源代码的映射的map文件）的时候，文件系统不支持 cjs 类型的模块引用。本身项目是由 webpack 打包起来的，但是当作者将 rea">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-12-28T09:24:41.000Z">
-<meta property="article:modified_time" content="2025-01-28T18:59:28.220Z">
+<meta property="og:image" content="https://hercules11.github.io/blog/images/2025-01-29-025642.png">
+<meta property="article:published_time" content="2025-01-28T18:45:23.000Z">
+<meta property="article:modified_time" content="2025-01-28T18:59:28.222Z">
 <meta property="article:author" content="wxc">
-<meta property="article:tag" content="bug fix">
+<meta property="article:tag" content="教程">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hercules11.github.io/blog/images/2025-01-29-025642.png">
   
   
   
-  <title>html未占满全屏 - Hercules11</title>
+  <title>调试react源代码的步骤 - Hercules11</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -184,7 +186,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">html未占满全屏</span>
+            <span id="subtitle">调试react源代码的步骤</span>
           
         </div>
 
@@ -200,8 +202,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-12-28 17:24" pubdate>
-          2021年12月28日 下午
+        <time datetime="2025-01-29 02:45" pubdate>
+          2025年1月29日 凌晨
         </time>
       </span>
     
@@ -213,7 +215,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          235 字
+          602 字
         
       </span>
     
@@ -225,7 +227,7 @@
         
         
           <!-- compatible with older versions-->
-          预计阅读耗时 2 分钟
+          预计阅读耗时 6 分钟
         
       </span>
     
@@ -263,7 +265,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">html未占满全屏</h1>
+            <h1 style="display: none">调试react源代码的步骤</h1>
             
               <p class="note note-info">
                 
@@ -277,16 +279,13 @@
             
               <div class="markdown-body">
                 
-                <p>解决 html, body 元素未占满全屏的问题</p>
-<p>设置</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> &#123;<br>    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>后，并没有解决问题。</p>
-<p>因为浏览器默认按照窗口大小（viewport）来设置 html 元素大小。于是，当页面缩小的时候，html 变小，但是页面元素的尺寸是写死的，于是越界，侧边出现白边。</p>
-<p>解决办法是设置</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> &#123;<br>	<span class="hljs-attribute">min-width</span>: <span class="hljs-number">1400px</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>就是设置最小宽度，使得 html 元素包含内部元素。不随着窗口大小改变到最小值以下。</p>
+                <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7126501202866470949">全网最优雅的 React 源码调试方式</a></p>
+<p>被教程坑了一把，react 在 19 版本以后就删除了 umd 的构建方式，导致原作者文章中提供的方法失效了。</p>
+<p>具体表现为，在将 react 和 react-dom 替换为外部引用（即包含react编译后的源代码到react源代码的映射的map文件）的时候，文件系统不支持 cjs 类型的模块引用。本身项目是由 webpack 打包起来的，但是当作者将 react 和 react-dom 脱离 webpack 的管辖时，原有的模块系统也失效了。umd 本身是自包含的，可以不借助打包工具直接引入到浏览器中使用。</p>
+<p>当我在想，是回退到作者演示的版本去搭建测试环境，还是想办法解决现有的模块引用问题的时候，我了问 chatgpt, 如何进行测试项目中的 react 源代码调试？</p>
+<p>结果，chatgpt 告诉我可以用 yarn link，生成源文件模块的引用，再到测试项目中进行 yarn link [package name]。</p>
+<p>于是乎，我用了 chatgpt 提示的方法，成功运行起了测试环境，也可以链接到 react 源代码进行调试。我发现和原作者讲的有一些不同，原作者认为 react 源代码编译到 单个文件 加 单个文件.map.js 的形式，再通过 webpack 打包到 bundle.js 到运行到浏览器中，调试工具不能触及 react 源代码。因为调试工具只解析一次 sourceMap。我实际测试发现，可以正常调试 react 源代码，调试工具会定位原文件的位置。</p>
+<p><img src="/blog/images/2025-01-29-025642.png" srcset="/blog/img/loading.gif" lazyload alt="2025-01-29-025642"></p>
 
                 
               </div>
@@ -299,7 +298,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/bug-fix/">#bug fix</a>
+        <a href="/blog/tags/%E6%95%99%E7%A8%8B/">#教程</a>
       
     </div>
   
@@ -311,8 +310,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>html未占满全屏</div>
-      <div>https://hercules11.github.io/blog/2021/12/28/html未占满全屏/</div>
+      <div>调试react源代码的步骤</div>
+      <div>https://hercules11.github.io/blog/2025/01/28/调试react源代码的步骤/</div>
     </div>
     <div class="license-meta">
       
@@ -324,7 +323,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年12月28日</div>
+          <div>2025年1月29日</div>
         </div>
       
       
@@ -356,18 +355,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2021/12/28/git-%E5%85%A8%E9%93%BE%E8%B7%AF%E5%88%86%E6%9E%90/" title="git 全链路分析">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">git 全链路分析</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2021/12/16/%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94%E7%94%9F%E6%88%90%E7%8B%AC%E4%B8%80%E6%97%A0%E4%BA%8C%E7%9A%84%E6%A0%87%E8%AF%86%E7%AC%A6/" title="算法——生成独一无二的标识符">
-                        <span class="hidden-mobile">算法——生成独一无二的标识符</span>
+                      <a href="/blog/2025/01/23/react%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/" title="react 整体架构">
+                        <span class="hidden-mobile">react 整体架构</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
