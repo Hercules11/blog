@@ -1,0 +1,677 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wxc">
+  <meta name="keywords" content="personal website">
+  
+    <meta name="description" content="我使用大模型进行 AI 辅助编程后，提升效率非常明显，越是精简的小项目，提升效率越高，大约十倍不止。于是我在想一个问题，以前用框架开发前端后端，是为了提升开发的效率，以及快速应用成熟的解决方案。在实际开发中，还会用软件开发模块去提升效率，尽可能快地拿到开发成果，但是也带来了一些问题，包括项目依赖很重，明明是很简单的功能，却引入了很多依赖包。模板软件厂商为了他的普适性，也增加了很多防御性的代码，对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型加持下的软件开发路线">
+<meta property="og:url" content="https://hercules11.github.io/blog/2025/06/28/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8A%A0%E6%8C%81%E4%B8%8B%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E8%B7%AF%E7%BA%BF/index.html">
+<meta property="og:site_name" content="Hercules11">
+<meta property="og:description" content="我使用大模型进行 AI 辅助编程后，提升效率非常明显，越是精简的小项目，提升效率越高，大约十倍不止。于是我在想一个问题，以前用框架开发前端后端，是为了提升开发的效率，以及快速应用成熟的解决方案。在实际开发中，还会用软件开发模块去提升效率，尽可能快地拿到开发成果，但是也带来了一些问题，包括项目依赖很重，明明是很简单的功能，却引入了很多依赖包。模板软件厂商为了他的普适性，也增加了很多防御性的代码，对">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-28T06:39:23.000Z">
+<meta property="article:modified_time" content="2025-06-28T06:39:43.092Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="编程技巧">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>大模型加持下的软件开发路线 - Hercules11</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/blog/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hercules11.github.io","root":"/blog/","version":"1.9.3","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Hercules11</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/images/VirginiaDeer_ZH-CN4255528182_1920x1080.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">大模型加持下的软件开发路线</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        wxc
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-28 14:39" pubdate>
+          2025年6月28日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          预计阅读耗时 26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">大模型加持下的软件开发路线</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年6月28日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<h3 id="我使用大模型进行-AI-辅助编程后，提升效率非常明显，越是精简的小项目，提升效率越高，大约十倍不止。于是我在想一个问题，以前用框架开发前端后端，是为了提升开发的效率，以及快速应用成熟的解决方案。在实际开发中，还会用软件开发模块去提升效率，尽可能快地拿到开发成果，但是也带来了一些问题，包括项目依赖很重，明明是很简单的功能，却引入了很多依赖包。模板软件厂商为了他的普适性，也增加了很多防御性的代码，对各种基础功能进行了高层次的抽象，导致修改不易，大量冗余的代码，后续优化困难。"><a href="#我使用大模型进行-AI-辅助编程后，提升效率非常明显，越是精简的小项目，提升效率越高，大约十倍不止。于是我在想一个问题，以前用框架开发前端后端，是为了提升开发的效率，以及快速应用成熟的解决方案。在实际开发中，还会用软件开发模块去提升效率，尽可能快地拿到开发成果，但是也带来了一些问题，包括项目依赖很重，明明是很简单的功能，却引入了很多依赖包。模板软件厂商为了他的普适性，也增加了很多防御性的代码，对各种基础功能进行了高层次的抽象，导致修改不易，大量冗余的代码，后续优化困难。" class="headerlink" title="我使用大模型进行 AI 辅助编程后，提升效率非常明显，越是精简的小项目，提升效率越高，大约十倍不止。于是我在想一个问题，以前用框架开发前端后端，是为了提升开发的效率，以及快速应用成熟的解决方案。在实际开发中，还会用软件开发模块去提升效率，尽可能快地拿到开发成果，但是也带来了一些问题，包括项目依赖很重，明明是很简单的功能，却引入了很多依赖包。模板软件厂商为了他的普适性，也增加了很多防御性的代码，对各种基础功能进行了高层次的抽象，导致修改不易，大量冗余的代码，后续优化困难。"></a>我使用大模型进行 AI 辅助编程后，提升效率非常明显，越是精简的小项目，提升效率越高，大约十倍不止。于是我在想一个问题，以前用框架开发前端后端，是为了提升开发的效率，以及快速应用成熟的解决方案。在实际开发中，还会用软件开发模块去提升效率，尽可能快地拿到开发成果，但是也带来了一些问题，包括项目依赖很重，明明是很简单的功能，却引入了很多依赖包。模板软件厂商为了他的普适性，也增加了很多防御性的代码，对各种基础功能进行了高层次的抽象，导致修改不易，大量冗余的代码，后续优化困难。</h3><h3 id="于是有了一个问题，有了大模型辅助开发之后，是从零到一重新开发，还是走老路用成熟厚重的框架，或是叠加用软件模板去拿到最终成果，该如何重新考虑得失的问题。"><a href="#于是有了一个问题，有了大模型辅助开发之后，是从零到一重新开发，还是走老路用成熟厚重的框架，或是叠加用软件模板去拿到最终成果，该如何重新考虑得失的问题。" class="headerlink" title="于是有了一个问题，有了大模型辅助开发之后，是从零到一重新开发，还是走老路用成熟厚重的框架，或是叠加用软件模板去拿到最终成果，该如何重新考虑得失的问题。"></a>于是有了一个问题，有了大模型辅助开发之后，是从零到一重新开发，还是走老路用成熟厚重的框架，或是叠加用软件模板去拿到最终成果，该如何重新考虑得失的问题。</h3></blockquote>
+<p>您提出的这个问题非常深刻，切中了当前 AI 时代软件开发范式转变的核心。您观察到的现象——AI 对小型、精简项目效率提升尤其巨大——正是引爆这场讨论的导火索。</p>
+<p>过去，我们选择框架和模板，本质上是在用<strong>“固化的最佳实践”</strong>来换取<strong>“初始开发速度”</strong>和<strong>“安全性、稳定性”</strong>。这是一种权衡（Trade-off），我们接受了它的“重”，以避免从零开始的“慢”和“坑”。</p>
+<p>现在，大模型（LLM）作为一种<strong>“动态的、即时生成的智慧”</strong>加入了这个等式，彻底改变了原有的得失计算。我们不再只有一个选项，而是有了一个全新的、可以动态调整的开发光谱。</p>
+<p>下面，我们来重新解构和思考这个问题。</p>
+<hr>
+<h3 id="1-重新评估三种路径的优劣势（AI-Powered-Edition）"><a href="#1-重新评估三种路径的优劣势（AI-Powered-Edition）" class="headerlink" title="1. 重新评估三种路径的优劣势（AI-Powered Edition）"></a>1. 重新评估三种路径的优劣势（AI-Powered Edition）</h3><table>
+<thead>
+<tr>
+<th align="left">开发路径</th>
+<th align="left">传统优势</th>
+<th align="left">传统劣势</th>
+<th align="left"><strong>加入 AI 后的新变化</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>从零到一 (From Scratch)</strong></td>
+<td align="left">- 极致轻量、无冗余<br>- 完全可控，定制性强<br>- 技术栈清晰，无黑盒</td>
+<td align="left">- 耗时极长，重复造轮子<br>- 对开发者经验要求高<br>- 容易忽略安全、性能等“看不见的”工程问题</td>
+<td align="left"><strong>劣势被极大削弱：</strong><br>1. <strong>速度提升</strong>：AI 能秒级生成基础结构、样板代码、算法、API 接口、单元测试，把最耗时的“轮子”部分自动化了。<br>2. <strong>经验补充</strong>：你可以向 AI 咨询架构设计、安全实践、性能优化方案，它成了你的“资深架构师顾问”。<br>3. <strong>质量保障</strong>：AI 可以帮你 review 代码，找出潜在 bug 和不规范的写法。</td>
+</tr>
+<tr>
+<td align="left"><strong>使用成熟框架 (Frameworks)</strong></td>
+<td align="left">- 生态成熟，社区强大<br>- 解决方案完整（ORM, Auth, etc.）<br>- 经过大规模验证，稳定可靠</td>
+<td align="left">- 学习曲线陡峭<br>- 依赖重，项目臃肿<br>- 抽象层次高，修改底层困难</td>
+<td align="left"><strong>体验被极大优化：</strong><br>1. <strong>学习曲线变平</strong>：遇到不懂的框架概念或错误，直接问 AI，它能给你“人话版”解释和代码示例。<br>2. <strong>开发加速</strong>：AI 能生成符合框架规范的代码（如生成一个 Spring Boot 的 Controller/Service/Repository 全家桶），让你专注于业务逻辑。<br>3. <strong>“破框”能力</strong>：当你需要修改框架默认行为时，AI 可以帮你定位到关键代码，并给出修改建议，降低了“破框”的难度。</td>
+</tr>
+<tr>
+<td align="left"><strong>使用软件模板 (Templates)</strong></td>
+<td align="left">- 拿来即用，最快交付<br>- 功能预置，开箱即用</td>
+<td align="left">- 代码质量参差不齐<br>- 定制化极其困难，牵一发而动全身<br>- 后续维护和扩展是噩梦</td>
+<td align="left"><strong>劣势部分被改善：</strong><br>1. <strong>代码解读器</strong>：面对模板中混乱的代码，AI 可以帮你快速理清逻辑、解释函数作用，让你能更快上手修改。<br>2. <strong>智能重构</strong>：你可以让 AI 帮你重构模板的某个模块，比如“把这段 jQuery 代码改成 React Hook”，或者“优化这个函数的性能”。<br>3. <strong>“外科手术式”修改</strong>：AI 能帮助你进行精准修改，而不需要全盘理解，降低了修改引入新 bug 的风险。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="2-如何在新范式下做决策？一个分场景的决策模型"><a href="#2-如何在新范式下做决策？一个分场景的决策模型" class="headerlink" title="2. 如何在新范式下做决策？一个分场景的决策模型"></a>2. 如何在新范式下做决策？一个分场景的决策模型</h3><p>结论是：<strong>我们不再是“三选一”，而是根据项目的具体情况，动态地组合和切换这三种模式。</strong> 你的角色从一个“代码实现者”更多地转变为一个“技术决策者”和“AI 指挥官”。</p>
+<h4 id="场景一：小型、创新或验证性项目-MVP"><a href="#场景一：小型、创新或验证性项目-MVP" class="headerlink" title="场景一：小型、创新或验证性项目 (MVP)"></a>场景一：小型、创新或验证性项目 (MVP)</h4><ul>
+<li><strong>项目特点</strong>：功能边界清晰、需求明确、追求极致的性能和灵活性、技术验证原型。</li>
+<li><strong>最佳策略</strong>：<strong>果断选择“从零到一 + AI”</strong>。</li>
+<li><strong>原因</strong>：这是 AI 辅助编程的“甜点区”。你可以获得一个完全为你量身定制、没有任何历史包袱和冗余代码的系统。AI 帮你处理了 80% 的体力活，你只需要专注于 20% 的核心创新逻辑。这正是您体验到“十倍效率提升”的领域。</li>
+<li><strong>例子</strong>：一个独立的微服务、一个命令行工具、一个个人博客、一个 Chrome 插件。</li>
+</ul>
+<h4 id="场景二：中大型、业务复杂的标准应用"><a href="#场景二：中大型、业务复杂的标准应用" class="headerlink" title="场景二：中大型、业务复杂的标准应用"></a>场景二：中大型、业务复杂的标准应用</h4><ul>
+<li><strong>项目特点</strong>：需要用户认证、数据库管理、复杂业务流程、长期维护、团队协作。</li>
+<li><strong>最佳策略</strong>：<strong>“成熟框架 + AI”作为基石，并在局部采用“从零到一 + AI”的模式。</strong></li>
+<li><strong>原因</strong>：<ol>
+<li><strong>基石用框架</strong>：对于认证、授权、ORM、事务管理等复杂且需要高度可靠性的“非功能性需求”，重复造轮子依然是危险且不划算的。成熟框架几十年来沉淀的稳定性和安全性，AI 短期内无法完全替代。</li>
+<li><strong>血肉用 AI</strong>：在框架之上，所有的业务逻辑、API 接口、前端组件，都让 AI 来快速生成。你不再需要去记框架的每一个 API，而是告诉 AI “我要用 Django Rest Framework 创建一个支持分页和搜索的 Product API”，然后由你来审查和微调。</li>
+</ol>
+</li>
+<li><strong>例子</strong>：企业级后台管理系统、电商平台、SaaS 应用。</li>
+</ul>
+<h4 id="场景三：预算极低、时间极紧的交付项目"><a href="#场景三：预算极低、时间极紧的交付项目" class="headerlink" title="场景三：预算极低、时间极紧的交付项目"></a>场景三：预算极低、时间极紧的交付项目</h4><ul>
+<li><strong>项目特点</strong>：“明天就要上线”、“先做个样子出来看看效果”。</li>
+<li><strong>最佳策略</strong>：<strong>“软件模板 + AI”</strong>。</li>
+<li><strong>原因</strong>：这是为了追求极致的“初始速度”。先用模板快速搭建一个 80% 可用的系统，然后利用 AI 的“外科手术”能力，对剩下的 20% 进行快速、精准的定制化修改。虽然这可能会带来技术债，但在特定商业场景下是合理的。AI 在此的作用是降低修改“祖传代码”的痛苦和风险。</li>
+<li><strong>例子</strong>：一个临时的市场活动页面、一个功能简单的官网。</li>
+</ul>
+<hr>
+<h3 id="3-思维转变：从“开发者”到“架构师-指挥官”"><a href="#3-思维转变：从“开发者”到“架构师-指挥官”" class="headerlink" title="3. 思维转变：从“开发者”到“架构师 + 指挥官”"></a>3. 思维转变：从“开发者”到“架构师 + 指挥官”</h3><p>有了大模型的帮助，你的核心价值发生了转移：</p>
+<ol>
+<li> <strong>提问和定义问题的能力</strong>：你能否清晰、准确地向 AI 描述你的需求？你的 Prompt 质量直接决定了生成代码的质量。</li>
+<li> <strong>架构设计和技术选型的能力</strong>：AI 可以提供选项，但最终决定用什么架构、什么技术栈、数据库如何设计的人，依然是你。这个决策的价值被放大了。</li>
+<li> **代码审查和批判性思维的能力 (Code Review)**：AI 会犯错，会产生“看起来正确”的垃圾代码。你需要具备识别这些问题、并指导 AI 修正的能力。你成了最终的质量守门员。</li>
+<li> <strong>系统整合和调试的能力</strong>：AI 可以生成模块，但如何将这些模块优雅地粘合在一起，并在出现问题时进行端到端的调试，这仍然是高级工程师的核心技能。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>所以，回到您最初的问题：<strong>我们应该如何重新考虑得失？</strong></p>
+<p>答案是：<strong>得失的平衡点已经从“固化方案”向量“动态生成”的方向大幅移动了。</strong></p>
+<ul>
+<li><strong>“重”的代价变高了</strong>：在 AI 的帮助下，“从零到一”的成本急剧下降，这使得传统框架和模板的“臃肿”和“不灵活”变得更加难以忍受。</li>
+<li><strong>“快”的定义改变了</strong>：过去，“快”意味着用现成的轮子。现在，“快”意味着用 AI 快速生成你想要的、不多不少、刚刚好的轮子。</li>
+<li><strong>“安全”和“稳定”的来源更多元了</strong>：过去主要依赖框架，现在你可以通过 AI 咨询最佳实践、生成测试用例、分析代码漏洞，主动地提升项目的安全性和稳定性。</li>
+</ul>
+<p><strong>最终建议：</strong></p>
+<p>拥抱这个新范式。<strong>以“从零到一”为理想基准，只在遇到真正复杂、非自己核心业务的通用问题（如身份认证、支付网关集成）时，才去引入成熟的框架或库作为“插件”来使用。</strong> 让 AI 成为你的主力编码工具，让框架回归其本质——解决特定领域复杂问题的工具集，而不是包办一切的“保姆”。</p>
+<p>这不仅会带来效率的提升，更重要的是，它能让你构建出更健康、更易于维护、真正为你所需而生的软件系统。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">#编程技巧</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>大模型加持下的软件开发路线</div>
+      <div>https://hercules11.github.io/blog/2025/06/28/大模型加持下的软件开发路线/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wxc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2025/03/04/%E5%8F%AF%E5%8F%96%E6%B6%88%E7%9A%84%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%20promise%20%E5%AE%9E%E7%8E%B0/" title="可以取消的网络请求 promise 实现">
+                        <span class="hidden-mobile">可以取消的网络请求 promise 实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
